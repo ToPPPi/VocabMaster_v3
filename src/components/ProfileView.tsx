@@ -227,7 +227,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                     Выйти
                 </button>
 
-                {/* PREMIUM SECTION - UPDATED DESIGN (Brand Colors) */}
+                {/* PREMIUM SECTION */}
                 {!progress.premiumStatus && (
                     <div className="pt-6">
                         <h3 className="text-center text-lg font-bold text-slate-900 mb-6">Преимущества Premium</h3>
@@ -263,14 +263,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                             />
                         </div>
 
-                        {/* Payment Options Block (Brand Gradient Frame) */}
+                        {/* Payment Options Block */}
                         <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-3xl p-6 shadow-xl shadow-violet-200/50 relative overflow-hidden text-white">
-                            
-                            {/* Decorative Background Blur */}
                             <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
                             <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none"></div>
 
-                            {/* Header */}
                             <div className="relative z-10 flex flex-col items-center mb-6 text-center">
                                 <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-2 shadow-inner border border-white/20">
                                     <Crown className="w-7 h-7 text-yellow-300 fill-yellow-300 drop-shadow-sm" />
@@ -282,7 +279,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                             </div>
 
                             <div className="space-y-4 relative z-10">
-                                {/* Month Plan - Glass Effect */}
+                                {/* Month Plan */}
                                 <button 
                                     onClick={() => handleBuy('month')}
                                     disabled={isLoadingPayment !== null}
@@ -302,13 +299,12 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                                     </div>
                                 </button>
 
-                                {/* Year Plan (Hero) - Solid White for Contrast */}
+                                {/* Year Plan */}
                                 <button 
                                     onClick={() => handleBuy('year')}
                                     disabled={isLoadingPayment !== null}
                                     className="w-full relative group"
                                 >
-                                    {/* Badge */}
                                     <div className="absolute -top-3 right-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md z-20 border-2 border-white flex items-center gap-1 transform group-hover:scale-110 transition-transform">
                                         <Flame className="w-3 h-3 fill-current" /> ВЫГОДНО
                                     </div>
@@ -342,7 +338,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                     <p className="text-xs text-slate-400 font-medium">
                         VocabMaster v1.2.0 {resetTaps > 0 && <span className="text-rose-400 font-bold">({resetTaps})</span>}
                     </p>
-                    <p className="text-[10px] text-slate-300">support@vocabmaster.app</p>
+                    {/* NEW HINT TEXT */}
+                    <p className="text-[10px] text-slate-300 mt-1">(Нажмите 10 раз для сброса данных)</p>
+                    <p className="text-[10px] text-slate-300 mt-1">support@vocabmaster.app</p>
                 </div>
             </div>
         </div>

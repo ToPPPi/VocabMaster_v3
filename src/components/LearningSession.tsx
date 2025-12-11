@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2, Check, X, Volume2, Brain, Sparkles, Zap, ThumbsUp, Tag, ArrowRight, Crown, RotateCcw, GraduationCap, Quote, WifiOff } from 'lucide-react';
+import { Loader2, Check, X, Volume2, Brain, Sparkles, Zap, ThumbsUp, Tag, ArrowRight, Crown, RotateCcw, GraduationCap, Quote, WifiOff, Lightbulb } from 'lucide-react';
 import { ProficiencyLevel, UserProgress, Word, AIExplanation } from '../types';
 import { getWordsByLevelAsync, getAllWords, getWordsDueForReview, rateWord, getUserProgress, lockDailySession, incrementAIUsage, checkAIUsageLimit, togglePremium } from '../services/storageService';
 import { explainWordWithAI } from '../services/aiService';
@@ -21,10 +21,8 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
     const [isLoading, setIsLoading] = useState(true);
     const [levelCompleted, setLevelCompleted] = useState(false);
     
-    // We use a fresh copy of progress for the completion screen logic
     const [finalProgress, setFinalProgress] = useState<UserProgress>(progress);
 
-    // --- WORD LOADING LOGIC ---
     const loadWords = async () => {
         setIsLoading(true);
         setCompleted(false);
@@ -86,7 +84,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
     const [aiError, setAiError] = useState<string | null>(null);
     const [isProcessingRating, setIsProcessingRating] = useState(false);
     
-    // Safer access to current word
     const currentWord = sessionWords[currentIndex];
 
     useEffect(() => { 
@@ -116,38 +113,53 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         return days === 1 ? '1 день' : `${days} дн.`;
     };
 
-    const handleRating = (rating: 'easy' | 'medium' | 'hard') => {
+    const handleRating = async (rating: 'easy' | 'medium' | 'hard') => {
         if (!currentWord || isProcessingRating) return;
         setIsProcessingRating(true);
         triggerHaptic('medium');
         
         const wordId = currentWord.id;
         const wordLevel = currentWord.level;
+        const isLastCard = currentIndex >= sessionWords.length - 1;
 
-        // 1. Optimistic UI Update: Move to next card IMMEDIATELY
-        if (currentIndex < sessionWords.length - 1) {
+        if (!isLastCard) {
+            // Optimistic update for non-last cards
             setTimeout(() => {
                 setIsFlipped(false);
                 setCurrentIndex(prev => prev + 1);
                 setIsProcessingRating(false);
-            }, 150); // Short delay for visual feedback
-        } else {
-            // Last card
-            setCompleted(true);
-            setIsProcessingRating(false);
-        }
-
-        // 2. Background Data Saving (Fire and Forget)
-        // We don't await this to prevent UI lag.
-        rateWord(wordId, rating, wordLevel).then((updatedProgress) => {
-            setFinalProgress(updatedProgress);
+            }, 150);
             
-            // Check if we need to lock session AFTER update
-            const limitNow = updatedProgress.premiumStatus ? DAILY_LIMIT_PREMIUM : DAILY_LIMIT_FREE;
-            if (mode === 'daily' && !updatedProgress.premiumStatus && updatedProgress.wordsLearnedToday >= limitNow) {
-                 lockDailySession();
+            // Fire and forget save
+            rateWord(wordId, rating, wordLevel).then(updatedProgress => {
+                setFinalProgress(updatedProgress);
+                const limitNow = updatedProgress.premiumStatus ? DAILY_LIMIT_PREMIUM : DAILY_LIMIT_FREE;
+                if (mode === 'daily' && !updatedProgress.premiumStatus && updatedProgress.wordsLearnedToday >= limitNow) {
+                     lockDailySession();
+                }
+            }).catch(err => console.error("Error saving rating:", err));
+        } else {
+            // CRITICAL FIX: For the LAST card, we MUST await the save
+            // This ensures that 'finalProgress' is fully updated (e.g. count is 10/10)
+            // BEFORE we switch to the 'completed' screen.
+            try {
+                const updatedProgress = await rateWord(wordId, rating, wordLevel);
+                setFinalProgress(updatedProgress);
+                
+                const limitNow = updatedProgress.premiumStatus ? DAILY_LIMIT_PREMIUM : DAILY_LIMIT_FREE;
+                if (mode === 'daily' && !updatedProgress.premiumStatus && updatedProgress.wordsLearnedToday >= limitNow) {
+                     await lockDailySession();
+                }
+                
+                setCompleted(true);
+            } catch(err) {
+                console.error("Error saving final rating:", err);
+                // Force complete anyway to not trap user
+                setCompleted(true);
+            } finally {
+                setIsProcessingRating(false);
             }
-        }).catch(err => console.error("Error saving rating:", err));
+        }
     };
 
     const handleAI = async () => {
@@ -233,7 +245,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         );
     }
 
-    // Safety check: if somehow we are not completed but have no word, force complete
     if (!currentWord && !completed) {
         setCompleted(true);
     }
@@ -250,7 +261,7 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                 <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Сессия завершена!</h2>
                 
                 {isLimitReached && mode === 'daily' ? (
-                     <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-8 max-w-xs mx-auto">
+                     <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-8 max-w-xs mx-auto animate-in fade-in zoom-in duration-300">
                         <p className="text-amber-800 font-bold text-sm mb-1">Дневной лимит исчерпан</p>
                         <p className="text-amber-600 text-xs">Возвращайтесь завтра. Сегодня сессия завершена.</p>
                      </div>
@@ -279,13 +290,11 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         );
     }
 
-    // Critical: If currentWord is undefined here, we return null to avoid crash,
-    // although the checks above should prevent this.
     if (!currentWord) return null;
 
     return (
         <div className="h-screen flex flex-col bg-slate-50 relative pb-safe overflow-hidden">
-            {/* Header / Progress */}
+            {/* Header */}
             <div className="px-6 pt-6 pb-2 flex justify-between items-center z-20">
                 <button onClick={handleFinish} className="text-slate-400 hover:text-slate-600 p-2">
                     <X className="w-6 h-6" />
@@ -313,6 +322,7 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                             {currentWord.transcription && (
                                 <p className="text-violet-500 font-medium text-xl opacity-80 mb-8">{currentWord.transcription}</p>
                             )}
+                            {/* Front Examples */}
                             <div className="space-y-3 w-full text-left bg-slate-50 p-5 rounded-2xl border border-slate-100">
                                     {currentWord.examples.slice(0, 3).map((ex, i) => (
                                         <div key={i} className="flex gap-3">
@@ -343,7 +353,7 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                 </div>
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); handleSpeak(currentWord.term); }}
-                                    className="p-3 border border-slate-100 rounded-xl"
+                                    className="p-3 border border-slate-100 rounded-xl active:bg-slate-50"
                                 >
                                     <Volume2 className="w-6 h-6 text-slate-600" />
                                 </button>
@@ -356,11 +366,38 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                     </span>
                                 )}
                                 <span className="px-2 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded-lg uppercase">{currentWord.partOfSpeech}</span>
+                                {currentWord.frequency && (
+                                    <span className="px-2 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded-lg uppercase">{currentWord.frequency} FREQ</span>
+                                )}
                             </div>
 
                             <div>
                                 <span className="text-xs font-bold text-slate-400 uppercase block mb-2 tracking-wide">Определение</span>
                                 <p className="text-slate-800 text-lg leading-relaxed font-medium">{currentWord.definition}</p>
+                            </div>
+
+                            {/* Usage Context (Added back) */}
+                            {currentWord.usageContext && (
+                                <div className="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                                    <div className="flex items-center gap-2 mb-2 text-emerald-700">
+                                        <Lightbulb className="w-4 h-4" />
+                                        <span className="font-bold text-xs uppercase">Контекст использования</span>
+                                    </div>
+                                    <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{currentWord.usageContext}</p>
+                                </div>
+                            )}
+
+                            {/* Examples on Back (Added back) */}
+                            <div>
+                                <span className="text-xs font-bold text-slate-400 uppercase block mb-3 tracking-wide">Примеры</span>
+                                <div className="space-y-4">
+                                    {currentWord.examples.map((ex, i) => (
+                                        <div key={i} className="pl-3 border-l-2 border-violet-200">
+                                            <p className="text-slate-900 font-medium mb-1">"{ex.en}"</p>
+                                            <p className="text-slate-500 text-sm">{ex.ru}</p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* AI Content */}
@@ -369,10 +406,35 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                     <div className="bg-violet-50 rounded-2xl p-5 border border-violet-100">
                                         <div className="flex items-center gap-2 mb-3 text-violet-700">
                                             <GraduationCap className="w-5 h-5" />
-                                            <span className="font-bold text-sm uppercase">Разбор</span>
+                                            <span className="font-bold text-sm uppercase">AI Разбор</span>
                                         </div>
                                         <p className="text-sm text-slate-900 leading-relaxed mb-3">{aiData.detailedExplanation}</p>
+                                        
+                                        {/* Added missing fields */}
+                                        {aiData.nuance && (
+                                            <div className="mt-3 pt-3 border-t border-violet-200/50">
+                                                <span className="text-xs font-bold text-violet-500 uppercase block mb-1">Нюансы</span>
+                                                <p className="text-sm text-slate-700">{aiData.nuance}</p>
+                                            </div>
+                                        )}
                                     </div>
+
+                                    {aiData.collocations && aiData.collocations.length > 0 && (
+                                        <div className="bg-sky-50 rounded-2xl p-4 border border-sky-100">
+                                            <div className="flex items-center gap-2 mb-2 text-sky-700">
+                                                <Quote className="w-4 h-4" />
+                                                <span className="font-bold text-xs uppercase">Устойчивые фразы</span>
+                                            </div>
+                                            <ul className="space-y-2">
+                                                {aiData.collocations.map((col, i) => (
+                                                    <li key={i} className="text-sm text-slate-700">
+                                                        <span className="font-bold text-sky-800">{col.en}</span> - {col.ru}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
                                     <div className="bg-amber-50 rounded-2xl p-4 border border-amber-100">
                                             <div className="flex items-center gap-2 mb-2 text-amber-700">
                                             <Brain className="w-4 h-4" />

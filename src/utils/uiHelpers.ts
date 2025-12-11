@@ -14,35 +14,47 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 export const speak = (text: string) => {
     if (!('speechSynthesis' in window)) return;
 
-    // Force cancel any pending speech to ensure immediate response on mobile
+    // 1. Force cancel any pending speech (critical for mobile)
     window.speechSynthesis.cancel();
 
-    // Sometimes mobile browsers need a moment to "wake up" the synthesis engine
-    // Getting voices helps trigger initialization
-    window.speechSynthesis.getVoices();
+    // 2. Ensure voices are loaded (Android/iOS fix)
+    const loadVoices = () => {
+        const voices = window.speechSynthesis.getVoices();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.volume = 1;
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US'; // Default to US English
-    utterance.rate = 0.9;     // Slightly slower for better clarity
-    utterance.pitch = 1;
-    utterance.volume = 1;
+        // Try to find a good English voice
+        const enVoice = voices.find(v => v.lang === 'en-US' && !v.localService) 
+                     || voices.find(v => v.lang.startsWith('en'))
+                     || null;
+        
+        if (enVoice) {
+            utterance.voice = enVoice;
+        }
 
-    // Try to ensure voice is selected (some Android WebViews are picky)
-    const voices = window.speechSynthesis.getVoices();
-    const enVoice = voices.find(v => v.lang.startsWith('en'));
-    if (enVoice) {
-        utterance.voice = enVoice;
+        window.speechSynthesis.speak(utterance);
+    };
+
+    // If voices are already loaded, speak immediately
+    if (window.speechSynthesis.getVoices().length > 0) {
+        loadVoices();
+    } else {
+        // Otherwise wait for the event
+        window.speechSynthesis.onvoiceschanged = () => {
+            loadVoices();
+            // Remove listener to avoid multi-firing
+            window.speechSynthesis.onvoiceschanged = null;
+        };
     }
-
-    // iOS Safari sometimes requires this to be called explicitly
-    window.speechSynthesis.speak(utterance);
 };
 
 export const shareApp = () => {
     const text = "Я учу английский с VocabMaster! 10,000 слов, ИИ-тьютор и интервальные повторения. Попробуй тоже!";
     const url = "https://t.me/VocabMasterBot/app"; 
 
-    // 1. Try Native Share (Mobile)
     if (navigator.share) {
         navigator.share({
             title: 'VocabMaster',
@@ -50,12 +62,10 @@ export const shareApp = () => {
             url: url,
         }).catch((error) => console.log('Error sharing', error));
     } 
-    // 2. Try Telegram WebApp Share
     else if (window.Telegram?.WebApp) {
         const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
         window.Telegram.WebApp.openTelegramLink(tgShareUrl);
     }
-    // 3. Fallback: Copy to Clipboard
     else {
         navigator.clipboard.writeText(`${text} ${url}`);
         alert('Ссылка скопирована в буфер обмена!');

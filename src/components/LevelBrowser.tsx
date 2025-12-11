@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Loader2, BookOpen, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Header } from './Header';
 import { ProficiencyLevel, UserProgress, Word } from '../types';
@@ -20,37 +20,47 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
     const [allWords, setAllWords] = useState<Word[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     
-    // Maintain local state for immediate UI feedback
+    // Local state for immediate UI feedback (Optimistic UI)
     const [knownWords, setKnownWords] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         const load = async () => {
             const words = await getWordsByLevelAsync(level);
             setAllWords(words);
-            // Initialize from prop, but then manage locally
+            // Initialize from DB once
             setKnownWords(new Set(Object.keys(progress.wordProgress)));
             setIsLoading(false);
         };
         load();
-    }, [level]); // Removed progress from dependency to prevent overwrite during async sync
+    }, [level]); 
 
     const handleToggleKnown = (wordId: string) => {
         triggerHaptic('selection');
         
-        // 1. Immediate visual update
+        // 1. Instant Visual Update (Trust the user input)
         setKnownWords(prev => {
             const newSet = new Set(prev);
-            if (newSet.has(wordId)) newSet.delete(wordId);
-            else newSet.add(wordId);
+            if (newSet.has(wordId)) {
+                newSet.delete(wordId);
+            } else {
+                newSet.add(wordId);
+            }
             return newSet;
         });
 
-        // 2. Async storage update (silent)
-        toggleKnownStatus(wordId).then(() => {
-            // We call onUpdate to sync global state for other views, 
-            // but we DON'T rely on it to update THIS view's hearts to avoid flicker/revert
-            onUpdate(); 
+        // 2. Background Save (Fire and forget)
+        // We DO NOT await this or call onUpdate() immediately to prevent 
+        // the app from reloading/flickering/crashing during rapid clicking.
+        toggleKnownStatus(wordId).catch(err => {
+            console.error("Failed to save word status", err);
+            // Optional: Revert state here if save fails, but for simple toggles it's rarely needed
         });
+    };
+
+    // Sync back when component unmounts or user goes back
+    const handleBack = () => {
+        onUpdate(); // Sync global state only on exit
+        onBack();
     };
 
     if (isLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-violet-600"/></div>;
@@ -63,7 +73,7 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
             <Header 
                 title={`Уровень ${level}`} 
                 subtitle={`Стр ${page + 1} из ${totalPages || 1}`}
-                onBack={onBack} 
+                onBack={handleBack} 
                 rightContent={<div className="text-xs font-bold text-violet-600 bg-violet-50 px-3 py-1.5 rounded-full">{allWords.length} слов</div>}
             />
 
