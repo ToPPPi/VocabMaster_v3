@@ -55,7 +55,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
 
     const expDate = getExpirationDate();
 
-    const handleBuy = async (plan: 'month' | 'lifetime') => {
+    const handleBuy = async (plan: 'month' | 'year') => {
         triggerHaptic('medium');
         setIsLoadingPayment(plan);
         try {
@@ -263,42 +263,62 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                             />
                         </div>
 
-                        {/* Monthly / Sub Button */}
-                        <button 
-                            onClick={() => handleBuy('month')}
-                            disabled={isLoadingPayment !== null}
-                            className="w-full py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white rounded-2xl font-bold text-lg shadow-xl shadow-violet-200 active:scale-95 transition-transform flex items-center justify-center gap-2 mb-4"
-                        >
-                            {isLoadingPayment === 'month' ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                                <Crown className="w-5 h-5" />
-                            )}
-                            Купить Premium за Stars
-                        </button>
-
-                        {/* Lifetime Card */}
-                        <button 
-                            onClick={() => handleBuy('lifetime')}
-                            disabled={isLoadingPayment !== null}
-                            className="w-full bg-amber-50 border border-amber-100 rounded-2xl p-4 flex items-center justify-between shadow-sm active:scale-95 transition-transform group relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 right-0 w-20 h-20 bg-amber-300/10 rounded-full blur-xl -mr-10 -mt-10"></div>
-                            
-                            <div className="flex flex-col items-start z-10">
-                                <div className="flex items-center gap-2">
-                                    <Infinity className="w-5 h-5 text-amber-600" />
-                                    <span className="font-bold text-slate-900 text-lg">Навсегда</span>
-                                    <span className="bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md uppercase">Выгодно</span>
+                        {/* Payment Options Block (Frame) */}
+                        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm relative">
+                            {/* Header */}
+                            <div className="flex flex-col items-center mb-6">
+                                <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                                    <Crown className="w-6 h-6 text-amber-500 fill-amber-500" />
                                 </div>
-                                <span className="text-xs text-amber-700 font-medium mt-0.5 text-left">Разовая оплата. Никаких подписок.</span>
+                                <h3 className="text-xl font-black text-slate-900">VocabMaster Pro</h3>
+                                <p className="text-xs text-slate-400 font-medium">Выберите свой план</p>
                             </div>
 
-                            <div className="bg-amber-400 text-white font-bold px-4 py-2 rounded-xl text-lg shadow-sm flex items-center gap-1 shrink-0 z-10 group-hover:bg-amber-500 transition-colors">
-                                {isLoadingPayment === 'lifetime' ? <Loader2 className="w-5 h-5 animate-spin" /> : <Star className="w-4 h-4 fill-white" />}
-                                500
+                            <div className="space-y-3">
+                                {/* Month Plan */}
+                                <button 
+                                    onClick={() => handleBuy('month')}
+                                    disabled={isLoadingPayment !== null}
+                                    className="w-full group relative bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl p-4 transition-all active:scale-95 text-left"
+                                >
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="font-bold text-slate-900 text-lg">1 Месяц</span>
+                                        <span className="bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg group-hover:bg-violet-600 transition-colors">
+                                            {isLoadingPayment === 'month' ? <Loader2 className="w-4 h-4 animate-spin"/> : 'Купить'}
+                                        </span>
+                                    </div>
+                                    <div className="text-sm text-slate-500 font-medium flex items-center gap-1.5">
+                                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                                        <span>150 звёзд</span>
+                                        <span className="text-slate-300">•</span>
+                                        <span>≈ 299 ₽</span>
+                                    </div>
+                                </button>
+
+                                {/* Year Plan */}
+                                <button 
+                                    onClick={() => handleBuy('year')}
+                                    disabled={isLoadingPayment !== null}
+                                    className="w-full group relative bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-4 transition-all active:scale-95 text-left shadow-lg shadow-slate-200"
+                                >
+                                    <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl rounded-tr-xl">
+                                        ВЫГОДНО
+                                    </div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="font-bold text-xl">1 Год</span>
+                                        <span className="bg-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-lg group-hover:bg-white/30 transition-colors">
+                                             {isLoadingPayment === 'year' ? <Loader2 className="w-4 h-4 animate-spin"/> : 'Купить'}
+                                        </span>
+                                    </div>
+                                    <div className="text-sm text-slate-300 font-medium flex items-center gap-1.5">
+                                        <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                                        <span>1000 звёзд</span>
+                                        <span className="text-slate-500">•</span>
+                                        <span>≈ 1,990 ₽</span>
+                                    </div>
+                                </button>
                             </div>
-                        </button>
+                        </div>
                     </div>
                 )}
                 
