@@ -14,8 +14,12 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 export const speak = (text: string) => {
     if (!('speechSynthesis' in window)) return;
 
-    // Cancel any currently playing speech to prevent queue build-up and ensure immediate playback
+    // Force cancel any pending speech to ensure immediate response on mobile
     window.speechSynthesis.cancel();
+
+    // Sometimes mobile browsers need a moment to "wake up" the synthesis engine
+    // Getting voices helps trigger initialization
+    window.speechSynthesis.getVoices();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US'; // Default to US English
@@ -23,13 +27,20 @@ export const speak = (text: string) => {
     utterance.pitch = 1;
     utterance.volume = 1;
 
+    // Try to ensure voice is selected (some Android WebViews are picky)
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) {
+        utterance.voice = enVoice;
+    }
+
     // iOS Safari sometimes requires this to be called explicitly
     window.speechSynthesis.speak(utterance);
 };
 
 export const shareApp = () => {
     const text = "Я учу английский с VocabMaster! 10,000 слов, ИИ-тьютор и интервальные повторения. Попробуй тоже!";
-    const url = "https://t.me/VocabMasterBot/app"; // Replace with your actual bot link if different
+    const url = "https://t.me/VocabMasterBot/app"; 
 
     // 1. Try Native Share (Mobile)
     if (navigator.share) {
@@ -41,7 +52,6 @@ export const shareApp = () => {
     } 
     // 2. Try Telegram WebApp Share
     else if (window.Telegram?.WebApp) {
-        // Option A: Share via link to specific chat
         const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
         window.Telegram.WebApp.openTelegramLink(tgShareUrl);
     }
