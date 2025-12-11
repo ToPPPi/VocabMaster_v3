@@ -2,15 +2,11 @@
 import { AIExplanation, AIWordDetails } from "../types";
 
 // --- CONFIGURATION ---
-// Universal Client for OpenAI-compatible APIs (DeepSeek, OpenAI, etc.)
-
 const getEnvVar = (key: string): string => {
-    // Helper to safely access env vars in Vite
     const val = (import.meta as any).env[key];
     return val || "";
 };
 
-// Defaults for DeepSeek
 const DEFAULT_BASE_URL = "https://api.deepseek.com"; 
 const DEFAULT_MODEL = "deepseek-chat"; 
 
@@ -35,19 +31,13 @@ interface OpenAIResponse {
 // --- HELPER: ROBUST JSON PARSER ---
 const extractJSON = <T>(text: string): T | null => {
     try {
-        // 0. Clean potential DeepSeek "thinking" blocks if R1 is used by mistake
-        // <think>...</think>
         const cleanText = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-
-        // 1. Try direct parse
         return JSON.parse(cleanText);
     } catch (e) {
-        // 2. Try extracting from markdown ```json ... ```
         const match = text.match(/```json([\s\S]*?)```/);
         if (match) {
             try { return JSON.parse(match[1]); } catch(e2) {}
         }
-        // 3. Try finding the outer braces { ... }
         const firstBrace = text.indexOf('{');
         const lastBrace = text.lastIndexOf('}');
         if (firstBrace !== -1 && lastBrace !== -1) {
@@ -65,13 +55,14 @@ const callUniversalAI = async (messages: ChatMessage[]): Promise<string | null> 
         throw new Error("Нет интернета. Проверьте соединение.");
     }
 
-    // Trim whitespace to prevent copy-paste errors
     const apiKey = getEnvVar("VITE_AI_API_KEY").trim();
     let baseUrl = getEnvVar("VITE_AI_BASE_URL") || DEFAULT_BASE_URL;
     const model = getEnvVar("VITE_AI_MODEL") || DEFAULT_MODEL;
 
-    // --- CORS FIX FOR LOCALHOST ---
-    if ((import.meta as any).env.DEV) {
+    // --- PROXY LOGIC ---
+    // If we are in dev mode OR if we haven't manually set a full URL, try to use the local proxy
+    // to avoid CORS issues on localhost.
+    if ((import.meta as any).env.DEV && baseUrl === DEFAULT_BASE_URL) {
         console.log(`🔧 Dev Mode: Using Proxy /ai-proxy`);
         baseUrl = '/ai-proxy';
     }
@@ -80,7 +71,6 @@ const callUniversalAI = async (messages: ChatMessage[]): Promise<string | null> 
         throw new Error("API ключ не найден. Настройте .env.local");
     }
 
-    // Clean URL construction
     const cleanBase = baseUrl.replace(/\/+$/, '');
     const endpoint = cleanBase.endsWith('/chat/completions') 
         ? cleanBase 
@@ -100,33 +90,20 @@ const callUniversalAI = async (messages: ChatMessage[]): Promise<string | null> 
             body: JSON.stringify({
                 model: model,
                 messages: messages,
-                temperature: 1.1, // DeepSeek V3 benefits from slightly higher temp for creativity
+                temperature: 1.1,
                 max_tokens: 2000,
-                // Only 'deepseek-chat' supports JSON mode reliably. R1 ('deepseek-reasoner') does not.
                 response_format: model.includes('reasoner') ? undefined : { type: "json_object" } 
             }),
         });
 
         if (!response.ok) {
             console.error(`AI API Error Status: ${response.status} ${response.statusText}`);
-            
             const errData = await response.json().catch(() => ({}));
             
-            if (response.status === 401) {
-                console.error("Auth Error Body:", errData);
-                throw new Error("Ошибка ключа API (401). Проверьте баланс на deepseek.com или правильность ключа в .env.local");
-            }
-            if (response.status === 402) {
-                throw new Error(`Недостаточно средств на балансе DeepSeek.`);
-            }
-            if (response.status === 405) {
-                throw new Error(`Ошибка конфигурации (405). Пожалуйста, перезапустите сервер (npm run dev).`);
-            }
-            if (response.status === 404) {
-                throw new Error(`Ошибка адреса (404). Проверьте VITE_AI_BASE_URL.`);
-            }
+            if (response.status === 401) throw new Error("Ошибка ключа API (401). Проверьте баланс.");
+            if (response.status === 402) throw new Error(`Недостаточно средств на балансе AI.`);
+            if (response.status === 404) throw new Error(`Ошибка адреса API (404).`);
 
-            console.error("AI API Error Body:", errData);
             throw new Error(errData?.error?.message || `Ошибка API (${response.status})`);
         }
 
@@ -140,17 +117,14 @@ const callUniversalAI = async (messages: ChatMessage[]): Promise<string | null> 
     } catch (error: any) {
         console.error("AI Request Failed:", error);
         const msg = error.message.toLowerCase();
-        if (msg.includes('expired') || msg.includes('key') || msg.includes('auth')) {
-            throw new Error("Ошибка ключа API. Проверьте баланс и .env.local");
-        }
+        
         if (msg.includes('failed to fetch')) {
-             throw new Error("Ошибка сети. Проверьте VPN или соединение.");
+             // More accurate error message for CORS/Network issues
+             throw new Error("Ошибка соединения с AI. Если вы в РФ, нужен VPN. Если локально - проверьте CORS.");
         }
         throw error;
     }
 };
-
-// --- EXPORTED FUNCTIONS ---
 
 export const explainWordWithAI = async (term: string, level: string): Promise<AIExplanation | null> => {
   const systemPrompt = `

@@ -13,6 +13,7 @@ export const INITIAL_PROGRESS: UserProgress = {
   wordsLearnedToday: 0,
   aiGenerationsToday: 0,
   premiumStatus: false,
+  premiumExpiration: null,
   wordProgress: {},
   wordComments: {},
   hasSeenOnboarding: false,
@@ -240,6 +241,8 @@ export const getUserProgress = async (): Promise<UserProgress> => {
   if (!progress.blitzHighScores) progress.blitzHighScores = {};
   if (!progress.wordComments) progress.wordComments = {};
   if (progress.photoUrl === undefined) progress.photoUrl = '';
+  // Monthly sub migration
+  if (progress.premiumExpiration === undefined) progress.premiumExpiration = null;
 
   // --- DAILY RESET LOGIC ---
   const now = getSecureNow();

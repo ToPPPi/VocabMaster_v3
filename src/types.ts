@@ -1,5 +1,4 @@
 
-
 export enum ProficiencyLevel {
   A1 = 'A1',
   A2 = 'A2',
@@ -56,7 +55,10 @@ export interface UserProgress {
   lastLoginDate: string; // YYYY-MM-DD
   wordsLearnedToday: number;
   aiGenerationsToday: number; // Track AI usage limits
-  premiumStatus: boolean;
+  
+  premiumStatus: boolean; // True if Lifetime
+  premiumExpiration: number | null; // Timestamp if Monthly (null if free or lifetime)
+
   // Map of wordID -> SRS data
   wordProgress: Record<string, WordProgress>; 
   // Map of wordID -> User Comment

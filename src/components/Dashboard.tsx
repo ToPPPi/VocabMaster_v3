@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Crown, Flame, Check, Target, Zap, Clock, Play, RotateCcw, Trophy, ArrowRight, Globe2, Coins, ShoppingBag, Sparkles, HelpCircle, Info } from 'lucide-react';
+import { Crown, Flame, Check, Target, Zap, Clock, Play, RotateCcw, Trophy, ArrowRight, Globe2, Coins, ShoppingBag, Sparkles, HelpCircle } from 'lucide-react';
 import { UserProgress, ViewState } from '../types';
-import { getLearnedCount, getWordsDueForReview, getAchievements, togglePremium, calculateCoverage, getUserRank, getSecureNow } from '../services/storageService';
+import { getLearnedCount, getWordsDueForReview, getAchievements, buyPremium, isUserPremium, calculateCoverage, getUserRank, getSecureNow } from '../services/storageService';
 import { triggerHaptic } from '../utils/uiHelpers';
 
 const DAILY_LIMIT = 10;
@@ -45,18 +45,25 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
         return () => clearInterval(timer);
     }, [progress]);
 
+    const isPremium = isUserPremium(progress);
+
+    const handleBuyPremium = async () => {
+        triggerHaptic('medium');
+        setViewState('profile');
+    };
+
     const isTimeLocked = progress.nextSessionUnlockTime && currentTime < progress.nextSessionUnlockTime;
-    const isLimitReached = !progress.premiumStatus && progress.wordsLearnedToday >= DAILY_LIMIT;
-    const isLocked = !progress.premiumStatus && (isTimeLocked || isLimitReached);
+    const isLimitReached = !isPremium && progress.wordsLearnedToday >= DAILY_LIMIT;
+    const isLocked = !isPremium && (isTimeLocked || isLimitReached);
     
-    const target = progress.premiumStatus ? PREMIUM_VISUAL_TARGET : DAILY_LIMIT;
+    const target = isPremium ? PREMIUM_VISUAL_TARGET : DAILY_LIMIT;
     const progressPercent = Math.min((progress.wordsLearnedToday / target) * 100, 100);
     
     const rank = getUserRank(learnedCount);
     const wordsToNext = rank.nextThreshold - learnedCount;
 
     // AI Stats
-    const aiLimit = progress.premiumStatus ? AI_LIMIT_PREMIUM : AI_LIMIT_FREE;
+    const aiLimit = isPremium ? AI_LIMIT_PREMIUM : AI_LIMIT_FREE;
     const aiLeft = Math.max(0, aiLimit - progress.aiGenerationsToday);
 
     // Time Formatting
@@ -84,7 +91,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                                 {progress.userName ? progress.userName[0].toUpperCase() : 'U'}
                             </div>
                         )}
-                        {progress.premiumStatus && (
+                        {isPremium && (
                             <div className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
                                 <div className="bg-gradient-to-br from-yellow-300 to-amber-500 rounded-full w-5 h-5 flex items-center justify-center">
                                     <Crown className="w-3 h-3 text-white fill-white" />
@@ -120,7 +127,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                             <span>{wordsToNext} слов до {rank.nextTitle}</span>
                         </div>
                         <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                             <div className="bg-violet-500 h-full rounded-full transition-all duration-500" style={{ width: `${Math.min(100, ((rank.currentThreshold + learnedCount) / rank.nextThreshold) * 100)}%` }}></div>
+                             <div className="bg-violet-50 h-full rounded-full transition-all duration-500" style={{ width: `${Math.min(100, ((rank.currentThreshold + learnedCount) / rank.nextThreshold) * 100)}%` }}></div>
                         </div>
                     </div>
                 )}
@@ -132,11 +139,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <span className="inline-block px-2.5 py-0.5 bg-violet-50 text-violet-700 text-[10px] font-bold uppercase rounded-md mb-2">
-                                {progress.premiumStatus ? 'Безлимит' : 'План на день'}
+                                {isPremium ? 'Безлимит' : 'План на день'}
                             </span>
                             <div className="flex items-baseline gap-1">
                                 <h2 className="text-3xl font-black text-slate-900 tracking-tight">{progress.wordsLearnedToday}</h2>
-                                <span className="text-lg font-bold text-slate-300">/ {progress.premiumStatus ? '∞' : DAILY_LIMIT}</span>
+                                <span className="text-lg font-bold text-slate-300">/ {isPremium ? '∞' : DAILY_LIMIT}</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center">
@@ -267,8 +274,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                 </div>
 
                 {/* 4. PREMIUM BANNER - DETAILED VERSION */}
-                {!progress.premiumStatus && (
-                    <div onClick={async () => { triggerHaptic('medium'); await togglePremium(); onUpdate(); }} className="bg-gradient-to-r from-violet-600 to-fuchsia-600 p-6 rounded-[2rem] text-white shadow-xl shadow-violet-200/50 cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden group">
+                {!isPremium && (
+                    <div onClick={handleBuyPremium} className="bg-gradient-to-r from-violet-600 to-fuchsia-600 p-6 rounded-[2rem] text-white shadow-xl shadow-violet-200/50 cursor-pointer active:scale-[0.99] transition-transform relative overflow-hidden group">
                         <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
                         <div className="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-black/10 rounded-full blur-2xl"></div>
                         
@@ -279,11 +286,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                                 </div>
                                 <div>
                                     <h3 className="font-extrabold text-xl leading-none">VocabMaster Pro</h3>
-                                    <p className="text-violet-100 text-xs font-medium mt-1">Версия для максимального результата</p>
+                                    <p className="text-violet-100 text-xs font-medium mt-1">Разблокируй максимум</p>
                                 </div>
                             </div>
                             <div className="bg-white/20 px-3 py-1 rounded-lg backdrop-blur-md text-[10px] font-bold uppercase tracking-wider">
-                                Upgrade
+                                от 150 ⭐️
                             </div>
                         </div>
 
@@ -300,14 +307,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                                 <Check className="w-4 h-4 text-emerald-300 shrink-0" />
                                 <span>ИИ тьютор - 50 разборов/день</span>
                             </div>
-                            <div className="flex items-center gap-2 text-sm font-medium text-violet-50">
-                                <Check className="w-4 h-4 text-emerald-300 shrink-0" />
-                                <span>Продвинутый алгоритм (FSRS)</span>
-                            </div>
                         </div>
 
                         <div className="relative z-10 w-full bg-white text-violet-700 py-3 rounded-xl font-bold text-center text-sm shadow-md flex items-center justify-center gap-2 hover:bg-violet-50 transition-colors">
-                            <span>Активировать Premium</span>
+                            <span>Выбрать план</span>
                             <ArrowRight className="w-4 h-4" />
                         </div>
                     </div>

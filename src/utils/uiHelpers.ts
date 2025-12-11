@@ -12,13 +12,19 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 };
 
 export const speak = (text: string) => {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9; 
-        window.speechSynthesis.speak(utterance);
-    }
+    if (!('speechSynthesis' in window)) return;
+
+    // Cancel any currently playing speech to prevent queue build-up and ensure immediate playback
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US'; // Default to US English
+    utterance.rate = 0.9;     // Slightly slower for better clarity
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    // iOS Safari sometimes requires this to be called explicitly
+    window.speechSynthesis.speak(utterance);
 };
 
 export const shareApp = () => {

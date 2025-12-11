@@ -145,8 +145,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onComplete }) => {
                     </ul>
                     <div className="text-center bg-white/5 rounded-xl p-3 border border-white/5">
                         <span className="text-slate-400 text-xs uppercase font-bold block mb-1">Цена свободы общения</span>
-                        <span className="text-2xl font-bold text-white">299₽</span>
-                        <span className="text-slate-500 text-sm"> / месяц</span>
+                        <div className="flex justify-center items-baseline gap-2">
+                            <span className="text-2xl font-bold text-white">150 ⭐️</span>
+                            <span className="text-slate-500 text-xs"> (≈299₽)</span>
+                        </div>
                     </div>
                 </div>
             </div>

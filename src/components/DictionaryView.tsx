@@ -41,15 +41,15 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
         setPage(0);
     }, [search]);
 
-    // Scroll to top when page changes
+    // Force Scroll to Top Logic
     useEffect(() => {
         const scrollContainer = document.querySelector('.overflow-y-auto');
         if (scrollContainer) {
-            scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollContainer.scrollTo({ top: 0 }); // Instant jump to top
         } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0 });
         }
-    }, [page]);
+    }, [page, selectedWord]); // Trigger when page changes OR when a word is selected
 
     // Calculate Counts per Level based on LEARNING PROGRESS
     const levelCounts: Record<string, number> = {};
@@ -72,7 +72,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
     const handleBack = () => {
         if (selectedWord) {
             setSelectedWord(null);
-            // Also cancel editing if we back out of detail view
             setEditingId(null);
         } else if (viewState === 'list') {
             setViewState('overview');
@@ -84,13 +83,9 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
 
     // --- LIST LOGIC ---
     let displayWords = learnedWords;
-    
-    // Filter by Level if selected
     if (selectedLevel) {
         displayWords = displayWords.filter(w => w.level === selectedLevel);
     }
-
-    // Filter by Search
     const filtered = displayWords.filter(w => w.term.toLowerCase().includes(search.toLowerCase()));
     
     const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -98,9 +93,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
 
     const handleDelete = async (wordId: string) => {
         triggerHaptic('medium');
-        // If we are in detail view, close it first
         if (selectedWord?.id === wordId) setSelectedWord(null);
-        
         await deleteWordFromProgress(wordId);
         onUpdate();
     };
@@ -120,7 +113,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
     
     const handleDeleteComment = async (wordId: string) => {
         triggerHaptic('medium');
-        await saveWordComment(wordId, ""); // Empty string deletes the key in storageService
+        await saveWordComment(wordId, "");
         setEditingId(null);
         onUpdate();
     };
@@ -147,7 +140,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
 
     const getRegisterBadge = (register?: string) => {
         if (!register || register === 'Neutral') return null;
-        
         let styleClass = 'bg-slate-100 text-slate-600 border-slate-200';
         if (register === 'Slang') styleClass = 'bg-pink-100 text-pink-700 border-pink-200';
         else if (register === 'Rude') styleClass = 'bg-red-100 text-red-700 border-red-200';
@@ -171,7 +163,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
         const detailComment = progress.wordComments[selectedWord.id];
 
         return (
-            <div className="bg-slate-50 min-h-screen pb-safe">
+            <div className="bg-slate-50 min-h-screen pb-safe animate-in slide-in-from-right-4 duration-300">
                  <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-100 flex items-center justify-between">
                     <button 
                         onClick={() => { triggerHaptic('light'); handleBack(); }}
@@ -251,7 +243,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                      <div className="bg-yellow-50 rounded-2xl p-5 border border-yellow-100 shadow-sm">
                         <div className="flex justify-between items-center mb-2">
                              <span className="text-xs font-bold text-yellow-700 uppercase tracking-wide">Ваша заметка</span>
-                             {/* Only show pencil if not editing */}
                              {!isEditingDetail && (
                                 <button onClick={() => { handleEditComment(selectedWord.id, detailComment); }} className="text-yellow-600 hover:text-yellow-800">
                                     <PenLine className="w-4 h-4" />
@@ -362,8 +353,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                             onClick={() => { triggerHaptic('light'); setSelectedWord(w); }}
                             className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm transition-all hover:shadow-md relative group cursor-pointer active:scale-[0.99]"
                         >
-                            
-                            {/* --- TOP ROW: Word Info + Delete --- */}
                             <div className="flex justify-between items-start gap-3 mb-2">
                                 <div className="flex items-start gap-3 flex-1 min-w-0">
                                      <button 
@@ -375,9 +364,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                      <div className="flex-1 min-w-0">
                                         <div className="flex flex-wrap items-center gap-2 mb-1">
                                             <span className="font-bold text-slate-900 text-lg leading-tight truncate">{w.term}</span>
-                                            {/* Fix 1: Added whitespace-normal, text-left, h-auto, break-words to handle long translations properly */}
                                             <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md break-words whitespace-normal text-left h-auto">{w.translation}</span>
-                                            {/* Register Badge stays near the word */}
                                             {getRegisterBadge(w.register)}
                                         </div>
                                         <p className="text-sm text-slate-500 leading-snug font-medium line-clamp-1">
@@ -386,7 +373,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                      </div>
                                 </div>
 
-                                {/* Delete Button - Fixed Top Right */}
                                 <button 
                                     onClick={(e) => { e.stopPropagation(); handleDelete(w.id); }}
                                     className="p-2 -mr-2 -mt-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors shrink-0"
@@ -395,10 +381,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                 </button>
                             </div>
 
-                            {/* --- BOTTOM ROW: Comments + Status Badge --- */}
                             <div className="mt-3 pt-3 border-t border-slate-50 flex items-start justify-between gap-4">
-                                
-                                {/* Comment Section (Left) */}
                                 <div className="flex-1 min-w-0" onClick={(e) => e.stopPropagation()}>
                                     {isEditing ? (
                                         <div className="flex items-start gap-2 flex-col sm:flex-row">
@@ -421,7 +404,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                                 <PenLine className="w-3.5 h-3.5" />
                                             </div>
                                             {userComment ? (
-                                                // Fix 2: Added break-words to note container to prevent overflow and overlap
                                                 <p className="text-sm text-slate-700 bg-yellow-50 px-2 py-1.5 rounded-lg border border-yellow-100 w-full break-words whitespace-pre-wrap leading-snug">{userComment}</p>
                                             ) : (
                                                 <span className="text-xs text-slate-300 font-medium group-hover/comment:text-slate-500 transition-colors pt-0.5">Заметка</span>
@@ -429,8 +411,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                         </div>
                                     )}
                                 </div>
-
-                                {/* Status Badge (Right - Fixed) */}
                                 <div className="shrink-0 self-center pl-2">
                                     {getStatusBadge(w.id)}
                                 </div>
@@ -440,7 +420,6 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                 })}
             </div>
 
-            {/* Pagination Controls - Always Visible */}
             <div className="fixed bottom-24 left-0 right-0 px-6 flex justify-center pointer-events-none z-30">
                  <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-6 pointer-events-auto">
                     <button 
@@ -450,11 +429,9 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                     >
                         <ChevronLeft className="w-6 h-6" />
                     </button>
-                    
                     <span className="text-sm font-bold text-slate-500 min-w-[3rem] text-center">
                         {page + 1} / {Math.max(1, totalPages)}
                     </span>
-
                     <button 
                         onClick={() => { triggerHaptic('light'); setPage(p => Math.min(totalPages - 1, p + 1)); }}
                         disabled={page >= totalPages - 1}

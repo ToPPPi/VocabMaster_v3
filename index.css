@@ -1,0 +1,19 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Global Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Main scroll is handled by App container */
+  /* Critical for Telegram: prevents pull-to-refresh and swipe-to-close logic on the body */
+  overscroll-behavior-y: none; 
+}
+
+#root {
+  height: 100%;
+  overscroll-behavior-y: none;
+}

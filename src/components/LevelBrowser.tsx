@@ -19,33 +19,56 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
     const [page, setPage] = useState(0);
     const [allWords, setAllWords] = useState<Word[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    
+    // Local state for optimistic updates to avoid lag
+    const [knownWords, setKnownWords] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         const load = async () => {
             const words = await getWordsByLevelAsync(level);
             setAllWords(words);
+            
+            // Initialize local known set from progress
+            const initialKnown = new Set(Object.keys(progress.wordProgress));
+            setKnownWords(initialKnown);
+            
             setIsLoading(false);
         };
         load();
-    }, [level]);
+    }, [level, progress]); // Re-sync if progress prop changes externally
 
     // Scroll to top when page changes
     useEffect(() => {
         const scrollContainer = document.querySelector('.overflow-y-auto');
         if (scrollContainer) {
             scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }, [page]);
 
     const totalPages = Math.ceil(allWords.length / PAGE_SIZE);
     const displayWords = allWords.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
-    const handleToggleKnown = async (wordId: string) => {
+    const handleToggleKnown = (wordId: string) => {
         triggerHaptic('selection');
-        await toggleKnownStatus(wordId);
-        onUpdate();
+        
+        // 1. Optimistic Update (Instant Visual Feedback)
+        setKnownWords(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(wordId)) {
+                newSet.delete(wordId);
+            } else {
+                newSet.add(wordId);
+            }
+            return newSet;
+        });
+
+        // 2. Background Storage Update (Don't await this for UI render)
+        toggleKnownStatus(wordId).then(() => {
+            // Optional: call onUpdate() here if other components need to know immediately,
+            // but for this screen, local state is enough for speed.
+            // We delay onUpdate slightly or let it happen on unmount to keep this screen fast.
+             onUpdate(); 
+        });
     };
 
     if (isLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-violet-600"/></div>;
@@ -67,8 +90,8 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
                     </div>
                 ) : (
                     displayWords.map((word, index) => {
-                        const isKnown = !!progress.wordProgress[word.id];
-                        // Using index in key to prevent rendering issues if IDs are duplicated in data
+                        const isKnown = knownWords.has(word.id);
+                        
                         return (
                             <div key={`${word.id}-${index}`} className="bg-white px-5 py-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between gap-3">
                                 <div className="flex-1 min-w-0">
@@ -82,7 +105,7 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
                                 </div>
                                 <button 
                                     onClick={() => handleToggleKnown(word.id)}
-                                    className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all shadow-sm shrink-0 ${isKnown ? 'bg-violet-500 text-white shadow-violet-200' : 'bg-slate-100 text-slate-300 hover:bg-slate-200'}`}
+                                    className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all shadow-sm shrink-0 ${isKnown ? 'bg-violet-500 text-white shadow-violet-200 scale-105' : 'bg-slate-100 text-slate-300 hover:bg-slate-200'}`}
                                 >
                                     <Heart className={`w-6 h-6 ${isKnown ? 'fill-current' : ''}`} />
                                 </button>
