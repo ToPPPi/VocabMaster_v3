@@ -14,7 +14,7 @@ interface LearningSessionProps {
     level?: ProficiencyLevel;
     progress: UserProgress;
     onComplete: () => void;
-    onBuyPremium?: () => void; // New callback for navigation
+    onBuyPremium?: () => void; 
 }
 
 export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, progress, onComplete, onBuyPremium }) => {
@@ -22,7 +22,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
     const [isLoading, setIsLoading] = useState(true);
     const [levelCompleted, setLevelCompleted] = useState(false);
     
-    // We keep track of local updates to ensure UI reflects instant changes
     const [localLearnedCount, setLocalLearnedCount] = useState(progress.wordsLearnedToday);
 
     const loadWords = async () => {
@@ -31,7 +30,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         setLevelCompleted(false);
         setCurrentIndex(0);
         
-        // Always fetch fresh progress to check limits
         const currentProgress = await getUserProgress();
         setLocalLearnedCount(currentProgress.wordsLearnedToday);
         
@@ -126,8 +124,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         const wordLevel = currentWord.level;
         const isLastCard = currentIndex >= sessionWords.length - 1;
 
-        // Use a Promise to ensure data saves before moving on
-        // The storage service uses memory cache now, so this is fast.
         try {
             const updatedProgress = await rateWord(wordId, rating, wordLevel);
             setLocalLearnedCount(updatedProgress.wordsLearnedToday);
@@ -139,7 +135,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
             }
 
             if (!isLastCard) {
-                // Delay slightly for animation
                 setTimeout(() => {
                     setIsFlipped(false);
                     setCurrentIndex(prev => prev + 1);
@@ -205,7 +200,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         if (onBuyPremium) {
             onBuyPremium();
         } else {
-            // Fallback just in case
             onComplete();
         }
     };
@@ -245,9 +239,7 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
     }
 
     if (completed) {
-        // Strict limit checking against latest progress
         const isLimitReached = !progress.premiumStatus && localLearnedCount >= DAILY_LIMIT_FREE;
-        // Button is hidden if limit is reached AND user is not premium
         const canContinue = mode === 'daily' && !isLimitReached;
 
         return (
@@ -269,14 +261,12 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                 )}
                 
                 <div className="w-full max-w-xs space-y-3">
-                    {/* Only show Continue if NOT limited */}
                     {canContinue && (
                         <button onClick={handleContinue} className="w-full px-6 py-4 bg-violet-600 text-white rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-2">
                             <RotateCcw className="w-5 h-5" /> Учить еще
                         </button>
                     )}
                     
-                    {/* Upsell if limited */}
                     {isLimitReached && (
                          <button onClick={handleBuyPremiumAction} className="w-full px-6 py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-2">
                             <Crown className="w-5 h-5" /> Снять лимиты (Premium)
@@ -417,21 +407,6 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                                 <p className="text-sm text-slate-700">{aiData.nuance}</p>
                                             </div>
                                         )}
-
-                                        {/* Added Extra Examples Block */}
-                                        {aiData.extraExamples && aiData.extraExamples.length > 0 && (
-                                            <div className="mt-4 pt-3 border-t border-violet-200/50">
-                                                <span className="text-xs font-bold text-violet-500 uppercase block mb-2">Еще примеры:</span>
-                                                <div className="space-y-3">
-                                                    {aiData.extraExamples.map((ex, i) => (
-                                                        <div key={i} className="pl-2 border-l-2 border-violet-300">
-                                                            <p className="text-slate-800 text-xs font-medium mb-0.5">"{ex.en}"</p>
-                                                            <p className="text-slate-500 text-[10px]">{ex.ru}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
                                     </div>
 
                                     {aiData.collocations && aiData.collocations.length > 0 && (
@@ -457,6 +432,21 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                         </div>
                                         <p className="text-sm text-slate-800 italic font-medium">"{aiData.mnemonic}"</p>
                                     </div>
+
+                                    {/* Moved Extra Examples to the bottom */}
+                                    {aiData.extraExamples && aiData.extraExamples.length > 0 && (
+                                        <div className="bg-violet-50 rounded-2xl p-5 border border-violet-100">
+                                            <span className="text-xs font-bold text-violet-500 uppercase block mb-2">Еще примеры (AI)</span>
+                                            <div className="space-y-3">
+                                                {aiData.extraExamples.map((ex, i) => (
+                                                    <div key={i} className="pl-2 border-l-2 border-violet-300">
+                                                        <p className="text-slate-800 text-xs font-medium mb-0.5">"{ex.en}"</p>
+                                                        <p className="text-slate-500 text-[10px]">{ex.ru}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 

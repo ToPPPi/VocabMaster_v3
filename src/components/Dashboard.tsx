@@ -8,7 +8,7 @@ import { triggerHaptic } from '../utils/uiHelpers';
 const DAILY_LIMIT = 10;
 const PREMIUM_VISUAL_TARGET = 50; 
 const AI_LIMIT_FREE = 5;
-const AI_LIMIT_PREMIUM = 50;
+const AI_LIMIT_PREMIUM = 25; // Updated to 25 as requested
 
 interface DashboardProps {
     progress: UserProgress;
@@ -304,7 +304,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, setViewState, on
                             </div>
                             <div className="flex items-center gap-3 text-sm font-medium text-white/95">
                                 <Check className="w-4 h-4 text-emerald-300 shrink-0 stroke-[3]" />
-                                <span>ИИ тьютор - 50 разборов/день</span>
+                                <span>ИИ тьютор - 25 разборов/день</span>
                             </div>
                             <div className="flex items-center gap-3 text-sm font-medium text-white/95">
                                 <Check className="w-4 h-4 text-emerald-300 shrink-0 stroke-[3]" />

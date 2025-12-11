@@ -12,38 +12,57 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 };
 
 export const speak = (text: string) => {
-    if (!('speechSynthesis' in window)) return;
+    if (!text) return;
 
-    // 1. Immediately cancel any ongoing speech
-    window.speechSynthesis.cancel();
-
-    // 2. Create Utterance
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // 3. Settings for Android/iOS Webview compatibility
-    utterance.lang = 'en-US'; 
-    utterance.rate = 0.9;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-
-    // 4. Try to get a better voice, but use default if not available instantly
-    // We don't want to wait for onvoiceschanged here as it delays the click action too much
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-        // Try to find a high-quality Google or Apple voice
-        const preferredVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Google') || v.name.includes('Samantha') || v.localService)) 
-                            || voices.find(v => v.lang === 'en-US');
-        
-        if (preferredVoice) {
-            utterance.voice = preferredVoice;
+    // Strategy 1: Network-based TTS (More reliable in Telegram WebViews on iOS/Android)
+    // using Google Translate's public TTS endpoint.
+    const playNetworkAudio = () => {
+        try {
+            const encodedText = encodeURIComponent(text);
+            const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=en&client=tw-ob`);
+            
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch((error) => {
+                    console.warn("Audio URL playback failed, switching to native:", error);
+                    playNativeTTS();
+                });
+            }
+        } catch (e) {
+            playNativeTTS();
         }
-    }
+    };
 
-    // 5. Fire speech immediately
-    // Small timeout ensures the cancellation has processed
-    setTimeout(() => {
-        window.speechSynthesis.speak(utterance);
-    }, 10);
+    // Strategy 2: Native Browser SpeechSynthesis (Fallback)
+    const playNativeTTS = () => {
+        if (!('speechSynthesis' in window)) return;
+
+        window.speechSynthesis.cancel(); // Reset queue
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        
+        // Force voice selection for mobile quirks
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang === 'en-US' && v.localService) || 
+                               voices.find(v => v.lang.startsWith('en'));
+        
+        if (preferredVoice) utterance.voice = preferredVoice;
+
+        // Small delay to ensure the stack is clear
+        setTimeout(() => {
+            window.speechSynthesis.speak(utterance);
+        }, 10);
+    };
+
+    // Attempt Network first if online
+    if (navigator.onLine) {
+        playNetworkAudio();
+    } else {
+        playNativeTTS();
+    }
 };
 
 export const shareApp = () => {

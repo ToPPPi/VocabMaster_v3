@@ -1,60 +1,61 @@
 
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-        <!-- Main Background Gradient: Deep Violet to Vibrant Fuchsia -->
-        <linearGradient id="bgGradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#6D28D9"/> <!-- Violet 700 -->
-            <stop offset="50%" stop-color="#7C3AED"/> <!-- Violet 600 -->
-            <stop offset="100%" stop-color="#C026D3"/> <!-- Fuchsia 600 -->
+        <!-- Main Background: Deep Learning Violet -->
+        <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#4C1D95"/> <!-- Violet 900 -->
+            <stop offset="100%" stop-color="#7C3AED"/> <!-- Violet 600 -->
         </linearGradient>
         
-        <!-- Gold Gradient for the Spark -->
-        <linearGradient id="goldGrad" x1="280" y1="80" x2="420" y2="220" gradientUnits="userSpaceOnUse">
+        <!-- Book Pages Gradient -->
+        <linearGradient id="pages" x1="150" y1="150" x2="362" y2="362" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#E2E8F0"/>
+        </linearGradient>
+
+        <!-- The Spark/AI Gradient -->
+        <linearGradient id="spark" x1="256" y1="100" x2="256" y2="200" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="#FDE047"/> <!-- Yellow 300 -->
             <stop offset="100%" stop-color="#F59E0B"/> <!-- Amber 500 -->
         </linearGradient>
 
-        <!-- Soft Shadow for depth -->
-        <filter id="softDrop" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#4C1D95" flood-opacity="0.4"/>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/>
         </filter>
-
-        <!-- Inner Light for Glass effect -->
-        <filter id="innerLight" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="8" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="arithmetic" k2="1" k3="1"/>
+        
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="10" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
         </filter>
     </defs>
     
-    <!-- 1. Background Squircle -->
-    <rect x="0" y="0" width="512" height="512" rx="128" fill="url(#bgGradient)"/>
+    <!-- Background -->
+    <rect x="0" y="0" width="512" height="512" rx="128" fill="url(#bg)"/>
     
-    <!-- 2. Subtle Gloss Overlay (Top) -->
-    <path d="M0 128C0 57.3 57.3 0 128 0H384C454.7 0 512 57.3 512 128V220C512 220 300 350 0 220V128Z" fill="white" fill-opacity="0.08"/>
+    <!-- Decorative Circle -->
+    <circle cx="256" cy="256" r="180" stroke="white" stroke-opacity="0.1" stroke-width="2"/>
 
-    <!-- 3. The Main Symbol Group -->
-    <g transform="translate(256, 266)">
+    <!-- Main Icon Group -->
+    <g transform="translate(0, 20)">
         
-        <!-- The "V" / Checkmark Shape -->
-        <!-- White with soft shadow -->
-        <path d="M-110 -70 L-20 110 L110 -130" 
-              stroke="white" 
-              stroke-width="65" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-              filter="url(#softDrop)"
-              fill="none"/>
-    </g>
-
-    <!-- 4. The AI Spark (Star) -->
-    <!-- Positioned near the top right of the V to signify intelligence/premium -->
-    <g transform="translate(360, 140)" filter="url(#softDrop)">
-        <!-- Vertical Beam -->
-        <path d="M0 -45 C5 -10 10 0 45 0 C10 0 5 10 0 45 C-5 10 -10 0 -45 0 C-10 0 -5 -10 0 -45 Z" 
-              fill="url(#goldGrad)"/>
+        <!-- The Book (Stylized 'V') -->
+        <!-- Left Page -->
+        <path d="M256 360 C256 360 160 380 120 340 V180 C160 220 256 200 256 200" 
+              fill="url(#pages)" 
+              filter="url(#shadow)"/>
         
-        <!-- Center Glow -->
-        <circle cx="0" cy="0" r="10" fill="white" fill-opacity="0.9"/>
-    </g>
+        <!-- Right Page -->
+        <path d="M256 360 C256 360 352 380 392 340 V180 C352 220 256 200 256 200" 
+              fill="url(#pages)" 
+              filter="url(#shadow)"/>
+              
+        <!-- Spine Shadow -->
+        <path d="M256 200 V360" stroke="#CBD5E1" stroke-width="2"/>
 
+        <!-- The Spark of Knowledge (Floating above) -->
+        <g filter="url(#glow)">
+            <path d="M256 80 L275 140 L335 145 L285 180 L300 240 L256 205 L212 240 L227 180 L177 145 L237 140 Z" 
+                  fill="url(#spark)"/>
+        </g>
+    </g>
 </svg>
