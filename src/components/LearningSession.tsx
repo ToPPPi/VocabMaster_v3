@@ -443,7 +443,7 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
                                     {/* Moved Extra Examples to the bottom */}
                                     {aiData.extraExamples && aiData.extraExamples.length > 0 && (
                                         <div className="bg-violet-50 rounded-2xl p-5 border border-violet-100">
-                                            <span className="text-xs font-bold text-violet-500 uppercase block mb-2">Еще примеры (AI)</span>
+                                            <span className="text-xs font-bold text-violet-500 uppercase block mb-2">Еще примеры</span>
                                             <div className="space-y-3">
                                                 {aiData.extraExamples.map((ex, i) => (
                                                     <div key={i} className="pl-2 border-l-2 border-violet-300">

@@ -14,45 +14,46 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 export const speak = (text: string) => {
     if (!text) return;
 
-    // Mobile TTS Best Practices:
-    // 1. Call speak() synchronously inside the event handler.
-    // 2. Do not wait for getVoices() if not ready.
-    // 3. Resume synthesis if stuck (iOS bug).
+    // Strategy 1: Native Browser SpeechSynthesis (Preferred for reliability and speed)
+    const playNativeTTS = () => {
+        if (!('speechSynthesis' in window)) return false;
 
-    if ('speechSynthesis' in window) {
-        // Fix for iOS: SpeechSynthesis sometimes pauses indefinitely
-        window.speechSynthesis.cancel();
-        
+        window.speechSynthesis.cancel(); // Reset queue
+
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
         utterance.rate = 0.9;
         
-        // Try to get a better voice, but don't block if they aren't loaded
+        // Improve voice quality on iOS/Android if available
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(v => v.lang === 'en-US' && v.localService) || 
                                voices.find(v => v.lang.startsWith('en'));
         
         if (preferredVoice) utterance.voice = preferredVoice;
 
-        // Force resume (fixes iOS 16+ stalling)
-        if (window.speechSynthesis.paused) {
-            window.speechSynthesis.resume();
-        }
-
         window.speechSynthesis.speak(utterance);
-        
-        // Android sometimes garbage collects the utterance before it finishes
-        // @ts-ignore
-        window.utteranceReference = utterance; 
-    } else {
-        // Fallback for very old browsers (rare)
+        return true;
+    };
+
+    // Strategy 2: Network-based TTS (Fallback if native fails or is empty)
+    const playNetworkAudio = () => {
         try {
             const encodedText = encodeURIComponent(text);
             const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=en&client=tw-ob`);
-            audio.play().catch(e => console.warn("Network audio failed", e));
+            audio.play().catch(e => console.warn("Audio playback failed", e));
         } catch (e) {
             console.error(e);
         }
+    };
+
+    // Try Native first
+    const nativeSuccess = playNativeTTS();
+    
+    // If native failed (or threw error silently), fallback to network
+    // Note: On some browsers, getVoices() is async, so the first click might fallback, 
+    // but subsequent clicks will use the loaded voices.
+    if (!nativeSuccess && navigator.onLine) {
+        playNetworkAudio();
     }
 };
 

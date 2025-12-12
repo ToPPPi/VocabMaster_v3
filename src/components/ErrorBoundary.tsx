@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { TriangleAlert, RefreshCw, Copy, Check } from 'lucide-react';
 import { exportUserData } from '../services/storageService';
 
