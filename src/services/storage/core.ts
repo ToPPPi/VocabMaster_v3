@@ -31,6 +31,10 @@ export const INITIAL_PROGRESS: UserProgress = {
 // This prevents race conditions where rapid clicks read stale data from disk.
 let memoryCache: UserProgress | null = null;
 
+// --- DEBOUNCE TIMER ---
+// Prevents spamming storage API when user taps "like" rapidly
+let saveDebounceTimer: any = null;
+
 // --- TIME SECURITY (Anti-Cheat) ---
 let serverTimeOffset = 0;
 let isTimeSynced = false;
@@ -134,25 +138,24 @@ const cloudAdapter = {
     if (!tgStorage.isSupported()) return;
 
     // We don't await this in the main thread to prevent UI blocking
-    (async () => {
-        try {
-            const chunks: string[] = [];
-            for (let i = 0; i < value.length; i += CHUNK_SIZE) {
-                chunks.push(value.substring(i, i + CHUNK_SIZE));
-            }
-
-            const metaSaved = await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
-            if (!metaSaved) return;
-
-            const promises = chunks.map((chunk, index) => 
-                tgStorage.setItem(`${key}_chunk_${index}`, chunk)
-            );
-
-            await Promise.all(promises);
-        } catch (e) {
-            console.error("Cloud save failed", e);
+    // But we need to handle it carefully to avoid overlapping writes
+    try {
+        const chunks: string[] = [];
+        for (let i = 0; i < value.length; i += CHUNK_SIZE) {
+            chunks.push(value.substring(i, i + CHUNK_SIZE));
         }
-    })();
+
+        const metaSaved = await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
+        if (!metaSaved) return;
+
+        const promises = chunks.map((chunk, index) => 
+            tgStorage.setItem(`${key}_chunk_${index}`, chunk)
+        );
+
+        await Promise.all(promises);
+    } catch (e) {
+        console.error("Cloud save failed", e);
+    }
   },
 
   async load(key: string): Promise<string | null> {
@@ -199,11 +202,48 @@ const cloudAdapter = {
   }
 };
 
-export const saveUserProgress = async (progress: UserProgress) => {
-  // 1. Update Memory Cache IMMEDIATELY
+/**
+ * Persists user progress.
+ * Uses DEBOUNCING: Rapid calls (like toggling many hearts) will update the memory cache instantly
+ * but only write to disk/cloud after 2 seconds of inactivity.
+ * @param progress The data to save
+ * @param immediate If true, skips debounce and saves instantly (use for critical events like payment or level complete)
+ */
+export const saveUserProgress = async (progress: UserProgress, immediate = false) => {
+  // 1. Update Memory Cache IMMEDIATELY (Source of Truth)
   memoryCache = progress;
-  // 2. Persist
-  await cloudAdapter.save(STORAGE_KEY, JSON.stringify(progress));
+
+  // Clear pending save if exists
+  if (saveDebounceTimer) {
+      clearTimeout(saveDebounceTimer);
+      saveDebounceTimer = null;
+  }
+
+  const performSave = async () => {
+      if (!memoryCache) return;
+      await cloudAdapter.save(STORAGE_KEY, JSON.stringify(memoryCache));
+  };
+
+  if (immediate) {
+      await performSave();
+  } else {
+      // 2. Schedule Save
+      saveDebounceTimer = setTimeout(performSave, 2000);
+  }
+};
+
+/**
+ * Force a save of the current memory cache to disk.
+ * Useful when navigating away from a screen or closing the app.
+ */
+export const forceSave = async () => {
+    if (saveDebounceTimer) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = null;
+    }
+    if (memoryCache) {
+        await cloudAdapter.save(STORAGE_KEY, JSON.stringify(memoryCache));
+    }
 };
 
 export const getUserProgress = async (): Promise<UserProgress> => {
@@ -283,8 +323,9 @@ const checkDailyReset = async (progress: UserProgress): Promise<UserProgress> =>
       needsSave = true;
   }
 
+  // We use immediate=true for daily resets as they are critical logic
   if (needsSave) {
-      await saveUserProgress(progress);
+      await saveUserProgress(progress, true);
   }
   
   return progress;
@@ -306,7 +347,7 @@ export const syncTelegramUserData = async () => {
         }
         
         if (changed) {
-            await saveUserProgress(progress);
+            await saveUserProgress(progress, true);
         }
     }
 };
@@ -335,7 +376,7 @@ export const completeOnboarding = async (name?: string): Promise<UserProgress> =
   if(name) progress.userName = name;
   progress.lastLoginDate = new Date().toISOString().split('T')[0];
   progress.streak = 0; 
-  await saveUserProgress(progress);
+  await saveUserProgress(progress, true);
   return progress;
 };
 
@@ -369,7 +410,7 @@ export const importUserData = async (backupCode: string): Promise<{success: bool
             return { success: false, message: "Неверный формат данных." };
         }
 
-        await saveUserProgress(data);
+        await saveUserProgress(data, true);
         return { success: true, message: "Данные успешно восстановлены!" };
     } catch (e) {
         console.error(e);

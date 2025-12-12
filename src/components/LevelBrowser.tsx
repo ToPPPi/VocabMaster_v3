@@ -4,6 +4,7 @@ import { Loader2, BookOpen, Heart, ChevronLeft, ChevronRight } from 'lucide-reac
 import { Header } from './Header';
 import { ProficiencyLevel, UserProgress, Word } from '../types';
 import { getWordsByLevelAsync, toggleKnownStatus } from '../services/storageService';
+import { forceSave } from '../services/storage/core'; // Import forceSave
 import { triggerHaptic } from '../utils/uiHelpers';
 
 const PAGE_SIZE = 20;
@@ -25,8 +26,6 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
 
     // CRITICAL FIX: Sort words by ID.
     // This ensures the list order is DETERMINISTIC.
-    // Without this, if the underlying array order changes (e.g. from async loading or merging),
-    // words will shift between pages, causing duplicates and confusion.
     useEffect(() => {
         const load = async () => {
             const words = await getWordsByLevelAsync(level);
@@ -55,17 +54,18 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
             return newSet;
         });
 
-        // 2. Background Save
+        // 2. Background Save (Debounced by storage service)
         try {
             await toggleKnownStatus(wordId);
-            // We DO NOT call onUpdate() here to avoid parent re-render which might force reload
         } catch (e) {
             console.error("Failed to toggle word", e);
         }
     };
 
-    const handleBack = () => {
-        onUpdate(); // Update parent only when leaving
+    const handleBack = async () => {
+        // CRITICAL: Force save pending debounced writes when leaving screen
+        await forceSave();
+        onUpdate(); 
         onBack();
     };
 
