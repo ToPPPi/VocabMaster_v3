@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader2, BookOpen, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Header } from './Header';
 import { ProficiencyLevel, UserProgress, Word } from '../types';
@@ -23,16 +23,20 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
     // Initial known state from props
     const [knownWords, setKnownWords] = useState<Set<string>>(new Set());
 
+    // CRITICAL FIX: Removed 'progress' from dependency array.
+    // We only want to load the word LIST once.
+    // The 'known' status is handled via the separate Set state.
+    // This prevents the list from reshuffling or pagination breaking when a user clicks a heart.
     useEffect(() => {
         const load = async () => {
             const words = await getWordsByLevelAsync(level);
             setAllWords(words);
-            // Initialize directly from the passed progress object to ensure sync
+            // Initialize known state only once on mount
             setKnownWords(new Set(Object.keys(progress.wordProgress)));
             setIsLoading(false);
         };
         load();
-    }, [level, progress]); // Added progress to dep array to refresh on prop change
+    }, [level]); 
 
     const handleToggleKnown = async (wordId: string) => {
         triggerHaptic('selection');
@@ -49,17 +53,16 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
         });
 
         // 2. Background Save
-        // Important: We don't await here to keep UI snappy, but the Storage Service now uses 
-        // a memory cache to handle rapid clicks correctly without race conditions.
         try {
             await toggleKnownStatus(wordId);
+            // We DO NOT call onUpdate() here to avoid parent re-render which might force reload
         } catch (e) {
             console.error("Failed to toggle word", e);
         }
     };
 
     const handleBack = () => {
-        onUpdate(); // Ensure parent state is refreshed
+        onUpdate(); // Update parent only when leaving
         onBack();
     };
 
@@ -91,7 +94,6 @@ export const LevelBrowser: React.FC<LevelBrowserProps> = ({ level, progress, onB
                                 <div className="flex-1 min-w-0">
                                     <div className="flex flex-col mb-1.5">
                                         <span className="font-bold text-slate-900 text-lg">{word.term}</span>
-                                        {/* CSS FIX: Changed items-baseline to flex-col and allowed translation to wrap */}
                                         <span className="text-sm font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded-md mt-1 w-fit whitespace-normal break-words leading-snug">
                                             {word.translation}
                                         </span>

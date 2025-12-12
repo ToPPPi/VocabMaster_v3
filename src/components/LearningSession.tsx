@@ -4,7 +4,7 @@ import { Loader2, Check, X, Volume2, Brain, Sparkles, Zap, ThumbsUp, Tag, ArrowR
 import { ProficiencyLevel, UserProgress, Word, AIExplanation } from '../types';
 import { getWordsByLevelAsync, getAllWords, getWordsDueForReview, rateWord, getUserProgress, lockDailySession, incrementAIUsage, checkAIUsageLimit, togglePremium } from '../services/storageService';
 import { explainWordWithAI } from '../services/aiService';
-import { triggerHaptic, speak } from '../utils/uiHelpers';
+import { triggerHaptic, speak, shuffleArray } from '../utils/uiHelpers';
 
 const DAILY_LIMIT_FREE = 10;
 const DAILY_LIMIT_PREMIUM = 8000;
@@ -56,13 +56,20 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
             const wordsLeftForFreeUser = limitToday - currentProgress.wordsLearnedToday;
             const batchSize = currentProgress.premiumStatus ? 20 : Math.min(10, wordsLeftForFreeUser);
             
-            words = available.slice(0, Math.max(1, batchSize));
+            // SHUFFLE LOGIC APPLIED HERE
+            // We shuffle the entire available pool before picking the batch.
+            const shuffledAvailable = shuffleArray(available);
+            
+            words = shuffledAvailable.slice(0, Math.max(1, batchSize));
             
         } else {
             const allWords = await getAllWords();
             const allWordIds = Object.keys(currentProgress.wordProgress);
             const dueIds = await getWordsDueForReview(allWordIds);
             words = allWords.filter(w => dueIds.includes(w.id));
+            
+            // Optionally shuffle review words too to mix up topics
+            words = shuffleArray(words);
         }
         
         setSessionWords(words);

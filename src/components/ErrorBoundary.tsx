@@ -14,12 +14,15 @@ interface State {
 }
 
 export class ErrorBoundary extends React.Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null,
-    copied: false,
-    backupCode: null
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      copied: false,
+      backupCode: null
+    };
+  }
 
   public static getDerivedStateFromError(error: Error): Partial<State> {
     return { hasError: true, error, copied: false, backupCode: null };
@@ -29,11 +32,11 @@ export class ErrorBoundary extends React.Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  private handleReload = () => {
+  handleReload = () => {
     window.location.reload();
   };
 
-  private handleCopyBackup = async () => {
+  handleCopyBackup = async () => {
     try {
         const code = await exportUserData();
         if (code) {

@@ -110,14 +110,14 @@ export const LevelsScreen: React.FC<LevelsScreenProps> = ({ progress, mode, onBa
                                 <button 
                                     onClick={() => { triggerHaptic('medium'); onSelectLevel(lvl); }}
                                     disabled={isLocked}
-                                    className={`px-6 py-3 font-semibold rounded-xl active:scale-95 transition-transform flex items-center gap-2 ${
-                                        mode === 'learn' ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 
-                                        mode === 'blitz' ? 'bg-violet-600 text-white shadow-lg shadow-violet-200' :
-                                        'bg-white border-2 border-slate-100 text-slate-700 hover:bg-slate-50'
-                                    }`}
+                                    className={`active:scale-95 transition-transform flex items-center gap-2 font-semibold rounded-xl ${
+                                        mode === 'browse' 
+                                            ? 'px-4 py-2 text-sm bg-white border border-slate-200 text-slate-600 shadow-sm' // Smaller Browse Button
+                                            : 'px-6 py-3 bg-slate-900 text-white shadow-lg'
+                                    } ${mode === 'blitz' ? 'bg-violet-600 text-white shadow-lg' : ''}`}
                                 >
                                     {mode === 'learn' && <GraduationCap className="w-5 h-5" />}
-                                    {mode === 'browse' && <BookOpen className="w-5 h-5" />}
+                                    {mode === 'browse' && <BookOpen className="w-4 h-4" />}
                                     {mode === 'blitz' && <Zap className="w-5 h-5 fill-current" />}
                                     
                                     {mode === 'learn' ? 'Учить' : mode === 'blitz' ? 'Играть' : 'Обзор'}

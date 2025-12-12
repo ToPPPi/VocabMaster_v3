@@ -80,10 +80,16 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
     const paginatedWords = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
     const handleDelete = async (wordId: string) => {
+        const confirm = window.confirm("Удалить это слово из изученных?");
+        if (!confirm) return;
+
         triggerHaptic('medium');
         if (selectedWord?.id === wordId) setSelectedWord(null);
         await deleteWordFromProgress(wordId);
-        onUpdate();
+        await onUpdate();
+        
+        // Refresh local list state if needed, though parent update should trigger
+        setAllWords(prev => [...prev]); // Force re-render just in case
     };
 
     const handleEditComment = (wordId: string, currentComment: string = "") => {
@@ -137,7 +143,11 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
 
     if (isLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-violet-600"/></div>;
 
+    // --- DETAIL VIEW ---
     if (selectedWord) {
+        const userComment = progress.wordComments?.[selectedWord.id];
+        const isEditing = editingId === selectedWord.id;
+
         return (
             <div className="bg-slate-50 min-h-screen pb-safe animate-in slide-in-from-right-4 duration-300">
                  <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-100 flex items-center justify-between">
@@ -149,21 +159,25 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                 </div>
 
                 <div className="p-5 pb-32 space-y-6">
-                    {/* Main Header Card - Identical to Learning Session Back */}
+                    {/* Main Header Card */}
                     <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-50">{getStatusBadge(selectedWord.id)}</div>
-                        <div className="flex justify-between items-start pb-4 border-b border-slate-50 mb-4">
-                            <div className="pr-4">
-                                <h2 className="text-3xl font-black text-slate-900 leading-tight">{selectedWord.term}</h2>
-                                {selectedWord.transcription && <span className="text-sm text-slate-400 font-mono mt-1 block">{selectedWord.transcription}</span>}
-                                <p className="text-xl text-violet-600 font-bold mt-2">{selectedWord.translation}</p>
-                            </div>
-                            <button 
+                        {/* FIX: Badge moved to relative layout to prevent overlap */}
+                        <div className="flex justify-between items-center mb-4">
+                             {getStatusBadge(selectedWord.id)}
+                             <button 
                                 onClick={(e) => { e.stopPropagation(); speak(selectedWord.term); }}
                                 className="w-12 h-12 bg-violet-50 rounded-xl flex items-center justify-center text-violet-600 active:scale-95 transition-transform shrink-0"
                             >
                                 <Volume2 className="w-6 h-6" />
                             </button>
+                        </div>
+
+                        <div className="flex justify-between items-start pb-4 border-b border-slate-50 mb-4">
+                            <div className="pr-4 w-full">
+                                <h2 className="text-3xl font-black text-slate-900 leading-tight break-words">{selectedWord.term}</h2>
+                                {selectedWord.transcription && <span className="text-sm text-slate-400 font-mono mt-1 block">{selectedWord.transcription}</span>}
+                                <p className="text-xl text-violet-600 font-bold mt-2">{selectedWord.translation}</p>
+                            </div>
                         </div>
 
                         {/* Metadata Tags */}
@@ -197,6 +211,42 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                         </div>
                     )}
 
+                    {/* Note Input in Detail View */}
+                    <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                        <span className="text-xs font-bold text-slate-400 uppercase block mb-3 tracking-wide">Моя заметка</span>
+                        {isEditing ? (
+                            <div className="flex flex-col gap-2">
+                                <textarea 
+                                    autoFocus 
+                                    value={commentText} 
+                                    onChange={(e) => setCommentText(e.target.value)} 
+                                    placeholder="Ваша заметка..." 
+                                    className="w-full bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 text-sm text-slate-800 resize-none h-24" 
+                                />
+                                <div className="flex gap-2 justify-end">
+                                    <button onClick={() => handleSaveComment(selectedWord.id)} className="px-4 py-2 bg-emerald-100 text-emerald-600 rounded-lg font-bold text-xs flex items-center gap-1"><Save className="w-3 h-3"/> Сохранить</button>
+                                    <button onClick={handleCancelEdit} className="px-4 py-2 bg-slate-100 text-slate-500 rounded-lg font-bold text-xs">Отмена</button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div 
+                                onClick={() => handleEditComment(selectedWord.id, userComment)}
+                                className={`p-3 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${userComment ? 'bg-yellow-50 border-yellow-200' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'}`}
+                            >
+                                {userComment ? (
+                                    <div className="flex items-start gap-2">
+                                        <PenLine className="w-4 h-4 text-yellow-600 shrink-0 mt-0.5" />
+                                        <p className="text-sm text-slate-800 break-words">{userComment}</p>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-center gap-2 text-slate-400 text-sm font-medium">
+                                        <PenLine className="w-4 h-4" /> Написать заметку
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
                     {/* Examples */}
                     <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-3 tracking-wide">Примеры</span>
@@ -222,6 +272,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
         );
     }
 
+    // --- OVERVIEW ---
     if (viewState === 'overview') {
         return (
              <div className="bg-slate-50 min-h-screen pb-32">
@@ -247,6 +298,7 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
         );
     }
 
+    // --- LIST VIEW ---
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
             <Header title={`Словарь ${selectedLevel}`} subtitle={`${displayWords.length} слов`} onBack={handleBack} />
@@ -274,12 +326,18 @@ export const DictionaryView: React.FC<DictionaryViewProps> = ({ progress, onBack
                                             <span className="font-bold text-slate-900 text-lg leading-tight truncate">{w.term}</span>
                                             <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-1 w-fit whitespace-normal break-words">{w.translation}</span>
                                         </div>
-                                        {/* CSS FIX: Removed line-clamp-1 and added whitespace-normal to allow expansion */}
                                         <p className="text-sm text-slate-500 leading-relaxed font-medium whitespace-normal break-words">{w.definition}</p>
                                      </div>
                                 </div>
-                                <div className="shrink-0 pl-1">
+                                <div className="shrink-0 pl-1 flex flex-col gap-2 items-end">
                                     {getStatusBadge(w.id)}
+                                    {/* Added Trash Button here */}
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); handleDelete(w.id); }}
+                                        className="p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
                                 </div>
                             </div>
                             <div className="mt-2 pt-2 border-t border-slate-50 flex items-start justify-between gap-4">

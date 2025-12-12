@@ -14,29 +14,9 @@ export const triggerHaptic = (style: 'light' | 'medium' | 'heavy' | 'selection' 
 export const speak = (text: string) => {
     if (!text) return;
 
-    // Strategy 1: Network-based TTS (More reliable in Telegram WebViews on iOS/Android)
-    // using Google Translate's public TTS endpoint.
-    const playNetworkAudio = () => {
-        try {
-            const encodedText = encodeURIComponent(text);
-            const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=en&client=tw-ob`);
-            
-            const playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch((error) => {
-                    console.warn("Audio URL playback failed, switching to native:", error);
-                    playNativeTTS();
-                });
-            }
-        } catch (e) {
-            playNativeTTS();
-        }
-    };
-
-    // Strategy 2: Native Browser SpeechSynthesis (Fallback)
+    // Strategy 1: Native Browser SpeechSynthesis (Preferred for reliability and speed)
     const playNativeTTS = () => {
-        if (!('speechSynthesis' in window)) return;
+        if (!('speechSynthesis' in window)) return false;
 
         window.speechSynthesis.cancel(); // Reset queue
 
@@ -44,24 +24,36 @@ export const speak = (text: string) => {
         utterance.lang = 'en-US';
         utterance.rate = 0.9;
         
-        // Force voice selection for mobile quirks
+        // Improve voice quality on iOS/Android if available
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(v => v.lang === 'en-US' && v.localService) || 
                                voices.find(v => v.lang.startsWith('en'));
         
         if (preferredVoice) utterance.voice = preferredVoice;
 
-        // Small delay to ensure the stack is clear
-        setTimeout(() => {
-            window.speechSynthesis.speak(utterance);
-        }, 10);
+        window.speechSynthesis.speak(utterance);
+        return true;
     };
 
-    // Attempt Network first if online
-    if (navigator.onLine) {
+    // Strategy 2: Network-based TTS (Fallback if native fails or is empty)
+    const playNetworkAudio = () => {
+        try {
+            const encodedText = encodeURIComponent(text);
+            const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=en&client=tw-ob`);
+            audio.play().catch(e => console.warn("Audio playback failed", e));
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    // Try Native first
+    const nativeSuccess = playNativeTTS();
+    
+    // If native failed (or threw error silently), fallback to network
+    // Note: On some browsers, getVoices() is async, so the first click might fallback, 
+    // but subsequent clicks will use the loaded voices.
+    if (!nativeSuccess && navigator.onLine) {
         playNetworkAudio();
-    } else {
-        playNativeTTS();
     }
 };
 
@@ -84,4 +76,13 @@ export const shareApp = () => {
         navigator.clipboard.writeText(`${text} ${url}`);
         alert('Ссылка скопирована в буфер обмена!');
     }
+};
+
+export const shuffleArray = <T>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
 };
