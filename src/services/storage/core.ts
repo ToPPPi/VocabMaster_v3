@@ -2,7 +2,8 @@
 import { UserProgress } from '../../types';
 
 export const STORAGE_KEY = 'vocabmaster_user_v5_ru';
-const CHUNK_SIZE = 2048; // Safe chunk size for Telegram
+// Reduced chunk size slightly to ensure stability
+const CHUNK_SIZE = 1500; 
 
 export const INITIAL_PROGRESS: UserProgress = {
   xp: 0,
@@ -142,7 +143,7 @@ const cloudAdapter = {
         console.warn("LocalStorage full or unavailable");
     }
 
-    // 2. If no cloud support, we are done (but warn if restoring)
+    // 2. If no cloud support, we are done
     if (!tgStorage.isSupported()) {
         if (onProgress) onProgress(100);
         return;
@@ -154,42 +155,62 @@ const cloudAdapter = {
             chunks.push(value.substring(i, i + CHUNK_SIZE));
         }
 
-        // --- CLOUD SYNC LOGIC ---
-        // We use a small batch size to prevent hitting API rate limits.
-        const BATCH_SIZE = 8; 
         const totalChunks = chunks.length;
+        
+        // Helper to save a single chunk with retries
+        const saveChunkWithRetry = async (chunkKey: string, chunkValue: string, retries = 3): Promise<boolean> => {
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                const success = await tgStorage.setItem(chunkKey, chunkValue);
+                if (success) return true;
+                console.warn(`Retry ${attempt}/${retries} for ${chunkKey}`);
+                await new Promise(r => setTimeout(r, 500 * attempt)); // Exponential backoff
+            }
+            return false;
+        };
+
+        // --- CLOUD SYNC LOGIC ---
+        // Process sequentially or in very small batches to ensure reliability
+        const BATCH_SIZE = 5; 
         let processed = 0;
 
         for (let i = 0; i < totalChunks; i += BATCH_SIZE) {
             const batchPromises = [];
             for (let j = 0; j < BATCH_SIZE && (i + j) < totalChunks; j++) {
                 const chunkIndex = i + j;
-                batchPromises.push(tgStorage.setItem(`${key}_chunk_${chunkIndex}`, chunks[chunkIndex]));
+                const chunkKey = `${key}_chunk_${chunkIndex}`;
+                // Return promise that resolves to success boolean
+                batchPromises.push(saveChunkWithRetry(chunkKey, chunks[chunkIndex]));
             }
             
-            // Wait for this batch to finish strictly
-            await Promise.all(batchPromises);
+            // Wait for this batch
+            const results = await Promise.all(batchPromises);
+            
+            // CRITICAL CHECK: If ANY chunk failed, we MUST abort.
+            if (results.some(res => res === false)) {
+                throw new Error("Critical: Failed to upload some data chunks to cloud.");
+            }
             
             processed += batchPromises.length;
             
-            // Report Progress
             if (onProgress) {
-                const percent = Math.floor((processed / totalChunks) * 95); // Up to 95% for chunks
+                const percent = Math.floor((processed / totalChunks) * 95); 
                 onProgress(percent);
             }
-
-            // Small delay to be polite to Telegram API
-            await new Promise(r => setTimeout(r, 50)); 
         }
 
-        // Commit transaction by saving metadata LAST
-        await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
+        // Only save metadata if ALL chunks succeeded
+        const metaSaved = await saveChunkWithRetry(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
+        
+        if (!metaSaved) {
+            throw new Error("Critical: Failed to save metadata.");
+        }
         
         if (onProgress) onProgress(100);
 
     } catch (e) {
         console.error("Cloud save failed", e);
-        throw new Error("Cloud sync failed");
+        // Do NOT alert user here for background saves, but useful for restore debugging
+        throw e; // Propagate error so restore UI can see it
     }
   },
 
@@ -206,7 +227,7 @@ const cloudAdapter = {
         const count = meta.count;
         
         let fullString = "";
-        const BATCH_SIZE = 15;
+        const BATCH_SIZE = 10;
         
         for (let i = 0; i < count; i += BATCH_SIZE) {
             const keys = [];
@@ -225,7 +246,7 @@ const cloudAdapter = {
                 if (typeof values[k] === 'string') {
                     fullString += values[k];
                 } else {
-                    console.warn(`Chunk ${k} missing`);
+                    console.warn(`Chunk ${k} missing in cloud`);
                     return localStorage.getItem(key);
                 }
             }
@@ -251,8 +272,11 @@ export const saveUserProgress = async (progress: UserProgress, immediate = false
 
   const performSave = async () => {
       if (!memoryCache) return;
-      // Background save doesn't report progress
-      await cloudAdapter.save(STORAGE_KEY, JSON.stringify(memoryCache));
+      try {
+          await cloudAdapter.save(STORAGE_KEY, JSON.stringify(memoryCache));
+      } catch (e) {
+          console.error("Background save warning:", e);
+      }
   };
 
   if (immediate) {
@@ -269,6 +293,7 @@ export const saveRestoredData = async (progress: UserProgress, onProgress: (pct:
         clearTimeout(saveDebounceTimer);
         saveDebounceTimer = null;
     }
+    // Propagate errors up to the UI
     await cloudAdapter.save(STORAGE_KEY, JSON.stringify(progress), onProgress);
 };
 
@@ -459,7 +484,8 @@ export const importUserData = async (inputCode: string, onProgress?: (pct: numbe
     try {
         if (onProgress) onProgress(1); // Start
 
-        let cleanCode = inputCode.trim().replace(/\s/g, '');
+        // Aggressive cleanup for pasted content
+        let cleanCode = inputCode.replace(/[\s\n\r]/g, '');
         
         if (cleanCode.startsWith(BACKUP_PREFIX)) {
             cleanCode = cleanCode.substring(BACKUP_PREFIX.length);
@@ -467,6 +493,7 @@ export const importUserData = async (inputCode: string, onProgress?: (pct: numbe
             cleanCode = cleanCode.substring(4);
         }
 
+        // Fix padding
         while (cleanCode.length % 4 !== 0) {
             cleanCode += '=';
         }
@@ -478,11 +505,11 @@ export const importUserData = async (inputCode: string, onProgress?: (pct: numbe
             try {
                 jsonStr = window.atob(cleanCode);
             } catch (e2) {
-                throw new Error("Не удалось раскодировать строку. Проверьте копию.");
+                throw new Error("Не удалось раскодировать. Проверьте, что скопировали код полностью.");
             }
         }
 
-        if (onProgress) onProgress(10); // Decoded
+        if (onProgress) onProgress(5); // Decoded
 
         const dataToRestore = JSON.parse(jsonStr);
 
@@ -497,7 +524,7 @@ export const importUserData = async (inputCode: string, onProgress?: (pct: numbe
 
     } catch (e: any) {
         console.error("Import failed:", e);
-        return { success: false, message: "Ошибка: Код поврежден или сеть недоступна." };
+        return { success: false, message: e.message || "Ошибка восстановления." };
     }
 };
 

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Users, Share2, MessageCircle, Database, Download, Upload, Loader2, Copy, Check, Cloud, RefreshCw } from 'lucide-react';
+import { Users, Share2, MessageCircle, Database, Download, Upload, Loader2, Copy, Check, Cloud, RefreshCw, AlertTriangle } from 'lucide-react';
 import { exportUserData, importUserData } from '../../services/storageService';
 import { shareApp, triggerHaptic } from '../../utils/uiHelpers';
 
@@ -63,9 +63,9 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                 triggerHaptic('error');
                 setIsRestoring(false);
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
-            setActionStatus({ success: false, msg: "Критическая ошибка восстановления." });
+            setActionStatus({ success: false, msg: e.message || "Ошибка восстановления." });
             setIsRestoring(false);
         }
     };
@@ -151,13 +151,14 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                         
                         {/* RESTORATION OVERLAY */}
                         {isRestoring && (
-                            <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 z-20 flex flex-col items-center justify-center p-6 text-center backdrop-blur-sm">
+                            <div className="absolute inset-0 bg-white/95 dark:bg-slate-900/95 z-20 flex flex-col items-center justify-center p-6 text-center backdrop-blur-sm">
                                 {restoreProgress < 100 ? (
                                     <>
                                         <Cloud className="w-10 h-10 text-violet-500 animate-bounce mb-4" />
                                         <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Синхронизация...</h4>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                                            Загружаем данные в облако Telegram. Пожалуйста, не закрывайте приложение.
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+                                            Отправляем данные в облако Telegram.<br/>
+                                            Не закрывайте приложение!
                                         </p>
                                         <div className="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mb-2">
                                             <div 
@@ -172,9 +173,9 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                                         <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mb-4">
                                             <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                                         </div>
-                                        <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Готово!</h4>
+                                        <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Успех!</h4>
                                         <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                                            Данные успешно восстановлены и сохранены в облаке.
+                                            Все данные сохранены в облаке.
                                         </p>
                                         <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
                                             <RefreshCw className="w-3 h-3 animate-spin" /> Перезагрузка
@@ -197,7 +198,12 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                             spellCheck={false}
                             autoComplete="off"
                         />
-                        {actionStatus && !isRestoring && <div className={`text-xs mb-3 font-bold ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>{actionStatus.msg}</div>}
+                        {actionStatus && !isRestoring && (
+                            <div className={`text-xs mb-3 font-bold flex items-center gap-2 ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                {!actionStatus.success && <AlertTriangle className="w-4 h-4"/>}
+                                {actionStatus.msg}
+                            </div>
+                        )}
                         
                         <button 
                             onClick={handleImport} 
