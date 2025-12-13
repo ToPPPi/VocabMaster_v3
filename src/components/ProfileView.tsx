@@ -112,7 +112,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                 
                 <div className="text-center pt-2 pb-4">
                     <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">
-                        VocabMaster v1.2.0
+                        VocabMaster v1.0.0
                     </p>
                     <p className="text-[10px] text-slate-300 dark:text-slate-600 mt-1">support@vocabmaster.app</p>
                 </div>
