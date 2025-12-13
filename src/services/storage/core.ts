@@ -383,92 +383,81 @@ export const logoutUser = async (): Promise<void> => {
     await saveUserProgress(progress, true);
 };
 
-// --- SIMPLIFIED IMPORT/EXPORT (JSON BASED) ---
+// --- DATA IMPORT/EXPORT (ROBUST BASE64) ---
 
-// 1. Export as Raw JSON (Human Readable, Reliable)
+const BACKUP_PREFIX = "VM5:";
+
+// Helper: Handle Unicode strings properly for Base64
+function utf8_to_b64(str: string) {
+    return window.btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+        function toSolidBytes(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+    }));
+}
+
+function b64_to_utf8(str: string) {
+    return decodeURIComponent(window.atob(str).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
+
 export const exportUserData = async (): Promise<string> => {
     try {
         const progress = await getUserProgress();
-        // Add metadata to ensure we know it's our file
-        const backupWrapper = {
-            _app: "VocabMaster",
-            _v: "1.0",
-            _date: new Date().toISOString(),
-            data: progress
-        };
-        // Pretty print (2 spaces) makes it copy-paste safe on mobile
-        // because it avoids extremely long single lines that some clipboards truncate
-        return JSON.stringify(backupWrapper, null, 2); 
+        // Minify JSON to save space (no spaces or newlines)
+        const jsonStr = JSON.stringify(progress);
+        const encoded = utf8_to_b64(jsonStr);
+        return BACKUP_PREFIX + encoded;
     } catch (e) {
         console.error("Export error", e);
         return "";
     }
 };
 
-// 2. Smart Import (Detects JSON bounds)
 export const importUserData = async (inputCode: string): Promise<{success: boolean, message: string}> => {
     try {
-        let cleanCode = inputCode.trim();
-        let dataToRestore: UserProgress;
-
-        // METHOD A: Try finding JSON object ({ ... })
-        // This makes it robust against "Here is my code: { ... } thanks"
-        const firstBrace = cleanCode.indexOf('{');
-        const lastBrace = cleanCode.lastIndexOf('}');
-
-        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-            const jsonString = cleanCode.substring(firstBrace, lastBrace + 1);
-            try {
-                const parsed = JSON.parse(jsonString);
-                
-                // Handle our wrapper if present, or raw data
-                if (parsed._app === "VocabMaster" && parsed.data) {
-                    dataToRestore = parsed.data;
-                } else {
-                    dataToRestore = parsed;
-                }
-                
-                // Validate essential fields to ensure it's not just any JSON
-                if (typeof dataToRestore.xp === 'undefined' || !dataToRestore.wordProgress) {
-                    throw new Error("Invalid schema");
-                }
-
-                await saveUserProgress(dataToRestore, true);
-                return { success: true, message: "Данные восстановлены из JSON!" };
-
-            } catch (jsonErr) {
-                console.warn("JSON parse failed, trying legacy Base64...", jsonErr);
-                // Fallthrough to Method B
-            }
+        // 1. Aggressive Cleanup: Remove ALL whitespace, line breaks, etc.
+        let cleanCode = inputCode.trim().replace(/\s/g, '');
+        
+        // 2. Remove Prefix
+        if (cleanCode.startsWith(BACKUP_PREFIX)) {
+            cleanCode = cleanCode.substring(BACKUP_PREFIX.length);
+        } else if (cleanCode.startsWith("VM1:")) {
+            cleanCode = cleanCode.substring(4);
         }
 
-        // METHOD B: Legacy Base64 Support (Fallback)
-        // If user pastes old code style
+        // 3. Fix Base64 Padding (Common copy-paste error)
+        while (cleanCode.length % 4 !== 0) {
+            cleanCode += '=';
+        }
+
+        // 4. Try Decoding
+        let jsonStr = "";
         try {
-            // Remove prefix if present
-            if (cleanCode.startsWith("VM1:")) cleanCode = cleanCode.substring(4);
-            
-            // Normalize
-            cleanCode = cleanCode.replace(/-/g, '+').replace(/_/g, '/');
-            while (cleanCode.length % 4 !== 0) cleanCode += '=';
-            
-            // Decode
-            const legacyJson = decodeURIComponent(escape(window.atob(cleanCode)));
-            dataToRestore = JSON.parse(legacyJson);
-
-            if (dataToRestore && typeof dataToRestore.xp !== 'undefined') {
-                await saveUserProgress(dataToRestore, true);
-                return { success: true, message: "Данные восстановлены (Legacy)!" };
+            jsonStr = b64_to_utf8(cleanCode);
+        } catch (e) {
+            // Fallback for standard ASCII base64
+            try {
+                jsonStr = window.atob(cleanCode);
+            } catch (e2) {
+                throw new Error("Не удалось раскодировать строку. Проверьте копию.");
             }
-        } catch (b64Err) {
-            console.error("Base64 failed", b64Err);
         }
 
-        throw new Error("Could not parse code");
+        // 5. Parse JSON
+        const dataToRestore = JSON.parse(jsonStr);
+
+        // 6. Basic Validation
+        if (typeof dataToRestore.xp === 'undefined' || !dataToRestore.wordProgress) {
+            throw new Error("Код не содержит данных VocabMaster.");
+        }
+
+        await saveUserProgress(dataToRestore, true);
+        return { success: true, message: "База данных успешно восстановлена!" };
 
     } catch (e: any) {
         console.error("Import failed:", e);
-        return { success: false, message: "Ошибка: Неверный формат кода." };
+        return { success: false, message: "Ошибка: Код поврежден или неверен." };
     }
 };
 
