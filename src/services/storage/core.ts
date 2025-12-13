@@ -228,7 +228,7 @@ const cloudAdapter = {
 
 /**
  * Persists user progress.
- * Uses DEBOUNCING: Rapid calls (like toggling many hearts) will update the memory cache instantly
+ * Uses DEBOUNCE: Rapid calls (like toggling many hearts) will update the memory cache instantly
  * but only write to disk/cloud after 2 seconds of inactivity.
  * @param progress The data to save
  * @param immediate If true, skips debounce and saves instantly (use for critical events like payment or level complete)
@@ -428,18 +428,29 @@ export const exportUserData = async (): Promise<string> => {
 
 export const importUserData = async (backupCode: string): Promise<{success: boolean, message: string}> => {
     try {
-        const jsonStr = b64_to_utf8(backupCode);
+        // CLEANUP: Remove whitespace/newlines that might occur from copy-pasting
+        // This is the main fix for "Error reading code" when users copy formatted text
+        const cleanCode = backupCode.trim().replace(/\s/g, '');
+        
+        const jsonStr = b64_to_utf8(cleanCode);
         const data = JSON.parse(jsonStr);
 
-        if (!data.wordProgress || typeof data.xp === 'undefined') {
-            return { success: false, message: "Неверный формат данных." };
+        // Validation
+        if (!data || typeof data !== 'object') {
+             throw new Error("Invalid structure");
+        }
+
+        // Basic schema check to ensure it's a valid backup
+        // Checking for XP or wordProgress usually confirms it's the right app data
+        if (typeof data.xp === 'undefined' && !data.wordProgress) {
+            return { success: false, message: "Неверный формат данных (нет прогресса)." };
         }
 
         await saveUserProgress(data, true);
         return { success: true, message: "Данные успешно восстановлены!" };
     } catch (e) {
-        console.error(e);
-        return { success: false, message: "Ошибка чтения кода." };
+        console.error("Import error:", e);
+        return { success: false, message: "Ошибка чтения кода. Проверьте, что скопировали весь текст." };
     }
 };
 
