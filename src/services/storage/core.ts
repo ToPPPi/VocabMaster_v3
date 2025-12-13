@@ -50,15 +50,16 @@ export const initUserProgress = async (): Promise<{ data: UserProgress, hasConfl
     // 1. Load Local Data only
     let localData = null;
     try {
+        // idbService.load now has a timeout and catches its own errors, returning null if it fails.
+        // This ensures this line does NOT hang.
         localData = await idbService.load();
     } catch (e) {
         console.error("Critical Error Loading IDB:", e);
-        // Fallback to localStorage or fresh start if IDB fails hard
     }
     
-    // 2. If no local data, start fresh
+    // 2. If no local data (or load failed/timed out), start fresh
     if (!localData) {
-        console.log("No local data found. Starting fresh.");
+        console.log("No local data found or DB timeout. Starting fresh.");
         memoryCache = { ...INITIAL_PROGRESS };
         return { data: memoryCache, hasConflict: false };
     }
@@ -153,9 +154,9 @@ export const syncTelegramUserData = async () => {
 
 export const resetUserProgress = async (): Promise<UserProgress> => {
     try {
-        await idbService.clear();
+        await idbService.deleteDatabase(); // Nuclear option
     } catch (e) {
-        console.error("IDB Clear failed, continuing with LocalStorage clear", e);
+        console.error("IDB Delete failed", e);
     }
     
     localStorage.removeItem(STORAGE_KEY);
@@ -214,14 +215,10 @@ export const importUserData = async (inputCode: string): Promise<{success: boole
         if (!importedData.wordProgress) throw new Error("Неверный формат данных");
 
         // --- SMART MERGE LOGIC ---
-        // We load the CURRENT data on this device first.
-        // We want to keep the current user's Identity (Name, Photo)
-        // But overwrite the Learning Data (Words, Score, Money) with the imported data.
-        
         const currentData = await idbService.load() || INITIAL_PROGRESS;
 
         const mergedData: UserProgress = {
-            ...importedData, // Start with everything from the backup (Words, Money, Stats)
+            ...importedData, // Start with everything from the backup
             
             // PRESERVE IDENTITY of the current device user
             userName: currentData.userName || importedData.userName, 
@@ -229,7 +226,7 @@ export const importUserData = async (inputCode: string): Promise<{success: boole
             
             // Update timestamps
             lastLocalUpdate: Date.now(),
-            hasSeenOnboarding: true // Ensure they don't see onboarding again
+            hasSeenOnboarding: true 
         };
         
         memoryCache = mergedData;

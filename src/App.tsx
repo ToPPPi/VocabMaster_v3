@@ -40,29 +40,28 @@ const App: React.FC = () => {
   const [showEmergencyReset, setShowEmergencyReset] = useState(false);
 
   useEffect(() => {
-      // Emergency timer: if stuck on loading for > 5s, show reset button
+      // Emergency timer: Show reset button faster (3 seconds)
       const timer = setTimeout(() => {
           if (!progress) {
               setShowEmergencyReset(true);
           }
-      }, 5000);
+      }, 3000);
 
       const load = async () => {
           try {
-              // Use new init function that checks for conflicts
+              // Init logic wrapped in try-catch
               const { data, hasConflict, cloudDate } = await initUserProgress();
               
               if (hasConflict && cloudDate) {
-                  // Pause loading, show conflict modal
                   setConflictData({ localDate: data.lastLocalUpdate, cloudDate: cloudDate });
-                  setProgress(data); // Show local momentarily behind modal
+                  setProgress(data); 
               } else {
                   setProgress(data);
                   if (data.hasSeenOnboarding) setView('dashboard');
                   else setView('onboarding');
               }
 
-              await syncTelegramUserData(); // Sync name and photo
+              await syncTelegramUserData();
               
               if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.ready();
@@ -71,8 +70,7 @@ const App: React.FC = () => {
                 window.Telegram.WebApp.setBackgroundColor('#F1F5F9');
             }
           } catch (e) {
-              console.error("Initialization failed completely:", e);
-              // Force reset visibility on error
+              console.error("Initialization failed:", e);
               setShowEmergencyReset(true);
           }
       };
@@ -90,7 +88,6 @@ const App: React.FC = () => {
               if (newData.hasSeenOnboarding) setView('dashboard');
           }
       } else {
-          // Keep local, force overwrite cloud
           if (progress) {
               await saveUserProgress(progress, true);
           }
@@ -100,7 +97,7 @@ const App: React.FC = () => {
   };
 
   const handleEmergencyReset = async () => {
-      const c = window.confirm("Сбросить данные? Это исправит зависание, но удалит прогресс.");
+      const c = window.confirm("Данные приложения повреждены. Выполнить полный сброс и перезапуск?");
       if (c) {
           await resetUserProgress();
           window.location.reload();
@@ -155,7 +152,6 @@ const App: React.FC = () => {
   }, [view]);
 
   const refreshProgress = async () => {
-      // Re-fetch using init is safe as it hits memory cache first
       const { data } = await initUserProgress();
       setProgress({ ...data });
       if(!data.hasSeenOnboarding && view !== 'onboarding') setView('onboarding');
@@ -201,27 +197,27 @@ const App: React.FC = () => {
   if (!progress) {
       return (
           <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-6 text-center">
-              <Loader2 className="w-10 h-10 animate-spin text-violet-600 mb-4"/>
+              <Loader2 className="w-10 h-10 animate-spin text-violet-600 mb-6"/>
               
               {showEmergencyReset && (
-                  <div className="animate-in fade-in zoom-in duration-500 max-w-xs">
-                      <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-2xl border border-rose-100 dark:border-rose-800 mb-4">
+                  <div className="animate-in fade-in zoom-in duration-500 w-full max-w-xs space-y-4">
+                      <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-2xl border border-rose-100 dark:border-rose-800">
                           <div className="flex justify-center mb-2">
-                              <AlertTriangle className="w-6 h-6 text-rose-500" />
+                              <AlertTriangle className="w-8 h-8 text-rose-500" />
                           </div>
-                          <p className="text-xs font-bold text-rose-600 dark:text-rose-300 mb-1">
-                              Возникла проблема с загрузкой
+                          <p className="text-sm font-bold text-rose-700 dark:text-rose-300 mb-1">
+                              Долгая загрузка
                           </p>
-                          <p className="text-[10px] text-rose-500 dark:text-rose-400 leading-snug">
-                              Если приложение зависло, попробуйте сбросить данные. Это удалит прогресс, но восстановит работу.
+                          <p className="text-xs text-rose-600 dark:text-rose-400 leading-snug">
+                              База данных не отвечает. Нажмите ниже, чтобы сбросить данные и починить приложение.
                           </p>
                       </div>
                       <button 
                           onClick={handleEmergencyReset}
-                          className="w-full py-3 bg-slate-900 dark:bg-slate-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                          className="w-full py-4 bg-slate-900 dark:bg-slate-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform"
                       >
                           <RefreshCw className="w-4 h-4" />
-                          Сбросить данные
+                          Сброс и запуск
                       </button>
                   </div>
               )}
