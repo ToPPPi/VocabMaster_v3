@@ -2,7 +2,7 @@
 import { UserProgress } from '../../types';
 
 export const STORAGE_KEY = 'vocabmaster_user_v5_ru';
-const CHUNK_SIZE = 2500; 
+const CHUNK_SIZE = 2048; // Safe chunk size for Telegram
 
 export const INITIAL_PROGRESS: UserProgress = {
   xp: 0,
@@ -60,7 +60,7 @@ const syncTime = async () => {
 export const getSecureNow = () => Date.now() + serverTimeOffset;
 
 // --- CLOUD STORAGE HELPERS ---
-const withTimeout = <T>(promise: Promise<T>, ms: number = 3000, fallback: T): Promise<T> => {
+const withTimeout = <T>(promise: Promise<T>, ms: number = 8000, fallback: T): Promise<T> => {
     return Promise.race([
         promise,
         new Promise<T>((resolve) => setTimeout(() => {
@@ -86,7 +86,7 @@ const tgStorage = {
                 }
             });
         });
-        return withTimeout(op, 3000, false);
+        return withTimeout(op, 10000, false);
     },
     getItem: (key: string): Promise<string | null> => {
         const op = new Promise<string | null>((resolve) => {
@@ -99,7 +99,7 @@ const tgStorage = {
                 }
             });
         });
-        return withTimeout(op, 3000, null);
+        return withTimeout(op, 8000, null);
     },
     getItems: (keys: string[]): Promise<Record<string, string> | null> => {
         const op = new Promise<Record<string, string> | null>((resolve) => {
@@ -112,7 +112,7 @@ const tgStorage = {
                 }
             });
         });
-        return withTimeout(op, 5000, null);
+        return withTimeout(op, 12000, null);
     },
     removeItem: (key: string): Promise<boolean> => {
         const op = new Promise<boolean>((resolve) => {
@@ -120,7 +120,7 @@ const tgStorage = {
                 resolve(!err && deleted);
             });
         });
-        return withTimeout(op, 3000, false);
+        return withTimeout(op, 5000, false);
     },
     removeItems: (keys: string[]): Promise<boolean> => {
         const op = new Promise<boolean>((resolve) => {
@@ -128,20 +128,25 @@ const tgStorage = {
                 resolve(!err && deleted);
             });
         });
-        return withTimeout(op, 3000, false);
+        return withTimeout(op, 8000, false);
     }
 };
 
 // --- ADAPTER LOGIC ---
 const cloudAdapter = {
-  async save(key: string, value: string): Promise<void> {
+  async save(key: string, value: string, onProgress?: (percent: number) => void): Promise<void> {
+    // 1. Always save to LocalStorage first as backup
     try {
         localStorage.setItem(key, value);
     } catch (e) {
         console.warn("LocalStorage full or unavailable");
     }
 
-    if (!tgStorage.isSupported()) return;
+    // 2. If no cloud support, we are done (but warn if restoring)
+    if (!tgStorage.isSupported()) {
+        if (onProgress) onProgress(100);
+        return;
+    }
 
     try {
         const chunks: string[] = [];
@@ -149,20 +154,42 @@ const cloudAdapter = {
             chunks.push(value.substring(i, i + CHUNK_SIZE));
         }
 
-        const metaSaved = await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
-        if (!metaSaved) return;
+        // --- CLOUD SYNC LOGIC ---
+        // We use a small batch size to prevent hitting API rate limits.
+        const BATCH_SIZE = 8; 
+        const totalChunks = chunks.length;
+        let processed = 0;
 
-        const BATCH_SIZE = 10;
-        for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
+        for (let i = 0; i < totalChunks; i += BATCH_SIZE) {
             const batchPromises = [];
-            for (let j = 0; j < BATCH_SIZE && (i + j) < chunks.length; j++) {
+            for (let j = 0; j < BATCH_SIZE && (i + j) < totalChunks; j++) {
                 const chunkIndex = i + j;
                 batchPromises.push(tgStorage.setItem(`${key}_chunk_${chunkIndex}`, chunks[chunkIndex]));
             }
+            
+            // Wait for this batch to finish strictly
             await Promise.all(batchPromises);
+            
+            processed += batchPromises.length;
+            
+            // Report Progress
+            if (onProgress) {
+                const percent = Math.floor((processed / totalChunks) * 95); // Up to 95% for chunks
+                onProgress(percent);
+            }
+
+            // Small delay to be polite to Telegram API
+            await new Promise(r => setTimeout(r, 50)); 
         }
+
+        // Commit transaction by saving metadata LAST
+        await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
+        
+        if (onProgress) onProgress(100);
+
     } catch (e) {
         console.error("Cloud save failed", e);
+        throw new Error("Cloud sync failed");
     }
   },
 
@@ -179,7 +206,7 @@ const cloudAdapter = {
         const count = meta.count;
         
         let fullString = "";
-        const BATCH_SIZE = 20;
+        const BATCH_SIZE = 15;
         
         for (let i = 0; i < count; i += BATCH_SIZE) {
             const keys = [];
@@ -188,12 +215,17 @@ const cloudAdapter = {
             }
             
             const values = await tgStorage.getItems(keys);
-            if (!values) return localStorage.getItem(key); 
+            
+            if (!values) {
+                console.warn("Cloud chunks missing, falling back to local");
+                return localStorage.getItem(key); 
+            }
 
             for (const k of keys) {
                 if (typeof values[k] === 'string') {
                     fullString += values[k];
                 } else {
+                    console.warn(`Chunk ${k} missing`);
                     return localStorage.getItem(key);
                 }
             }
@@ -219,14 +251,25 @@ export const saveUserProgress = async (progress: UserProgress, immediate = false
 
   const performSave = async () => {
       if (!memoryCache) return;
+      // Background save doesn't report progress
       await cloudAdapter.save(STORAGE_KEY, JSON.stringify(memoryCache));
   };
 
   if (immediate) {
       await performSave();
   } else {
-      saveDebounceTimer = setTimeout(performSave, 2000);
+      saveDebounceTimer = setTimeout(performSave, 3000);
   }
+};
+
+// New function specifically for Restore process to ensure full sync
+export const saveRestoredData = async (progress: UserProgress, onProgress: (pct: number) => void) => {
+    memoryCache = progress;
+    if (saveDebounceTimer) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = null;
+    }
+    await cloudAdapter.save(STORAGE_KEY, JSON.stringify(progress), onProgress);
 };
 
 export const forceSave = async () => {
@@ -387,7 +430,6 @@ export const logoutUser = async (): Promise<void> => {
 
 const BACKUP_PREFIX = "VM5:";
 
-// Helper: Handle Unicode strings properly for Base64
 function utf8_to_b64(str: string) {
     return window.btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
         function toSolidBytes(match, p1) {
@@ -404,7 +446,6 @@ function b64_to_utf8(str: string) {
 export const exportUserData = async (): Promise<string> => {
     try {
         const progress = await getUserProgress();
-        // Minify JSON to save space (no spaces or newlines)
         const jsonStr = JSON.stringify(progress);
         const encoded = utf8_to_b64(jsonStr);
         return BACKUP_PREFIX + encoded;
@@ -414,29 +455,26 @@ export const exportUserData = async (): Promise<string> => {
     }
 };
 
-export const importUserData = async (inputCode: string): Promise<{success: boolean, message: string}> => {
+export const importUserData = async (inputCode: string, onProgress?: (pct: number) => void): Promise<{success: boolean, message: string}> => {
     try {
-        // 1. Aggressive Cleanup: Remove ALL whitespace, line breaks, etc.
+        if (onProgress) onProgress(1); // Start
+
         let cleanCode = inputCode.trim().replace(/\s/g, '');
         
-        // 2. Remove Prefix
         if (cleanCode.startsWith(BACKUP_PREFIX)) {
             cleanCode = cleanCode.substring(BACKUP_PREFIX.length);
         } else if (cleanCode.startsWith("VM1:")) {
             cleanCode = cleanCode.substring(4);
         }
 
-        // 3. Fix Base64 Padding (Common copy-paste error)
         while (cleanCode.length % 4 !== 0) {
             cleanCode += '=';
         }
 
-        // 4. Try Decoding
         let jsonStr = "";
         try {
             jsonStr = b64_to_utf8(cleanCode);
         } catch (e) {
-            // Fallback for standard ASCII base64
             try {
                 jsonStr = window.atob(cleanCode);
             } catch (e2) {
@@ -444,20 +482,22 @@ export const importUserData = async (inputCode: string): Promise<{success: boole
             }
         }
 
-        // 5. Parse JSON
+        if (onProgress) onProgress(10); // Decoded
+
         const dataToRestore = JSON.parse(jsonStr);
 
-        // 6. Basic Validation
         if (typeof dataToRestore.xp === 'undefined' || !dataToRestore.wordProgress) {
             throw new Error("Код не содержит данных VocabMaster.");
         }
 
-        await saveUserProgress(dataToRestore, true);
-        return { success: true, message: "База данных успешно восстановлена!" };
+        // Use strict restoration save which waits for cloud confirmation
+        await saveRestoredData(dataToRestore, onProgress);
+        
+        return { success: true, message: "База данных восстановлена и синхронизирована с облаком!" };
 
     } catch (e: any) {
         console.error("Import failed:", e);
-        return { success: false, message: "Ошибка: Код поврежден или неверен." };
+        return { success: false, message: "Ошибка: Код поврежден или сеть недоступна." };
     }
 };
 
