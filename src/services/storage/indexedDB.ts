@@ -7,13 +7,13 @@ const STORE_NAME = 'user_data';
 const KEY_PROGRESS = 'main_progress';
 
 // Helper to open DB with Timeout
-// Increased to 5000ms to allow slow Android WebViews to initialize properly
+// REDUCED TO 1500ms (1.5s) to fail fast on stuck Android WebViews
 const openDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
         // 1. Setup Timeout
         const timeoutId = setTimeout(() => {
             reject(new Error("IDB_TIMEOUT: Database took too long to open"));
-        }, 5000); // 5s max wait time (Safe for slow devices)
+        }, 1500); 
 
         // 2. Attempt Open
         let request: IDBOpenDBRequest;

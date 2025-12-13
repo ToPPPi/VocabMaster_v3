@@ -11,6 +11,40 @@
     
     <title>VocabMaster</title>
     
+    <!-- CRITICAL: Global Error Handler (Runs first) -->
+    <script>
+      window.onerror = function(msg, url, line, col, error) {
+        // Show error on screen so user isn't stuck on spinner
+        const loader = document.getElementById('app-loader');
+        if (loader) {
+           const errorBox = document.createElement('div');
+           errorBox.style.cssText = "color:#ef4444; font-size:11px; padding:15px; text-align:center; background:rgba(255,255,255,0.9); margin-top:20px; border-radius:12px; border:1px solid #fca5a5; max-width: 90%; word-break: break-word;";
+           errorBox.innerHTML = `<strong>Ошибка запуска:</strong><br/>${msg}<br/><br/>Line: ${line}`;
+           
+           // Add specific reset button inside error
+           const btn = document.createElement('button');
+           btn.innerText = "СБРОСИТЬ ДАННЫЕ И ПЕРЕЗАГРУЗИТЬ";
+           btn.style.cssText = "margin-top:10px; padding:8px 16px; background:#dc2626; color:white; border:none; border-radius:8px; font-weight:bold; font-size:10px;";
+           btn.onclick = function() {
+              localStorage.clear();
+              // Try to delete DB
+              try { indexedDB.deleteDatabase('VocabMaster_LocalDB'); } catch(e){}
+              if(navigator.serviceWorker) {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) { registration.unregister(); }
+                    window.location.reload();
+                  });
+              } else {
+                  window.location.reload();
+              }
+           };
+           errorBox.appendChild(btn);
+           loader.appendChild(errorBox);
+        }
+        return false; // Let default handler run too
+      };
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -123,7 +157,7 @@
                 Сбросить данные (Repair)
             </button>
             <p id="emergency-msg" style="display:none; color: #94a3b8; font-size: 10px; margin-top: 10px; text-align: center; padding: 0 20px;">
-                Приложение долго грузится. Если оно зависло, нажмите кнопку выше.
+                Приложение долго грузится.<br>Нажмите кнопку выше для сброса.
             </p>
         </div>
     </div>
@@ -132,72 +166,62 @@
   <script>
     // 1. Function to Nuke Everything
     function hardResetApp() {
-        if (!confirm('Это полностью очистит данные приложения. Продолжить?')) return;
+        if (!confirm('Это очистит данные и перезагрузит приложение. Продолжить?')) return;
         
         try {
-            // Clear LocalStorage
             localStorage.clear();
             sessionStorage.clear();
             
-            // Clear IndexedDB
+            // Kill Service Workers
+            if(navigator.serviceWorker) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            }
+
             const req = indexedDB.deleteDatabase('VocabMaster_LocalDB');
-            req.onsuccess = function () {
-                window.location.reload();
-            };
-            req.onerror = function () {
-                alert("Ошибка очистки БД. Попробуйте переустановить приложение.");
-                window.location.reload();
-            };
-            req.onblocked = function () {
-                window.location.reload();
-            };
+            req.onsuccess = function () { window.location.reload(); };
+            req.onerror = function () { window.location.reload(); };
+            req.onblocked = function () { window.location.reload(); };
         } catch (e) {
-            alert("Error: " + e.message);
             window.location.reload();
         }
     }
 
-    // 2. Check for start_param=reset (Telegram Slash Command Support)
-    // Usage: https://t.me/YourBot/app?startapp=reset
+    // 2. Check for start_param=reset
     (function() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
-            // Telegram WebApp passes params via hash usually, but let's check both
             let startParam = urlParams.get('tgWebAppStartParam');
-            
-            // If checking hash params
             if (!startParam && window.location.hash) {
                 const hashParams = new URLSearchParams(window.location.hash.slice(1));
-                // Sometimes it's inside tgWebAppData
                 const initData = hashParams.get('tgWebAppData');
                 if (initData) {
                     const initParams = new URLSearchParams(initData);
                     startParam = initParams.get('start_param');
                 }
             }
-
             if (startParam === 'reset') {
-                console.log("🚨 DETECTED RESET COMMAND VIA URL");
+                console.log("🚨 URL RESET");
                 localStorage.clear();
-                indexedDB.deleteDatabase('VocabMaster_LocalDB');
-                // Remove param to prevent infinite reset loop on reload
-                // We just let it reload clean
+                try { indexedDB.deleteDatabase('VocabMaster_LocalDB'); } catch(e){}
             }
-        } catch (e) {
-            console.error("Param check failed", e);
-        }
+        } catch (e) {}
     })();
 
     // 3. Fail-safe Timer
-    // If React doesn't remove the loader within 7 seconds, show the Emergency Button
+    // Lowered to 4 seconds for faster feedback
     setTimeout(() => {
         const loader = document.getElementById('app-loader');
-        if (loader) {
-            document.getElementById('emergency-btn').style.display = 'block';
-            document.getElementById('emergency-msg').style.display = 'block';
-            console.warn("⚠️ App load slow: Emergency button activated");
+        if (loader && loader.style.display !== 'none') {
+            const btn = document.getElementById('emergency-btn');
+            const msg = document.getElementById('emergency-msg');
+            if(btn) btn.style.display = 'block';
+            if(msg) msg.style.display = 'block';
         }
-    }, 7000); 
+    }, 4000); 
   </script>
 
   <script type="module" src="/index.tsx"></script>
