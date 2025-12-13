@@ -3,8 +3,6 @@ import { UserProgress } from '../../types';
 
 export const STORAGE_KEY = 'vocabmaster_user_v5_ru';
 // Telegram CloudStorage limits: 4096 bytes per key. 
-// UTF-8 chars can be up to 4 bytes. 
-// Increased to 2500 to reduce total key count for 10k words (approx 1.5MB / 2500 ~ 600 keys)
 const CHUNK_SIZE = 2500; 
 
 export const INITIAL_PROGRESS: UserProgress = {
@@ -30,11 +28,9 @@ export const INITIAL_PROGRESS: UserProgress = {
 };
 
 // --- MEMORY CACHE (CRITICAL FOR PERFORMANCE) ---
-// This prevents race conditions where rapid clicks read stale data from disk.
 let memoryCache: UserProgress | null = null;
 
 // --- DEBOUNCE TIMER ---
-// Prevents spamming storage API when user taps "like" rapidly
 let saveDebounceTimer: any = null;
 
 // --- TIME SECURITY (Anti-Cheat) ---
@@ -66,9 +62,8 @@ const syncTime = async () => {
 
 export const getSecureNow = () => Date.now() + serverTimeOffset;
 
-// --- CLOUD STORAGE HELPERS (Promisified & Timeout Safe) ---
+// --- CLOUD STORAGE HELPERS ---
 
-// Helper to prevent hanging promises
 const withTimeout = <T>(promise: Promise<T>, ms: number = 3000, fallback: T): Promise<T> => {
     return Promise.race([
         promise,
@@ -145,32 +140,23 @@ const tgStorage = {
 
 const cloudAdapter = {
   async save(key: string, value: string): Promise<void> {
-    // 1. Sync Save to LocalStorage (Fastest)
     try {
         localStorage.setItem(key, value);
     } catch (e) {
         console.warn("LocalStorage full or unavailable");
     }
 
-    // 2. Async Save to CloudStorage (Background)
     if (!tgStorage.isSupported()) return;
 
     try {
-        console.time("cloud_save");
         const chunks: string[] = [];
         for (let i = 0; i < value.length; i += CHUNK_SIZE) {
             chunks.push(value.substring(i, i + CHUNK_SIZE));
         }
 
         const metaSaved = await tgStorage.setItem(`${key}_meta`, JSON.stringify({ count: chunks.length, timestamp: Date.now() }));
-        if (!metaSaved) {
-            console.warn("Failed to save metadata to cloud");
-            return;
-        }
+        if (!metaSaved) return;
 
-        // BATCH SAVING STRATEGY (Optimization for Large Datasets)
-        // Instead of firing all promises at once (which might hit rate limits or timeout for 10k words),
-        // we process them in batches of 10.
         const BATCH_SIZE = 10;
         for (let i = 0; i < chunks.length; i += BATCH_SIZE) {
             const batchPromises = [];
@@ -180,35 +166,23 @@ const cloudAdapter = {
             }
             await Promise.all(batchPromises);
         }
-        
-        console.timeEnd("cloud_save");
-        console.log(`Saved ${chunks.length} chunks to cloud.`);
-
     } catch (e) {
         console.error("Cloud save failed", e);
     }
   },
 
   async load(key: string): Promise<string | null> {
-    // 1. Check if Cloud is supported
     if (!tgStorage.isSupported()) {
         return localStorage.getItem(key);
     }
 
     try {
-        // 2. Get Metadata
         const metaStr = await tgStorage.getItem(`${key}_meta`);
-        
-        if (!metaStr) {
-            return localStorage.getItem(key);
-        }
+        if (!metaStr) return localStorage.getItem(key);
 
         const meta = JSON.parse(metaStr);
         const count = meta.count;
         
-        // BATCH LOADING
-        // We can request multiple keys at once, but getItems has limits too.
-        // Let's request in batches of 20.
         let fullString = "";
         const BATCH_SIZE = 20;
         
@@ -219,14 +193,12 @@ const cloudAdapter = {
             }
             
             const values = await tgStorage.getItems(keys);
-            if (!values) return localStorage.getItem(key); // Fallback on partial failure
+            if (!values) return localStorage.getItem(key); 
 
-            // Append in order
             for (const k of keys) {
                 if (typeof values[k] === 'string') {
                     fullString += values[k];
                 } else {
-                    console.warn(`Missing chunk ${k}`);
                     return localStorage.getItem(key);
                 }
             }
@@ -242,18 +214,9 @@ const cloudAdapter = {
   }
 };
 
-/**
- * Persists user progress.
- * Uses DEBOUNCE: Rapid calls (like toggling many hearts) will update the memory cache instantly
- * but only write to disk/cloud after 2 seconds of inactivity.
- * @param progress The data to save
- * @param immediate If true, skips debounce and saves instantly (use for critical events like payment or level complete)
- */
 export const saveUserProgress = async (progress: UserProgress, immediate = false) => {
-  // 1. Update Memory Cache IMMEDIATELY (Source of Truth)
   memoryCache = progress;
 
-  // Clear pending save if exists
   if (saveDebounceTimer) {
       clearTimeout(saveDebounceTimer);
       saveDebounceTimer = null;
@@ -267,15 +230,10 @@ export const saveUserProgress = async (progress: UserProgress, immediate = false
   if (immediate) {
       await performSave();
   } else {
-      // 2. Schedule Save
       saveDebounceTimer = setTimeout(performSave, 2000);
   }
 };
 
-/**
- * Force a save of the current memory cache to disk.
- * Useful when navigating away from a screen or closing the app.
- */
 export const forceSave = async () => {
     if (saveDebounceTimer) {
         clearTimeout(saveDebounceTimer);
@@ -287,7 +245,6 @@ export const forceSave = async () => {
 };
 
 export const getUserProgress = async (): Promise<UserProgress> => {
-  // 1. Return Memory Cache if available (Instant access)
   if (memoryCache) {
       return checkDailyReset(memoryCache);
   }
@@ -320,13 +277,11 @@ export const getUserProgress = async (): Promise<UserProgress> => {
   if (!memoryCache.usedPromoCodes) memoryCache.usedPromoCodes = [];
   if (memoryCache.photoUrl === undefined) memoryCache.photoUrl = '';
   if (memoryCache.premiumExpiration === undefined) memoryCache.premiumExpiration = null;
-  // Ensure strict boolean for onboarding
   if (typeof memoryCache.hasSeenOnboarding === 'undefined') memoryCache.hasSeenOnboarding = false;
 
   return checkDailyReset(memoryCache);
 };
 
-// Helper to handle daily resets on the progress object
 export const checkDailyReset = async (progress: UserProgress): Promise<UserProgress> => {
   const now = getSecureNow();
   const todayDateStr = new Date(now).toISOString().split('T')[0];
@@ -366,7 +321,6 @@ export const checkDailyReset = async (progress: UserProgress): Promise<UserProgr
       needsSave = true;
   }
 
-  // We use immediate=true for daily resets as they are critical logic
   if (needsSave) {
       await saveUserProgress(progress, true);
   }
@@ -415,48 +369,43 @@ export const resetUserProgress = async (): Promise<UserProgress> => {
 
 export const completeOnboarding = async (name?: string): Promise<UserProgress> => {
   const progress = await getUserProgress();
-  
-  // Check if it's a "real" new user (no xp, no words)
   const isNewUser = Object.keys(progress.wordProgress).length === 0 && progress.xp === 0;
-
-  // Set the flag that allows access to Dashboard
   progress.hasSeenOnboarding = true;
-  
-  // Only set name if provided OR if it's currently generic
   if (name && (isNewUser || progress.userName === 'User' || !progress.userName)) {
       progress.userName = name;
   }
-  
   progress.lastLoginDate = new Date().toISOString().split('T')[0];
-  
-  // Only reset streak if it's actually a new user. 
-  // Restored users should keep their streak!
   if (isNewUser) {
       progress.streak = 0; 
   }
-  
   await saveUserProgress(progress, true);
   return progress;
 };
 
 export const logoutUser = async (): Promise<void> => {
-    // We don't delete data, but we reset the flag so the App can transition
-    // safely to the Landing Page logic.
     const progress = await getUserProgress();
     progress.hasSeenOnboarding = false;
-    
-    // NOTE: This will now time out after 3s if cloud is unresponsive,
-    // ensuring the UI doesn't hang forever.
     await saveUserProgress(progress, true);
 };
 
+// --- NEW ROBUST ENCODING LOGIC (MDN Recommended + URL Safe) ---
+
+// 1. Unicode to Base64 (Standard)
 function utf8_to_b64(str: string) {
-    return window.btoa(unescape(encodeURIComponent(str)));
+    return window.btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+        function toSolidBytes(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+    }));
 }
 
+// 2. Base64 to Unicode (Standard)
 function b64_to_utf8(str: string) {
-    return decodeURIComponent(escape(window.atob(str)));
+    return decodeURIComponent(window.atob(str).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 }
+
+const BACKUP_PREFIX = "VM1:";
 
 export const exportUserData = async (): Promise<string> => {
     let dataStr = "";
@@ -468,38 +417,46 @@ export const exportUserData = async (): Promise<string> => {
     }
     
     if (!dataStr) return "";
-    return utf8_to_b64(dataStr);
+
+    try {
+        // 1. Strict UTF-8 Encoding
+        const base64 = utf8_to_b64(dataStr);
+        
+        // 2. Make URL Safe (Replace + with -, / with _, remove =)
+        // This prevents mobile clipboards from mangling standard Base64 characters
+        const safeBase64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        
+        // 3. Add Prefix
+        return BACKUP_PREFIX + safeBase64;
+    } catch (e) {
+        console.error("Export encode error", e);
+        return "";
+    }
 };
 
 export const importUserData = async (backupCode: string): Promise<{success: boolean, message: string}> => {
     try {
-        // STEP 1: Aggressive Cleanup
-        // Remove ANY whitespace (newlines, spaces) which Google Notes often adds
-        let cleanCode = backupCode.replace(/\s/g, '');
+        // STEP 1: Basic Cleanup
+        let cleanCode = backupCode.replace(/\s/g, ''); // Remove whitespace
+        cleanCode = cleanCode.replace(/^["']|["']$/g, ''); // Remove quotes
 
-        // Remove accidental surrounding quotes if user copied them
-        cleanCode = cleanCode.replace(/^["']|["']$/g, '');
-
-        // STEP 2: URI Decode
-        // Sometimes copying from browser bars or specific rich text apps encodes symbols
-        try {
-            const decoded = decodeURIComponent(cleanCode);
-            if (decoded !== cleanCode) {
-                cleanCode = decoded;
-                // Re-clean just in case decodeURIComponent introduced spaces (unlikely but safe)
-                cleanCode = cleanCode.replace(/\s/g, '');
-            }
-        } catch (e) {
-            // If it wasn't encoded, just proceed with original cleanCode
+        // STEP 2: Handle Prefix
+        if (cleanCode.startsWith(BACKUP_PREFIX)) {
+            cleanCode = cleanCode.substring(BACKUP_PREFIX.length);
         }
 
-        // STEP 3: Fix Base64 Padding
-        // The `atob` function fails if length is not divisible by 4.
-        // Copy-pasting often drops trailing '=' characters.
+        // STEP 3: Restore Standard Base64 from URL-Safe format
+        // Replace - back to +
+        // Replace _ back to /
+        cleanCode = cleanCode.replace(/-/g, '+').replace(/_/g, '/');
+
+        // STEP 4: Restore Padding (=)
+        // Base64 length must be divisible by 4
         while (cleanCode.length % 4 !== 0) {
             cleanCode += '=';
         }
         
+        // STEP 5: Decode
         const jsonStr = b64_to_utf8(cleanCode);
         const data = JSON.parse(jsonStr);
 
@@ -508,8 +465,7 @@ export const importUserData = async (backupCode: string): Promise<{success: bool
              throw new Error("Invalid structure");
         }
 
-        // Basic schema check to ensure it's a valid backup
-        // Checking for XP or wordProgress usually confirms it's the right app data
+        // Schema Check
         if (typeof data.xp === 'undefined' && !data.wordProgress) {
             return { success: false, message: "Неверный формат данных (нет прогресса)." };
         }
@@ -518,7 +474,7 @@ export const importUserData = async (backupCode: string): Promise<{success: bool
         return { success: true, message: "Данные успешно восстановлены!" };
     } catch (e) {
         console.error("Import error:", e);
-        return { success: false, message: "Ошибка чтения кода. Проверьте, что скопировали весь текст." };
+        return { success: false, message: "Ошибка: Код поврежден или неверен." };
     }
 };
 
