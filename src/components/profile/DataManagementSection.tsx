@@ -19,7 +19,7 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
         const code = await exportUserData();
         if (code) {
             navigator.clipboard.writeText(code);
-            alert("Код резервной копии скопирован в буфер обмена!\n\nСохраните его в надежном месте (например, в 'Избранном' Telegram).");
+            alert("Данные скопированы в буфер обмена!\n\nЭто обычный текст (JSON). Сохраните его в заметках или 'Избранном' Telegram.");
         } else {
             alert("Ошибка при создании резервной копии.");
         }
@@ -42,7 +42,7 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                 await onUpdate();
                 setTimeout(() => {
                     window.location.reload();
-                }, 2000);
+                }, 1500);
             } else {
                 triggerHaptic('error');
                 setIsRestoring(false);
@@ -100,19 +100,20 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                 {/* Import Logic */}
                 {showImportInput && (
                     <div className="mt-4 animate-in slide-in-from-top-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 block">Восстановление данных</span>
+                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 block">Вставьте текст восстановления:</span>
                         <textarea 
                             value={importCode}
                             onChange={(e) => setImportCode(e.target.value)}
-                            placeholder="Вставьте код резервной копии..."
-                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs font-mono h-24 mb-3 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-800 outline-none text-slate-900 dark:text-slate-200"
+                            onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                            placeholder='Вставьте текст начинающийся с { "_app": ... }'
+                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-[10px] font-mono h-24 mb-3 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-800 outline-none text-slate-900 dark:text-slate-200 resize-none leading-tight"
                             disabled={isRestoring}
                             autoCapitalize="off"
                             autoCorrect="off"
                             spellCheck={false}
                             autoComplete="off"
                         />
-                        {actionStatus && <div className={`text-xs mb-2 font-bold ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>{actionStatus.msg}</div>}
+                        {actionStatus && <div className={`text-xs mb-3 font-bold ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>{actionStatus.msg}</div>}
                         
                         <button 
                             onClick={handleImport} 
@@ -122,7 +123,7 @@ export const DataManagementSection: React.FC<DataManagementSectionProps> = ({ on
                             {isRestoring ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin"/>
-                                    <span>Восстановление...</span>
+                                    <span>Проверка...</span>
                                 </>
                             ) : (
                                 "Восстановить"
