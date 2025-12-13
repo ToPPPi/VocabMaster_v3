@@ -1,6 +1,7 @@
 
-import { ProficiencyLevel, Word } from '../../types';
+import { ProficiencyLevel, Word, SecondaryMeaning } from '../../types';
 
+// Helper to create rich words (duplicated here to avoid circular dependency or complex shared utils for data files)
 const createRichWord = (
   id: string,
   term: string,
@@ -13,7 +14,8 @@ const createRichWord = (
   reg: 'Formal' | 'Informal' | 'Neutral' | 'Slang' | 'Literary',
   def: string,
   usageCtx: string,
-  examples: { en: string; ru: string }[]
+  examples: { en: string; ru: string }[],
+  secondaryMeanings?: SecondaryMeaning[] // <--- ДОБАВЛЕН 13-й АРГУМЕНТ
 ): Word => ({
   id,
   term,
@@ -27,10 +29,11 @@ const createRichWord = (
   definition: def,
   usageContext: usageCtx,
   examples,
+  secondaryMeanings // <--- ДОБАВЛЕНО В ОБЪЕКТ
 });
 
 export const WORDS_B2: Word[] = [
-createRichWord('b2_absolute', 'Absolute', '/ˈæbsəluːt/', 'эбсолют', 'Абсолютный / Полный', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+  createRichWord('b2_absolute', 'Absolute', '/ˈæbsəluːt/', 'эбсолют', 'Абсолютный / Полный', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
     'Полный, совершенный; не имеющий ограничений или исключений. Употребляется для усиления утверждения.',
     '- Уверенность: "Absolute certainty" (Абсолютная уверенность)\n- Власть: "Absolute power" (Абсолютная власть)\n- Необходимость: "Absolute necessity" (Крайняя необходимость)',
     [

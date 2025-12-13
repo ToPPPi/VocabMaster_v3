@@ -1,6 +1,7 @@
 
-import { ProficiencyLevel, Word } from '../../types';
+import { ProficiencyLevel, Word, SecondaryMeaning } from '../../types';
 
+// Helper to create rich words (duplicated here to avoid circular dependency or complex shared utils for data files)
 const createRichWord = (
   id: string,
   term: string,
@@ -13,7 +14,8 @@ const createRichWord = (
   reg: 'Formal' | 'Informal' | 'Neutral' | 'Slang' | 'Literary',
   def: string,
   usageCtx: string,
-  examples: { en: string; ru: string }[]
+  examples: { en: string; ru: string }[],
+  secondaryMeanings?: SecondaryMeaning[] // <--- ДОБАВЛЕН 13-й АРГУМЕНТ
 ): Word => ({
   id,
   term,
@@ -27,9 +29,20 @@ const createRichWord = (
   definition: def,
   usageContext: usageCtx,
   examples,
+  secondaryMeanings // <--- ДОБАВЛЕНО В ОБЪЕКТ
 });
 
 export const WORDS_C2: Word[] = [
+  createRichWord('c2_1', 'Ubiquitous', '/juːˈbɪk.wɪ.təs/', 'юбикуитос', 'Вездесущий', ProficiencyLevel.C2, 'adj', 'Low', 'Formal',
+    'Present, appearing, or found everywhere.',
+    '- Technology: "Ubiquitous computing."\n- Culture: "Ubiquitous ads."',
+    [
+      { en: 'Smartphones are ubiquitous nowadays.', ru: 'Смартфоны сейчас вездесущи.' },
+      { en: 'Plastic is ubiquitous in modern life.', ru: 'Пластик вездесущ в современной жизни.' },
+      { en: 'The ubiquitous presence of cameras.', ru: 'Повсеместное присутствие камер.' },
+      { en: 'Coffee shops are ubiquitous here.', ru: 'Кофейни здесь на каждом шагу.' }
+    ]
+  ),
   createRichWord('c2_adhere', 'Adhere', '/ədˈhɪə/', 'эдхиэ', 'Придерживаться / Прилипать', ProficiencyLevel.C2, 'verb', 'Low', 'Formal',
     'Строго следовать правилу или убеждению; или физически прилипать.',
     '- Правила: "Adhere to rules" (Придерживаться правил)\n- Физика: "Adhere to surface" (Прилипать к поверхности)\n- Принцип: "Adhere to principles" (Следовать принципам)',
@@ -4977,5 +4990,4 @@ createRichWord('c2_cajole', 'Cajole', '/kəˈdʒəʊl/', 'кэджоул', 'Уг
       { en: 'It took a lot of cajoling to get the baby to eat.', ru: 'Потребовалось много уговоров, чтобы заставить ребенка поесть.' }
     ]
   ),
-
 ];
