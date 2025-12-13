@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Loader2, Check, X, Volume2, Brain, Sparkles, Zap, ThumbsUp, Tag, ArrowRight, Crown, RotateCcw, GraduationCap, Quote, WifiOff, Lightbulb, Split } from 'lucide-react';
 import { ProficiencyLevel, UserProgress, Word, AIExplanation } from '../types';
 import { getWordsByLevelAsync, getAllWords, getWordsDueForReview, rateWord, getUserProgress, lockDailySession, incrementAIUsage, checkAIUsageLimit, togglePremium } from '../services/storageService';
@@ -120,9 +120,19 @@ export const LearningSession: React.FC<LearningSessionProps> = ({ mode, level, p
         setTimeout(() => setIsPlaying(false), 1500); 
     };
 
+    // SNAPSHOT: Keep track of the word's status BEFORE we rate it to prevent UI flickering
+    // when the global progress object mutates during the transition animation.
+    const initialWordProgress = useMemo(() => {
+        if (!currentWord) return undefined;
+        // Return a copy to avoid mutation reference issues
+        const wp = progress.wordProgress[currentWord.id];
+        return wp ? { ...wp } : undefined;
+    }, [currentWord]); // Only update when the word itself changes (currentIndex changes)
+
     const getNextIntervalLabel = (rating: 'hard' | 'medium' | 'easy') => {
         if (!currentWord) return '';
-        const wp = progress.wordProgress[currentWord.id] || { interval: 0, easeFactor: 2.5 };
+        // Use the snapshot instead of live progress to prevent visual jumping
+        const wp = initialWordProgress || { interval: 0, easeFactor: 2.5 };
         let days = 0;
 
         if (rating === 'hard') return '< 1 мин';
