@@ -387,6 +387,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                                     placeholder="Вставьте код резервной копии..."
                                     className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs font-mono h-24 mb-3 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-800 outline-none text-slate-900 dark:text-slate-200"
                                     disabled={isRestoring}
+                                    autoCapitalize="off"
+                                    autoCorrect="off"
+                                    spellCheck={false}
+                                    autoComplete="off"
                                 />
                                 {actionStatus && <div className={`text-xs mb-2 font-bold ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>{actionStatus.msg}</div>}
                                 

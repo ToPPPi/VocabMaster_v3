@@ -397,12 +397,36 @@ export const resetUserProgress = async (): Promise<UserProgress> => {
 
 export const completeOnboarding = async (name?: string): Promise<UserProgress> => {
   const progress = await getUserProgress();
+  
+  // Check if it's a "real" new user (no xp, no words)
+  const isNewUser = Object.keys(progress.wordProgress).length === 0 && progress.xp === 0;
+
+  // Set the flag that allows access to Dashboard
   progress.hasSeenOnboarding = true;
-  if(name) progress.userName = name;
+  
+  // Only set name if provided OR if it's currently generic
+  if (name && (isNewUser || progress.userName === 'User' || !progress.userName)) {
+      progress.userName = name;
+  }
+  
   progress.lastLoginDate = new Date().toISOString().split('T')[0];
-  progress.streak = 0; 
+  
+  // Only reset streak if it's actually a new user. 
+  // Restored users should keep their streak!
+  if (isNewUser) {
+      progress.streak = 0; 
+  }
+  
   await saveUserProgress(progress, true);
   return progress;
+};
+
+export const logoutUser = async (): Promise<void> => {
+    // We don't delete data, but we reset the flag so the App can transition
+    // safely to the Landing Page logic.
+    const progress = await getUserProgress();
+    progress.hasSeenOnboarding = false;
+    await saveUserProgress(progress, true);
 };
 
 function utf8_to_b64(str: string) {
@@ -429,8 +453,9 @@ export const exportUserData = async (): Promise<string> => {
 export const importUserData = async (backupCode: string): Promise<{success: boolean, message: string}> => {
     try {
         // CLEANUP: Remove whitespace/newlines that might occur from copy-pasting
-        // This is the main fix for "Error reading code" when users copy formatted text
-        const cleanCode = backupCode.trim().replace(/\s/g, '');
+        // Also remove surrounding quotes if user copied them by mistake
+        let cleanCode = backupCode.trim().replace(/\s/g, '');
+        cleanCode = cleanCode.replace(/^["']|["']$/g, '');
         
         const jsonStr = b64_to_utf8(cleanCode);
         const data = JSON.parse(jsonStr);

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, Zap } from 'lucide-react';
 import { ProficiencyLevel, ViewState, UserProgress } from './types';
-import { getUserProgress, completeOnboarding, resetUserProgress, syncTelegramUserData } from './services/storageService';
+import { getUserProgress, completeOnboarding, resetUserProgress, syncTelegramUserData, logoutUser } from './services/storageService';
 import { triggerHaptic } from './utils/uiHelpers';
 
 // Components
@@ -131,8 +131,10 @@ const App: React.FC = () => {
   };
 
   const handleLogout = async () => {
-      // FIX: Do NOT reset data. Just go to onboarding screen.
-      // Data is preserved in localStorage/CloudStorage.
+      // Explicitly set hasSeenOnboarding to false so UI and Data are in sync
+      await logoutUser();
+      // Refresh local state to reflect this change
+      await refreshProgress();
       setView('onboarding');
   };
 
