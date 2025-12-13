@@ -109,7 +109,8 @@ const App: React.FC = () => {
 
   const refreshProgress = async () => {
       const p = await getUserProgress();
-      setProgress(p);
+      // Ensure state update triggers re-render by creating a new object reference
+      setProgress({ ...p });
       if(!p.hasSeenOnboarding && view !== 'onboarding') setView('onboarding');
   };
 

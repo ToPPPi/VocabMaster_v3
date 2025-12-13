@@ -44,6 +44,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
     
     // Dev Tools State
     const [isDevLoading, setIsDevLoading] = useState(false);
+    const [isRestoring, setIsRestoring] = useState(false); // Specific loading state for Restore
     const [loadingProgress, setLoadingProgress] = useState(0); // 0-100
     const [loadingText, setLoadingText] = useState("");
     const [duplicateReport, setDuplicateReport] = useState<string[] | null>(null);
@@ -193,17 +194,31 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
 
     const handleImport = async () => {
         if (!importCode.trim()) return;
+        if (isRestoring) return; // Prevent double click
+
         triggerHaptic('medium');
-        const result = await importUserData(importCode);
-        setActionStatus({ success: result.success, msg: result.message });
+        setIsRestoring(true); // Lock button
         
-        if (result.success) {
-            triggerHaptic('success');
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-        } else {
-            triggerHaptic('error');
+        try {
+            const result = await importUserData(importCode);
+            setActionStatus({ success: result.success, msg: result.message });
+            
+            if (result.success) {
+                triggerHaptic('success');
+                setImportCode(""); // Clear input to prevent re-use
+                
+                // Wait 2 seconds to show success message and allow storage to flush to disk/cloud
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                triggerHaptic('error');
+                setIsRestoring(false); // Unlock only on error
+            }
+        } catch (e) {
+            console.error(e);
+            setActionStatus({ success: false, msg: "Критическая ошибка восстановления." });
+            setIsRestoring(false);
         }
     };
 
@@ -371,9 +386,24 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                                     onChange={(e) => setImportCode(e.target.value)}
                                     placeholder="Вставьте код резервной копии..."
                                     className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs font-mono h-24 mb-3 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-800 outline-none text-slate-900 dark:text-slate-200"
+                                    disabled={isRestoring}
                                 />
                                 {actionStatus && <div className={`text-xs mb-2 font-bold ${actionStatus.success ? 'text-emerald-600' : 'text-rose-600'}`}>{actionStatus.msg}</div>}
-                                <button onClick={handleImport} className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform">Восстановить</button>
+                                
+                                <button 
+                                    onClick={handleImport} 
+                                    disabled={isRestoring || !importCode.trim()}
+                                    className={`w-full py-3 rounded-xl font-bold text-sm shadow-md transition-transform flex items-center justify-center gap-2 ${isRestoring ? 'bg-slate-200 dark:bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-emerald-600 text-white active:scale-95'}`}
+                                >
+                                    {isRestoring ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin"/>
+                                            <span>Восстановление...</span>
+                                        </>
+                                    ) : (
+                                        "Восстановить"
+                                    )}
+                                </button>
                             </div>
                         )}
                     </div>
