@@ -473,10 +473,32 @@ export const exportUserData = async (): Promise<string> => {
 
 export const importUserData = async (backupCode: string): Promise<{success: boolean, message: string}> => {
     try {
-        // CLEANUP: Remove whitespace/newlines that might occur from copy-pasting
-        // Also remove surrounding quotes if user copied them by mistake
-        let cleanCode = backupCode.trim().replace(/\s/g, '');
+        // STEP 1: Aggressive Cleanup
+        // Remove ANY whitespace (newlines, spaces) which Google Notes often adds
+        let cleanCode = backupCode.replace(/\s/g, '');
+
+        // Remove accidental surrounding quotes if user copied them
         cleanCode = cleanCode.replace(/^["']|["']$/g, '');
+
+        // STEP 2: URI Decode
+        // Sometimes copying from browser bars or specific rich text apps encodes symbols
+        try {
+            const decoded = decodeURIComponent(cleanCode);
+            if (decoded !== cleanCode) {
+                cleanCode = decoded;
+                // Re-clean just in case decodeURIComponent introduced spaces (unlikely but safe)
+                cleanCode = cleanCode.replace(/\s/g, '');
+            }
+        } catch (e) {
+            // If it wasn't encoded, just proceed with original cleanCode
+        }
+
+        // STEP 3: Fix Base64 Padding
+        // The `atob` function fails if length is not divisible by 4.
+        // Copy-pasting often drops trailing '=' characters.
+        while (cleanCode.length % 4 !== 0) {
+            cleanCode += '=';
+        }
         
         const jsonStr = b64_to_utf8(cleanCode);
         const data = JSON.parse(jsonStr);
