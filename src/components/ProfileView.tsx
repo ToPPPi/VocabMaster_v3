@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { LogOut, Moon, Sun, Loader2 } from 'lucide-react';
 import { Header } from './Header';
 import { UserProgress, ViewState } from '../types';
-import { isUserPremium, resetUserProgress, getSecureNow, toggleDarkMode } from '../services/storageService';
+import { isUserPremium, getSecureNow, toggleDarkMode, logoutUser } from '../services/storageService';
 import { triggerHaptic } from '../utils/uiHelpers';
 import { RewardType } from './RewardOverlay';
 
@@ -19,12 +19,10 @@ interface ProfileViewProps {
     onLogout: () => void;
     scrollToPremium?: boolean;
     onShowReward?: (type: RewardType) => void;
-    onNavigate: (view: ViewState) => void; // Added prop
+    onNavigate: (view: ViewState) => void; 
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, onLogout, scrollToPremium, onShowReward, onNavigate }) => {
-    // Secret Reset Logic State
-    const [resetTaps, setResetTaps] = useState(0);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const isPremium = isUserPremium(progress);
@@ -58,26 +56,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
         if (isLoggingOut) return;
         triggerHaptic('medium');
         setIsLoggingOut(true);
-        setTimeout(() => {
+        // Ensure sync before logout
+        try {
+            await logoutUser();
+        } finally {
             onLogout();
-        }, 50);
-    };
-
-    const handleSecretReset = async () => {
-        const newTaps = resetTaps + 1;
-        setResetTaps(newTaps);
-        triggerHaptic('light'); 
-        
-        if (newTaps === 7) triggerHaptic('warning');
-        
-        if (newTaps >= 10) {
-            triggerHaptic('heavy');
-            const confirm = window.confirm("⚠️ СБРОС ДАННЫХ\n\nВы уверены, что хотите полностью стереть прогресс? Это действие необратимо.");
-            if (confirm) {
-                await resetUserProgress();
-                window.location.reload();
-            }
-            setResetTaps(0);
         }
     };
 
@@ -127,14 +110,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                     </button>
                 </div>
                 
-                <div 
-                    onClick={handleSecretReset}
-                    className="text-center pt-2 pb-4 cursor-pointer select-none active:opacity-50"
-                >
+                <div className="text-center pt-2 pb-4">
                     <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">
-                        VocabMaster v1.2.0 {resetTaps > 0 && <span className="text-rose-400 font-bold">({resetTaps})</span>}
+                        VocabMaster v1.2.0
                     </p>
-                    <p className="text-[10px] text-slate-300 dark:text-slate-600 mt-1">(Нажмите 10 раз для сброса данных)</p>
                     <p className="text-[10px] text-slate-300 dark:text-slate-600 mt-1">support@vocabmaster.app</p>
                 </div>
 
