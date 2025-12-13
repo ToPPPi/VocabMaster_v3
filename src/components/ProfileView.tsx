@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { Check, Crown, BarChart3, Sparkles, Zap, Clock, Star, Infinity, Loader2, Database, Download, Upload, Users, Share2, MessageCircle, LogOut, Calendar, BookOpen, Flame, Wrench, KeyRound, Gift, Ticket, X, TestTube, Moon, Sun } from 'lucide-react';
+import { Check, Crown, BarChart3, Sparkles, Zap, Clock, Star, Infinity, Loader2, Database, Download, Upload, Users, Share2, MessageCircle, LogOut, Calendar, BookOpen, Flame, Wrench, KeyRound, Gift, Ticket, X, TestTube, Moon, Sun, Search } from 'lucide-react';
 import { Header } from './Header';
 import { ProficiencyLevel, UserProgress } from '../types';
-import { buyPremium, isUserPremium, exportUserData, importUserData, resetUserProgress, getSecureNow, togglePremium, redeemPromoCode, dev_UnlockRealWords, dev_PopulateReview, toggleDarkMode } from '../services/storageService';
+import { buyPremium, isUserPremium, exportUserData, importUserData, resetUserProgress, getSecureNow, togglePremium, redeemPromoCode, dev_UnlockRealWords, dev_PopulateReview, toggleDarkMode, dev_FindDuplicates } from '../services/storageService';
 import { triggerHaptic, shareApp } from '../utils/uiHelpers';
 import { RewardType } from './RewardOverlay';
 
@@ -46,6 +46,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
     const [isDevLoading, setIsDevLoading] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState(0); // 0-100
     const [loadingText, setLoadingText] = useState("");
+    const [duplicateReport, setDuplicateReport] = useState<string[] | null>(null);
     
     // Secret Reset Logic
     const [resetTaps, setResetTaps] = useState(0);
@@ -157,6 +158,23 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
         } catch (e) {
             console.error(e);
             alert("Ошибка при заполнении очереди.");
+        } finally {
+            setIsDevLoading(false);
+        }
+    };
+
+    const handleCheckDuplicates = async () => {
+        setIsDevLoading(true);
+        setLoadingText("Сканирование базы...");
+        try {
+            const duplicates = await dev_FindDuplicates();
+            setDuplicateReport(duplicates);
+            if (duplicates.length === 0) {
+                alert("Дубликатов ID не найдено! База чиста.");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Ошибка сканирования.");
         } finally {
             setIsDevLoading(false);
         }
@@ -578,6 +596,29 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
                             {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <Clock className="w-3 h-3"/>}
                             [DEV] Populate Review Queue (15 words)
                         </button>
+
+                        <button 
+                            onClick={handleCheckDuplicates}
+                            disabled={isDevLoading}
+                            className="w-full py-2 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-xl shadow-sm active:scale-95 flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-700"
+                        >
+                            {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <Search className="w-3 h-3"/>}
+                            [DEV] Scan for ID Duplicates
+                        </button>
+
+                        {/* DUPLICATE REPORT DISPLAY */}
+                        {duplicateReport && duplicateReport.length > 0 && (
+                            <div className="mt-4 p-3 bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-900/30 rounded-xl text-left max-h-48 overflow-y-auto no-scrollbar">
+                                <h4 className="text-xs font-bold text-rose-700 dark:text-rose-400 mb-2 sticky top-0 bg-rose-50 dark:bg-transparent pb-1">Found Conflicts ({duplicateReport.length}):</h4>
+                                <ul className="space-y-1">
+                                    {duplicateReport.map((line, idx) => (
+                                        <li key={idx} className="text-[10px] font-mono text-rose-600 dark:text-rose-300 border-b border-rose-100 dark:border-rose-800/50 pb-1 last:border-0 leading-tight">
+                                            {line}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

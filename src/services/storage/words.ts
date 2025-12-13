@@ -196,9 +196,9 @@ export const rateWord = async (wordId: string, rating: 'easy' | 'medium' | 'hard
 // --- DEV TOOLS ---
 
 export const dev_UnlockRealWords = async (count: number = 500, onProgress?: (percent: number) => void) => {
-    // 1. Load ALL words from database (A1-C2)
+    // 1. Load ALL words from database (A1-C2) and ensure uniqueness
     if (onProgress) onProgress(10);
-    const allWords = await loadAllWords();
+    const allWords = await getAllWords(); // Changed from loadAllWords() to getAllWords() to ensure deduplication
     if (onProgress) onProgress(30);
 
     const progress = await getUserProgress();
@@ -251,7 +251,7 @@ export const dev_UnlockRealWords = async (count: number = 500, onProgress?: (per
 
 export const dev_PopulateReview = async (count: number = 15, onProgress?: (percent: number) => void) => {
     if (onProgress) onProgress(10);
-    const allWords = await loadAllWords();
+    const allWords = await getAllWords(); // Changed from loadAllWords() to getAllWords()
     if (onProgress) onProgress(20);
     
     const progress = await getUserProgress();
@@ -303,4 +303,33 @@ export const dev_PopulateReview = async (count: number = 15, onProgress?: (perce
     await saveUserProgress(progress, true); 
     if (onProgress) onProgress(100);
     return addedCount;
+};
+
+// Tool to find duplicate IDs in the raw data files
+export const dev_FindDuplicates = async (): Promise<string[]> => {
+    // We use the raw loadAllWords here which does NOT dedup, 
+    // so we can see the conflicts from the source files.
+    const allWords = await loadAllWords(); 
+    
+    const idTracker: Record<string, Word[]> = {};
+    const duplicates: string[] = [];
+
+    // Group by ID
+    allWords.forEach(w => {
+        if (!idTracker[w.id]) {
+            idTracker[w.id] = [];
+        }
+        idTracker[w.id].push(w);
+    });
+
+    // Check for collisions
+    Object.keys(idTracker).forEach(id => {
+        const matches = idTracker[id];
+        if (matches.length > 1) {
+            const description = matches.map(m => `"${m.term}" (${m.level})`).join(' vs ');
+            duplicates.push(`ID [${id}] is duplicated: ${description}`);
+        }
+    });
+
+    return duplicates;
 };
