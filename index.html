@@ -9,23 +9,8 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/icon.svg" />
     
-    <!-- SEO & Social Meta Tags -->
-    <title>VocabMaster — Выучи 10,000 слов с ИИ</title>
-    <meta name="description" content="Революционное приложение для изучения английского в Telegram. ИИ-тьютор, интервальные повторения и геймификация." />
+    <title>VocabMaster</title>
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://vocabmaster.app/" />
-    <meta property="og:title" content="VocabMaster — Английский с ИИ" />
-    <meta property="og:description" content="Выучи 10,000 слов, используя интервальные повторения, ИИ-тьютора и геймификацию." />
-    <meta property="og:image" content="/og-image.svg" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="VocabMaster — Английский с ИИ" />
-    <meta property="twitter:description" content="Выучи 10,000 слов, используя интервальные повторения, ИИ-тьютора и геймификацию." />
-    <meta property="twitter:image" content="/og-image.svg" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -45,66 +30,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       
       body {
-        background-color: #F1F5F9; /* Slate-50 to match app bg */
+        background-color: #F1F5F9;
         font-family: 'Inter', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         -webkit-tap-highlight-color: transparent;
-        color: #0F172A; /* Slate-900 */
-        overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
+        color: #0F172A;
+        overscroll-behavior-y: none;
+        user-select: none;
       }
       
-      /* Dark mode body override defaults */
-      .dark body {
-        background-color: #0F172A;
-        color: #F8FAFC;
-      }
-
-      /* VocabMaster Purple Selection */
-      ::selection {
-        background: #DDD6FE; /* Violet-200 */
-        color: #5B21B6; /* Violet-800 */
-      }
-
-      .pb-safe {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
-      }
+      .dark body { background-color: #0F172A; color: #F8FAFC; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
       
-      /* 3D Card Flip Logic */
-      .perspective-1000 {
-        perspective: 1000px;
-      }
-      .transform-style-3d {
-        transform-style: preserve-3d;
-      }
-      .backface-hidden {
-        backface-visibility: hidden;
-      }
-      .rotate-y-180 {
-        transform: rotateY(180deg);
-      }
-
-      /* Startup Loader */
+      /* Startup Loader Styles */
       .app-loader-container {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
         background-color: #F1F5F9;
         flex-direction: column;
         gap: 16px;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
       }
+      .dark .app-loader-container { background-color: #0F172A; }
+      
       .app-loader-spinner {
         width: 40px;
         height: 40px;
@@ -113,14 +68,34 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
+      .dark .app-loader-spinner { border-color: #1E293B; border-top-color: #8B5CF6; }
+
       .app-loader-text {
         font-size: 14px;
         font-weight: 600;
         color: #64748B;
         animation: pulse 1.5s ease-in-out infinite;
       }
+
+      /* Emergency Button - Hidden by default */
+      #emergency-btn {
+        display: none;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #E11D48; /* Rose 600 */
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+        cursor: pointer;
+        animation: fadeIn 0.5s ease-in;
+      }
+
       @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
       @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 <link rel="stylesheet" href="/index.css">
 <script type="importmap">
@@ -138,21 +113,93 @@
 </head>
   <body>
     <div id="root">
-        <!-- Visual Loader before React Hydrates -->
-        <div class="app-loader-container">
+        <!-- Visual Loader (Pure HTML) -->
+        <div id="app-loader" class="app-loader-container">
             <div class="app-loader-spinner"></div>
             <div class="app-loader-text">VocabMaster</div>
+            
+            <!-- EMERGENCY BUTTON (Pure JS Logic) -->
+            <button id="emergency-btn" onclick="hardResetApp()">
+                Сбросить данные (Repair)
+            </button>
+            <p id="emergency-msg" style="display:none; color: #94a3b8; font-size: 10px; margin-top: 10px; text-align: center; padding: 0 20px;">
+                Приложение долго грузится. Если оно зависло, нажмите кнопку выше.
+            </p>
         </div>
     </div>
-  <script type="module" src="/index.tsx"></script>
+
+  <!-- CRITICAL: Raw JS Reset Logic (Runs before React) -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => console.log('Service Worker registered', reg))
-          .catch(err => console.log('Service Worker registration failed', err));
-      });
+    // 1. Function to Nuke Everything
+    function hardResetApp() {
+        if (!confirm('Это полностью очистит данные приложения. Продолжить?')) return;
+        
+        try {
+            // Clear LocalStorage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear IndexedDB
+            const req = indexedDB.deleteDatabase('VocabMaster_LocalDB');
+            req.onsuccess = function () {
+                window.location.reload();
+            };
+            req.onerror = function () {
+                alert("Ошибка очистки БД. Попробуйте переустановить приложение.");
+                window.location.reload();
+            };
+            req.onblocked = function () {
+                window.location.reload();
+            };
+        } catch (e) {
+            alert("Error: " + e.message);
+            window.location.reload();
+        }
     }
+
+    // 2. Check for start_param=reset (Telegram Slash Command Support)
+    // Usage: https://t.me/YourBot/app?startapp=reset
+    (function() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Telegram WebApp passes params via hash usually, but let's check both
+            let startParam = urlParams.get('tgWebAppStartParam');
+            
+            // If checking hash params
+            if (!startParam && window.location.hash) {
+                const hashParams = new URLSearchParams(window.location.hash.slice(1));
+                // Sometimes it's inside tgWebAppData
+                const initData = hashParams.get('tgWebAppData');
+                if (initData) {
+                    const initParams = new URLSearchParams(initData);
+                    startParam = initParams.get('start_param');
+                }
+            }
+
+            if (startParam === 'reset') {
+                console.log("🚨 DETECTED RESET COMMAND VIA URL");
+                localStorage.clear();
+                indexedDB.deleteDatabase('VocabMaster_LocalDB');
+                // Remove param to prevent infinite reset loop on reload
+                // We just let it reload clean
+            }
+        } catch (e) {
+            console.error("Param check failed", e);
+        }
+    })();
+
+    // 3. Fail-safe Timer
+    // If React doesn't remove the loader within 7 seconds, show the Emergency Button
+    setTimeout(() => {
+        const loader = document.getElementById('app-loader');
+        if (loader) {
+            document.getElementById('emergency-btn').style.display = 'block';
+            document.getElementById('emergency-msg').style.display = 'block';
+            console.warn("⚠️ App load slow: Emergency button activated");
+        }
+    }, 7000); 
   </script>
+
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>

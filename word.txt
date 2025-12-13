@@ -1,0 +1,462 @@
+Вот готовый TypeScript код для базы данных VocabMaster, сгруппированный по уровням CEFR, с соблюдением всех требований к форматированию, экранированию и контенту.
+
+code
+TypeScript
+download
+content_copy
+expand_less
+// ==============================================================================
+// LEVEL A1 (Beginner)
+// ==============================================================================
+
+
+
+// ==============================================================================
+// LEVEL A2 (Elementary)
+// ==============================================================================
+
+createRichWord('a2_bush', 'Bush', '/bʊʃ/', 'буш', 'Куст', ProficiencyLevel.A2, 'noun', 'Medium', 'Neutral',
+    'Растение с множеством небольших деревянистых стеблей, меньше дерева.',
+    '- Сад: "Rose bush" (Розовый куст)\n- Природа: "Thick bush" (Густой кустарник)\n- Идиома: "Beat about the bush" (Ходить вокруг да около)',
+    [
+        { en: 'The bird was hiding in a thick bush.', ru: 'Птица пряталась в густом кустарнике.' },
+        { en: 'We planted a rose bush in the garden.', ru: 'Мы посадили розовый куст в саду.' },
+        { en: 'Don\'t beat about the bush, say it!', ru: 'Не ходи вокруг да около, говори!' },
+        { en: 'There were berries growing on the bush.', ru: 'На кусте росли ягоды.' }
+    ],
+    [
+        { meaning: "Wild land (Australia/Africa)", translation: "Буш (дикая местность)", example: { en: "They went camping in the bush.", ru: "Они поехали в поход в дикую местность." } }
+    ]
+),
+
+createRichWord('a2_business', 'Business', '/ˈbɪznɪs/', 'бизнис', 'Бизнес / Дело', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Деятельность по покупке и продаже товаров или услуг; работа или занятие.',
+    '- Работа: "Do business" (Вести бизнес)\n- Поездка: "Business trip" (Командировка)\n- Фраза: "None of your business" (Не твое дело)',
+    [
+        { en: 'He has his own small business in town.', ru: 'У него есть свой маленький бизнес в городе.' },
+        { en: 'They are here on a business trip.', ru: 'Они здесь в командировке.' },
+        { en: 'It is a pleasure to do business with you.', ru: 'Приятно иметь с вами дело.' },
+        { en: 'Mind your own business, please.', ru: 'Занимайся своим делом, пожалуйста.' }
+    ],
+    [
+        { meaning: "A specific company", translation: "Предприятие / Фирма", example: { en: "Many businesses closed down.", ru: "Многие предприятия закрылись." } },
+        { meaning: "Affair / Matter", translation: "Дело / Вопрос", example: { en: "It\'s a messy business.", ru: "Это запутанное дело." } }
+    ]
+),
+
+createRichWord('a2_camp', 'Camp', '/kæmp/', 'кэмп', 'Лагерь', ProficiencyLevel.A2, 'noun', 'Medium', 'Neutral',
+    'Место, где люди временно живут в палатках или хижинах, часто на отдыхе.',
+    '- Отдых: "Summer camp" (Летний лагерь)\n- Действие: "Set up camp" (Разбить лагерь)\n- Туризм: "Camp site" (Кемпинг)',
+    [
+        { en: 'We stayed at a camp near the lake.', ru: 'Мы остановились в лагере у озера.' },
+        { en: 'The children went to summer camp in July.', ru: 'Дети поехали в летний лагерь в июле.' },
+        { en: 'They set up camp before it got dark.', ru: 'Они разбили лагерь, прежде чем стемнело.' },
+        { en: 'Life in the camp was simple but fun.', ru: 'Жизнь в лагере была простой, но веселой.' }
+    ],
+    [
+        { meaning: "To live in a tent (verb)", translation: "Жить в палатке / Кемпинговать", example: { en: "We camped in the forest.", ru: "Мы стояли лагерем в лесу." } },
+        { meaning: "Effeminate / Exaggerated (Slang adj)", translation: "Манерный / Театральный", example: { en: "His style is very camp.", ru: "У него очень манерный стиль." } }
+    ]
+),
+
+createRichWord('a2_card', 'Card', '/kɑːd/', 'кард', 'Карта / Открытка', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Кусок плотной бумаги или пластика, используемый для оплаты, игры или поздравлений.',
+    '- Оплата: "Credit card" (Кредитная карта)\n- Праздник: "Birthday card" (Поздравительная открытка)\n- Игра: "Play cards" (Играть в карты)',
+    [
+        { en: 'Can I pay by credit card here?', ru: 'Могу я расплатиться здесь кредитной картой?' },
+        { en: 'She sent me a nice card for my birthday.', ru: 'Она прислала мне милую открытку на день рождения.' },
+        { en: 'Show me your ID card, please.', ru: 'Покажите ваше удостоверение личности, пожалуйста.' },
+        { en: 'We played cards all evening yesterday.', ru: 'Вчера мы весь вечер играли в карты.' }
+    ],
+    [
+        { meaning: "Playing card", translation: "Игральная карта", example: { en: "Pick a card from the deck.", ru: "Выберите карту из колоды." } }
+    ]
+),
+
+createRichWord('a2_care', 'Care', '/keər/', 'кэа', 'Забота / Уход', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Процесс защиты кого-либо или чего-либо и обеспечения их нужд.',
+    '- Фраза: "Take care" (Береги себя / Заботиться)\n- Медицина: "Medical care" (Медицинская помощь)\n- Внимание: "Handle with care" (Обращаться с осторожностью)',
+    [
+        { en: 'Take care of yourself while I am away.', ru: 'Береги себя, пока меня не будет.' },
+        { en: 'She needs special medical care now.', ru: 'Сейчас ей нужен особый медицинский уход.' },
+        { en: 'He handled the old book with great care.', ru: 'Он обращался со старой книгой с большой осторожностью.' },
+        { en: 'I don\'t have a care in the world today.', ru: 'Сегодня у меня нет ни единой заботы в мире.' }
+    ],
+    [
+        { meaning: "To feel concern / interest (verb)", translation: "Волновать / Заботиться", example: { en: "I don\'t care about money.", ru: "Меня не волнуют деньги." } },
+        { meaning: "To like (verb, formal)", translation: "Хотеть / Любить", example: { en: "Would you care for some tea?", ru: "Не хотите ли чаю?" } }
+    ]
+),
+
+createRichWord('a2_carry', 'Carry', '/ˈkæri/', 'кэри', 'Нести', ProficiencyLevel.A2, 'verb', 'High', 'Neutral',
+    'Держать что-то руками или на спине и перемещать это с одного места на другое.',
+    '- Руки: "Carry a bag" (Нести сумку)\n- Вес: "Carry weight" (Нести вес)\n- Продолжение: "Carry on" (Продолжать)',
+    [
+        { en: 'Can you help me carry this heavy box?', ru: 'Можешь помочь мне донести эту тяжелую коробку?' },
+        { en: 'She always carries a bottle of water.', ru: 'Она всегда носит с собой бутылку воды.' },
+        { en: 'The waiter carried the plates to the table.', ru: 'Официант понес тарелки к столу.' },
+        { en: 'Sound carries well over the water.', ru: 'Звук хорошо разносится над водой.' }
+    ],
+    [
+        { meaning: "To support / sustain", translation: "Выдерживать / Нести на себе", example: { en: "The pillars carry the roof.", ru: "Колонны держат крышу." } },
+        { meaning: "To have in stock (shop)", translation: "Иметь в продаже", example: { en: "Do you carry this brand?", ru: "У вас продается этот бренд?" } }
+    ]
+),
+
+createRichWord('a2_case', 'Case', '/keɪs/', 'кейс', 'Случай / Дело', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Конкретная ситуация или пример происшествия; также контейнер.',
+    '- Ситуация: "In that case" (В таком случае)\n- Пример: "Case of flu" (Случай гриппа)\n- Фраза: "Just in case" (На всякий случай)',
+    [
+        { en: 'In case of fire, use the stairs.', ru: 'В случае пожара пользуйтесь лестницей.' },
+        { en: 'It is a classic case of bad management.', ru: 'Это классический случай плохого управления.' },
+        { en: 'Bring an umbrella just in case it rains.', ru: 'Возьми зонт на всякий случай, если пойдет дождь.' },
+        { en: 'This is not the case at all.', ru: 'Это вовсе не так (не тот случай).' }
+    ],
+    [
+        { meaning: "Container / Suitcase", translation: "Футляр / Чемодан", example: { en: "Packing my case.", ru: "Упаковываю свой чемодан." } },
+        { meaning: "Legal action", translation: "Судебное дело", example: { en: "They won the court case.", ru: "Они выиграли судебное дело." } }
+    ]
+),
+
+createRichWord('a2_catch', 'Catch', '/kætʃ/', 'кэтч', 'Ловить', ProficiencyLevel.A2, 'verb', 'High', 'Neutral',
+    'Схватить что-то движущееся; успеть на транспорт.',
+    '- Предмет: "Catch a ball" (Поймать мяч)\n- Транспорт: "Catch a bus" (Успеть на автобус)\n- Болезнь: "Catch a cold" (Подхватить простуду)',
+    [
+        { en: 'Throw the ball and I will catch it.', ru: 'Брось мяч, и я его поймаю.' },
+        { en: 'We need to run to catch the train.', ru: 'Нам нужно бежать, чтобы успеть на поезд.' },
+        { en: 'Did you catch any fish yesterday?', ru: 'Ты поймал рыбу вчера?' },
+        { en: 'I hope I don\'t catch the flu from you.', ru: 'Надеюсь, я не заражусь от тебя гриппом.' }
+    ],
+    [
+        { meaning: "Hidden problem (noun)", translation: "Подвох", example: { en: "What is the catch?", ru: "В чем подвох?" } },
+        { meaning: "To hear / understand", translation: "Уловить / Расслышать", example: { en: "I didn\'t catch your name.", ru: "Я не расслышал ваше имя." } }
+    ]
+),
+
+createRichWord('a2_centre', 'Centre', '/ˈsentər/', 'сентэр', 'Центр', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Середина чего-либо или главное место активности.',
+    '- Город: "City centre" (Центр города)\n- Место: "Shopping centre" (Торговый центр)\n- Позиция: "In the centre" (В центре)',
+    [
+        { en: 'The hotel is in the city centre.', ru: 'Отель находится в центре города.' },
+        { en: 'Draw a circle in the centre of the page.', ru: 'Нарисуй круг в центре страницы.' },
+        { en: 'She likes being the centre of attention.', ru: 'Ей нравится быть в центре внимания.' },
+        { en: 'We went to the sports centre to swim.', ru: 'Мы пошли в спортивный центр поплавать.' }
+    ],
+    [
+        { meaning: "To focus (verb)", translation: "Сосредоточивать", example: { en: "The discussion centred on money.", ru: "Дискуссия сосредоточилась на деньгах." } }
+    ]
+),
+
+createRichWord('a2_chance', 'Chance', '/tʃɑːns/', 'чанс', 'Шанс / Возможность', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Возможность что-то сделать или вероятность того, что что-то случится.',
+    '- Вероятность: "Good chance" (Хороший шанс)\n- Риск: "Take a chance" (Рискнуть)\n- Случайность: "By chance" (Случайно)',
+    [
+        { en: 'Is there any chance of rain today?', ru: 'Есть ли какой-то шанс дождя сегодня?' },
+        { en: 'Please give me a second chance.', ru: 'Пожалуйста, дайте мне второй шанс.' },
+        { en: 'I met him by chance at the station.', ru: 'Я случайно встретил его на станции.' },
+        { en: 'You have a chance to win the game.', ru: 'У тебя есть шанс выиграть игру.' }
+    ],
+    [
+        { meaning: "Risk (verb)", translation: "Рискнуть", example: { en: "I\'ll chance it.", ru: "Я рискну." } }
+    ]
+),
+
+createRichWord('a2_change', 'Change', '/tʃeɪndʒ/', 'чейндж', 'Менять / Изменять', ProficiencyLevel.A2, 'verb', 'High', 'Neutral',
+    'Сделать что-то другим или заменить одно на другое.',
+    '- Одежда: "Change clothes" (Переодеться)\n- Мнение: "Change mind" (Передумать)\n- Транспорт: "Change trains" (Сделать пересадку)',
+    [
+        { en: 'She changed her dress for the party.', ru: 'Она сменила платье для вечеринки.' },
+        { en: 'Don\'t forget to change the batteries.', ru: 'Не забудь поменять батарейки.' },
+        { en: 'I need to change some money into euros.', ru: 'Мне нужно обменять немного денег на евро.' },
+        { en: 'Nothing will change if you don\'t act.', ru: 'Ничего не изменится, если ты не будешь действовать.' }
+    ],
+    [
+        { meaning: "Coins / Small money (noun)", translation: "Мелочь / Сдача", example: { en: "Keep the change.", ru: "Сдачи не надо." } },
+        { meaning: "The act of becoming different (noun)", translation: "Перемена / Изменение", example: { en: "A welcome change.", ru: "Желанная перемена." } }
+    ]
+),
+
+createRichWord('a2_check', 'Check', '/tʃek/', 'чек', 'Проверять', ProficiencyLevel.A2, 'verb', 'High', 'Neutral',
+    'Осматривать что-то, чтобы убедиться в правильности или безопасности.',
+    '- Осмотр: "Check the oil" (Проверить масло)\n- Отель: "Check in" (Заселяться)\n- Список: "Check the list" (Свериться со списком)',
+    [
+        { en: 'Please check your answers before submitting.', ru: 'Пожалуйста, проверьте свои ответы перед сдачей.' },
+        { en: 'I need to check if I locked the door.', ru: 'Мне нужно проверить, запер ли я дверь.' },
+        { en: 'Check in at the hotel is at two pm.', ru: 'Заезд в отель в два часа дня.' },
+        { en: 'Can you check the time for me?', ru: 'Можешь посмотреть время для меня?' }
+    ],
+    [
+        { meaning: "Bill in a restaurant (noun, US)", translation: "Счет (в ресторане)", example: { en: "Can we have the check?", ru: "Можно нам счет?" } },
+        { meaning: "Pattern of squares (noun)", translation: "Клетка (узор)", example: { en: "A shirt with a check pattern.", ru: "Рубашка в клетку." } },
+        { meaning: "Tick mark (noun)", translation: "Галочка", example: { en: "Put a check next to the name.", ru: "Поставь галочку рядом с именем." } }
+    ]
+),
+
+createRichWord('a2_chip', 'Chip', '/tʃɪp/', 'чип', 'Чип / Жареный картофель', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Тонкий кусочек чего-либо (картофеля, дерева) или электронная деталь.',
+    '- Еда: "Fish and chips" (Рыба с картошкой фри)\n- Электроника: "Silicon chip" (Кремниевый чип)\n- Повреждение: "Chip in the glass" (Скол на стекле)',
+    [
+        { en: 'He ordered a burger and a portion of chips.', ru: 'Он заказал бургер и порцию картошки фри.' },
+        { en: 'This computer chip is very powerful.', ru: 'Этот компьютерный чип очень мощный.' },
+        { en: 'There is a small chip on this plate.', ru: 'На этой тарелке есть маленький скол.' },
+        { en: 'Be careful not to step on the wood chips.', ru: 'Осторожно, не наступи на древесные щепки.' }
+    ],
+    [
+        { meaning: "Gambling token", translation: "Фишка (в казино)", example: { en: "He lost all his chips.", ru: "Он проиграл все свои фишки." } },
+        { meaning: "To break a small piece off (verb)", translation: "Отколоть", example: { en: "I chipped my tooth.", ru: "Я отколол зуб." } }
+    ]
+),
+
+createRichWord('a2_church', 'Church', '/tʃɜːtʃ/', 'чёрч', 'Церковь', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Здание для христианских богослужений.',
+    '- Место: "Go to church" (Ходить в церковь)\n- Служба: "Church service" (Церковная служба)\n- Архитектура: "Old church" (Старая церковь)',
+    [
+        { en: 'They go to church every Sunday morning.', ru: 'Они ходят в церковь каждое воскресное утро.' },
+        { en: 'The church was built in the last century.', ru: 'Церковь была построена в прошлом веке.' },
+        { en: 'We visited a beautiful old church in Rome.', ru: 'Мы посетили красивую старую церковь в Риме.' },
+        { en: 'He sings in the local church choir.', ru: 'Он поет в местном церковном хоре.' }
+    ],
+    [
+        { meaning: "The institution of religion", translation: "Церковь (как институт)", example: { en: "The Church has great influence.", ru: "Церковь имеет большое влияние." } }
+    ]
+),
+
+createRichWord('a2_clear', 'Clear', '/klɪər/', 'клиэ', 'Ясный / Понятный', ProficiencyLevel.A2, 'adj', 'High', 'Neutral',
+    'Легкий для понимания, видения или слышания; прозрачный.',
+    '- Погода: "Clear sky" (Ясное небо)\n- Понимание: "Is it clear?" (Это понятно?)\n- Вид: "Clear water" (Прозрачная вода)',
+    [
+        { en: 'The water in the lake was crystal clear.', ru: 'Вода в озере была кристально чистой.' },
+        { en: 'His instructions were very clear and simple.', ru: 'Его инструкции были очень ясными и простыми.' },
+        { en: 'We had a clear view of the mountains.', ru: 'У нас был ясный вид на горы.' },
+        { en: 'Are you clear about what to do next?', ru: 'Тебе понятно, что делать дальше?' }
+    ],
+    [
+        { meaning: "To remove obstruction (verb)", translation: "Очищать / Убирать", example: { en: "Clear the table.", ru: "Убери со стола." } },
+        { meaning: "Free from guilt", translation: "Чистый (о совести)", example: { en: "A clear conscience.", ru: "Чистая совесть." } }
+    ]
+),
+
+createRichWord('a2_climb', 'Climb', '/klaɪm/', 'клайм', 'Взбираться / Лазить', ProficiencyLevel.A2, 'verb', 'Medium', 'Neutral',
+    'Подниматься вверх, часто используя руки и ноги.',
+    '- Горы: "Climb a mountain" (Взбираться на гору)\n- Дерево: "Climb a tree" (Лезть на дерево)\n- Лестница: "Climb stairs" (Подниматься по лестнице)',
+    [
+        { en: 'It took them hours to climb the mountain.', ru: 'У них ушли часы, чтобы взобраться на гору.' },
+        { en: 'The cat climbed up the tree but couldn\'t get down.', ru: 'Кошка залезла на дерево, но не могла спуститься.' },
+        { en: 'We had to climb lots of stairs to the top.', ru: 'Нам пришлось подняться по множеству ступенек наверх.' },
+        { en: 'Prices continue to climb this year.', ru: 'Цены продолжают ползти вверх в этом году.' }
+    ],
+    [
+        { meaning: "An ascent (noun)", translation: "Подъем", example: { en: "A steep climb.", ru: "Крутой подъем." } }
+    ]
+),
+
+createRichWord('a2_club', 'Club', '/klʌb/', 'клаб', 'Клуб', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Организация людей с общими интересами или место для развлечений.',
+    '- Спорт: "Football club" (Футбольный клуб)\n- Развлечение: "Night club" (Ночной клуб)\n- Хобби: "Join a club" (Вступить в клуб)',
+    [
+        { en: 'He is a member of the local golf club.', ru: 'Он член местного гольф-клуба.' },
+        { en: 'We went to a night club to dance.', ru: 'Мы пошли в ночной клуб потанцевать.' },
+        { en: 'Which football club do you support?', ru: 'За какой футбольный клуб ты болеешь?' },
+        { en: 'I joined a book club to read more.', ru: 'Я вступил в книжный клуб, чтобы больше читать.' }
+    ],
+    [
+        { meaning: "Heavy stick / Weapon", translation: "Дубинка", example: { en: "Cavemen used clubs.", ru: "Пещерные люди использовали дубинки." } },
+        { meaning: "Suit in cards (Clubs)", translation: "Трефы (масть)", example: { en: "The Ace of Clubs.", ru: "Туз треф." } }
+    ]
+),
+
+createRichWord('a2_collect', 'Collect', '/kəˈlekt/', 'коллект', 'Собирать', ProficiencyLevel.A2, 'verb', 'Medium', 'Neutral',
+    'Сводить вещи вместе или забирать кого-то/что-то из определенного места.',
+    '- Хобби: "Collect stamps" (Собирать марки)\n- Люди: "Collect kids" (Забирать детей)\n- Деньги: "Collect money" (Собриать деньги)',
+    [
+        { en: 'I used to collect coins when I was young.', ru: 'В молодости я собирал монеты.' },
+        { en: 'Please collect your tickets at the counter.', ru: 'Пожалуйста, заберите свои билеты на стойке.' },
+        { en: 'The bus collects passengers from the hotel.', ru: 'Автобус забирает пассажиров из отеля.' },
+        { en: 'We are collecting money for charity.', ru: 'Мы собираем деньги на благотворительность.' }
+    ],
+    [
+        { meaning: "To gather thoughts/self", translation: "Собраться (с мыслями)", example: { en: "She paused to collect herself.", ru: "Она остановилась, чтобы собраться с мыслями." } }
+    ]
+),
+
+createRichWord('a2_college', 'College', '/ˈkɒlɪdʒ/', 'колидж', 'Колледж', ProficiencyLevel.A2, 'noun', 'Medium', 'Neutral',
+    'Учебное заведение для получения высшего или профессионального образования.',
+    '- Учеба: "Go to college" (Поступать/ходить в колледж)\n- Люди: "College student" (Студент колледжа)\n- Место: "Art college" (Художественный колледж)',
+    [
+        { en: 'She is studying history at college.', ru: 'Она изучает историю в колледже.' },
+        { en: 'After school, I want to go to college.', ru: 'После школы я хочу поступить в колледж.' },
+        { en: 'College life is very different from school.', ru: 'Жизнь в колледже сильно отличается от школьной.' },
+        { en: 'He met his wife when they were in college.', ru: 'Он встретил свою жену, когда они учились в колледже.' }
+    ],
+    []
+),
+
+createRichWord('a2_company', 'Company', '/ˈkʌmpəni/', 'кампэни', 'Компания / Фирма', ProficiencyLevel.A2, 'noun', 'High', 'Neutral',
+    'Коммерческая организация или наличие людей рядом (общество).',
+    '- Бизнес: "Software company" (Программная компания)\n- Общение: "Good company" (Хорошая компания/собеседник)\n- Гости: "Have company" (Принимать гостей)',
+    [
+        { en: 'He works for a large insurance company.', ru: 'Он работает в крупной страховой компании.' },
+        { en: 'I enjoy her company very much.', ru: 'Мне очень нравится ее общество.' },
+        { en: 'We are expecting company for dinner tonight.', ru: 'Мы ждем гостей на ужин сегодня вечером.' },
+        { en: 'Keep me company while I wait.', ru: 'Составь мне компанию, пока я жду.' }
+    ],
+    [
+        { meaning: "Military unit", translation: "Рота", example: { en: "A tank company.", ru: "Танковая рота." } }
+    ]
+),
+
+createRichWord('a2_complete', 'Complete', '/kəmˈpliːt/', 'комплит', 'Завершать / Полный', ProficiencyLevel.A2, 'verb', 'High', 'Neutral',
+    'Закончить что-либо делать; содержащий все необходимые части.',
+    '- Действие: "Complete the form" (Заполнить форму)\n- Состояние: "Complete surprise" (Полный сюрприз)\n- Работа: "Mission complete" (Миссия завершена)',
+    [
+        { en: 'Please complete the sentence with a word.', ru: 'Пожалуйста, дополните предложение словом.' },
+        { en: 'The building work is finally complete.', ru: 'Строительные работы наконец завершены.' },
+        { en: 'It came as a complete surprise to me.', ru: 'Это стало для меня полной неожиданностью.' },
+        { en: 'I have the complete set of his books.', ru: 'У меня есть полный набор его книг.' }
+    ],
+    [
+        { meaning: "To finish (verb)", translation: "Завершать", example: { en: "She completed her studies.", ru: "Она завершила свое обучение." } }
+    ]
+),
+
+createRichWord('a2_conversation', 'Conversation', '/ˌkɒnvəˈseɪʃn/', 'конвесэйшн', 'Разговор', ProficiencyLevel.A2, 'noun', 'Medium', 'Neutral',
+    'Обмен мыслями и словами между двумя или более людьми.',
+    '- Действие: "Have a conversation" (Вести разговор)\n- Телефон: "Phone conversation" (Телефонный разговор)\n- Тема: "Topic of conversation" (Тема разговора)',
+    [
+        { en: 'We had a long conversation about our future.', ru: 'У нас был долгий разговор о нашем будущем.' },
+        { en: 'I tried to start a conversation with him.', ru: 'Я пытался завязать с ним разговор.' },
+        { en: 'Their conversation was very interesting to hear.', ru: 'Их разговор было очень интересно слушать.' },
+        { en: 'English conversation classes are helpful.', ru: 'Уроки разговорного английского полезны.' }
+    ],
+    []
+),
+
+// ==============================================================================
+// LEVEL B1 (Intermediate)
+// ==============================================================================
+
+createRichWord('b1_cause', 'Cause', '/kɔːz/', 'коз', 'Причина / Вызывать', ProficiencyLevel.B1, 'noun', 'Medium', 'Neutral',
+    'То, что заставляет что-то происходить; повод или основание.',
+    '- Проблема: "Cause of death" (Причина смерти)\n- Действие: "Cause trouble" (Вызывать проблемы)\n- Наука: "Cause and effect" (Причина и следствие)',
+    [
+        { en: 'The police are investigating the cause of the accident.', ru: 'Полиция расследует причину аварии.' },
+        { en: 'Smoking can cause serious health problems.', ru: 'Курение может вызвать серьезные проблемы со здоровьем.' },
+        { en: 'There is no cause for alarm right now.', ru: 'Сейчас нет причин для тревоги.' },
+        { en: 'The storm caused damage to many houses.', ru: 'Шторм нанес ущерб многим домам.' }
+    ],
+    [
+        { meaning: "Social movement / Goal", translation: "Дело / Цель (благотворительная)", example: { en: "It is for a good cause.", ru: "Это ради благого дела." } }
+    ]
+),
+
+createRichWord('b1_certain', 'Certain', '/ˈsɜːtn/', 'сётн', 'Определенный / Уверенный', ProficiencyLevel.B1, 'adj', 'High', 'Neutral',
+    'Не имеющий сомнений; конкретный, но не названный.',
+    '- Уверенность: "I am certain" (Я уверен)\n- Количество: "Certain amount" (Определенное количество)\n- Факт: "For certain" (Наверняка)',
+    [
+        { en: 'I am absolutely certain that I left it here.', ru: 'Я абсолютно уверен, что оставил это здесь.' },
+        { en: 'Certain people disagree with this decision.', ru: 'Некоторые (определенные) люди не согласны с этим решением.' },
+        { en: 'It is not certain if they will come.', ru: 'Не факт (не точно), что они придут.' },
+        { en: 'Make certain that the door is locked.', ru: 'Убедись, что дверь заперта.' }
+    ],
+    []
+),
+
+createRichWord('b1_charge', 'Charge', '/tʃɑːdʒ/', 'чардж', 'Взимать плату / Заряжать', ProficiencyLevel.B1, 'verb', 'High', 'Neutral',
+    'Требовать деньги за услугу; наполнять электричеством; официально обвинять.',
+    '- Деньги: "Charge a fee" (Взимать плату)\n- Телефон: "Charge the phone" (Заряжать телефон)\n- Полиция: "Charge with theft" (Обвинять в краже)',
+    [
+        { en: 'How much do they charge for delivery?', ru: 'Сколько они берут за доставку?' },
+        { en: 'I need to charge my phone battery.', ru: 'Мне нужно зарядить батарею телефона.' },
+        { en: 'The police arrested him and charged him with robbery.', ru: 'Полиция арестовала его и обвинила в ограблении.' },
+        { en: 'Who is in charge of this department?', ru: 'Кто главный (ответственный) в этом отделе?' }
+    ],
+    [
+        { meaning: "To rush forward (attack)", translation: "Атаковать / Бросаться", example: { en: "The bull charged at the red cloth.", ru: "Бык бросился на красную тряпку." } },
+        { meaning: "Price / Cost (noun)", translation: "Плата / Цена", example: { en: "Admission charge is five dollars.", ru: "Плата за вход — пять долларов." } }
+    ]
+),
+
+createRichWord('b1_choice', 'Choice', '/tʃɔɪs/', 'чойс', 'Выбор', ProficiencyLevel.B1, 'noun', 'High', 'Neutral',
+    'Возможность или право выбирать; то, что выбрано.',
+    '- Действие: "Make a choice" (Сделать выбор)\n- Варианты: "Wide choice" (Широкий выбор)\n- Отсутствие: "No choice" (Нет выбора)',
+    [
+        { en: 'It was a difficult choice to make.', ru: 'Это был трудный выбор.' },
+        { en: 'You have no choice but to accept.', ru: 'У тебя нет выбора, кроме как согласиться.' },
+        { en: 'The menu offers a wide choice of dishes.', ru: 'Меню предлагает широкий выбор блюд.' },
+        { en: 'By choice, she lives alone in the forest.', ru: 'По собственному выбору она живет одна в лесу.' }
+    ],
+    [
+        { meaning: "High quality (adj, dated)", translation: "Отборный", example: { en: "Choice apples.", ru: "Отборные яблоки." } }
+    ]
+),
+
+createRichWord('b1_comfort', 'Comfort', '/ˈkʌmfət/', 'камфэт', 'Комфорт / Утешение', ProficiencyLevel.B1, 'noun', 'Medium', 'Neutral',
+    'Состояние физического расслабления; отсутствие боли или тревоги.',
+    '- Удобство: "Live in comfort" (Жить в комфорте)\n- Зона: "Comfort zone" (Зона комфорта)\n- Поддержка: "Words of comfort" (Слова утешения)',
+    [
+        { en: 'The hotel offers a high level of comfort.', ru: 'Отель предлагает высокий уровень комфорта.' },
+        { en: 'He tried to give her some comfort after the loss.', ru: 'Он пытался утешить ее после утраты.' },
+        { en: 'These shoes are designed for maximum comfort.', ru: 'Эта обувь создана для максимального комфорта.' },
+        { en: 'She stepped out of her comfort zone.', ru: 'Она вышла из своей зоны комфорта.' }
+    ],
+    [
+        { meaning: "To console (verb)", translation: "Утешать", example: { en: "The mother comforted the crying child.", ru: "Мать утешала плачущего ребенка." } }
+    ]
+),
+
+createRichWord('b1_consider', 'Consider', '/kənˈsɪdər/', 'кэнсидэр', 'Рассматривать / Считать', ProficiencyLevel.B1, 'verb', 'High', 'Neutral',
+    'Думать о чем-то внимательно, особенно перед принятием решения; полагать.',
+    '- Решение: "Consider options" (Рассматривать варианты)\n- Мнение: "Considered to be" (Считается)\n- Вежливость: "Consider feelings" (Учитывать чувства)',
+    [
+        { en: 'We are considering moving to another city.', ru: 'Мы подумываем о переезде в другой город.' },
+        { en: 'He is considered an expert in this field.', ru: 'Он считается экспертом в этой области.' },
+        { en: 'Please consider my application carefully.', ru: 'Пожалуйста, внимательно рассмотрите мое заявление.' },
+        { en: 'You should consider the cost before buying.', ru: 'Тебе следует учесть стоимость перед покупкой.' }
+    ],
+    []
+),
+
+createRichWord('b1_continue', 'Continue', '/kənˈtɪnjuː/', 'кэнтинью', 'Продолжать', ProficiencyLevel.B1, 'verb', 'High', 'Neutral',
+    'Делать что-то без остановки или возобновить после паузы.',
+    '- Действие: "Continue working" (Продолжать работать)\n- Путь: "Continue straight" (Продолжать прямо)\n- Время: "To be continued" (Продолжение следует)',
+    [
+        { en: 'The rain continued all through the night.', ru: 'Дождь продолжался всю ночь напролет.' },
+        { en: 'Please continue with your story, I am listening.', ru: 'Пожалуйста, продолжай свой рассказ, я слушаю.' },
+        { en: 'If symptoms continue, consult a doctor.', ru: 'Если симптомы продолжатся, проконсультируйтесь с врачом.' },
+        { en: 'They decided to continue the meeting tomorrow.', ru: 'Они решили продолжить собрание завтра.' }
+    ],
+    []
+),
+
+createRichWord('b1_control', 'Control', '/kənˈtrəʊl/', 'кэнтроул', 'Контроль / Управлять', ProficiencyLevel.B1, 'noun', 'High', 'Neutral',
+    'Способность управлять чем-либо или проверять что-либо; власть над ситуацией.',
+    '- Власть: "Under control" (Под контролем)\n- Устройство: "Remote control" (Пульт дистанционного управления)\n- Эмоции: "Lose control" (Потерять контроль/самообладание)',
+    [
+        { en: 'The pilot lost control of the plane.', ru: 'Пилот потерял управление самолетом.' },
+        { en: 'Everything is under control, don\'t worry.', ru: 'Все под контролем, не волнуйся.' },
+        { en: 'Parents cannot control everything their children do.', ru: 'Родители не могут контролировать все, что делают их дети.' },
+        { en: 'Use the remote control to change the channel.', ru: 'Используй пульт, чтобы переключить канал.' }
+    ],
+    [
+        { meaning: "To limit / Regulate (verb)", translation: "Ограничивать / Регулировать", example: { en: "Control your spending.", ru: "Контролируй свои расходы." } }
+    ]
+),
+
+// ==============================================================================
+// LEVEL B2 (Upper Intermediate)
+// ==============================================================================
+
+createRichWord('b2_concern', 'Concern', '/kənˈsɜːn/', 'кэнсён', 'Беспокойство / Касаться', ProficiencyLevel.B2, 'noun', 'Medium', 'Formal',
+    'Чувство тревоги; дело, имеющее отношение к кому-либо.',
+    '- Тревога: "Cause concern" (Вызывать беспокойство)\n- Отношение: "To whom it may concern" (Тому, кого это касается)\n- Интерес: "Main concern" (Главная забота)',
+    [
+        { en: 'There is growing concern about climate change.', ru: 'Растет беспокойство по поводу изменения климата.' },
+        { en: 'This matter does not concern you at all.', ru: 'Это дело вас совершенно не касается.' },
+        { en: 'My main concern is the safety of the children.', ru: 'Моя главная забота — безопасность детей.' },
+        { en: 'I appreciate your concern, but I am fine.', ru: 'Я ценю ваше беспокойство, но со мной все в порядке.' }
+    ],
+    [
+        { meaning: "A business company", translation: "Концерн / Фирма", example: { en: "A major manufacturing concern.", ru: "Крупный производственный концерн." } },
+        { meaning: "To involve (verb)", translation: "Затрагивать / Вовлекать", example: { en: "The story concerns two friends.", ru: "История повествует о двух друзьях." } }
+    ]
+),
