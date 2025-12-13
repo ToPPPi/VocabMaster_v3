@@ -48,7 +48,13 @@ export const getSecureNow = () => Date.now();
 
 export const initUserProgress = async (): Promise<{ data: UserProgress, hasConflict: boolean, cloudDate?: number }> => {
     // 1. Load Local Data only
-    let localData = await idbService.load();
+    let localData = null;
+    try {
+        localData = await idbService.load();
+    } catch (e) {
+        console.error("Critical Error Loading IDB:", e);
+        // Fallback to localStorage or fresh start if IDB fails hard
+    }
     
     // 2. If no local data, start fresh
     if (!localData) {
@@ -81,7 +87,11 @@ export const saveUserProgress = async (progress: UserProgress, forceCloudUpload 
     memoryCache = progress;
     
     // INSTANT SAVE: Only write to local IndexedDB
-    await idbService.save(progress);
+    try {
+        await idbService.save(progress);
+    } catch (e) {
+        console.error("Save failed:", e);
+    }
     
     // Cloud sync logic removed for performance
 };
@@ -142,7 +152,12 @@ export const syncTelegramUserData = async () => {
 };
 
 export const resetUserProgress = async (): Promise<UserProgress> => {
-    await idbService.clear();
+    try {
+        await idbService.clear();
+    } catch (e) {
+        console.error("IDB Clear failed, continuing with LocalStorage clear", e);
+    }
+    
     localStorage.removeItem(STORAGE_KEY);
     memoryCache = { ...INITIAL_PROGRESS };
     return memoryCache;

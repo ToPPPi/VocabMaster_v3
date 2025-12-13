@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, Zap } from 'lucide-react';
+import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, Zap, AlertTriangle, RefreshCw } from 'lucide-react';
 import { ProficiencyLevel, ViewState, UserProgress } from './types';
-import { initUserProgress, downloadCloudData, saveUserProgress, completeOnboarding, syncTelegramUserData, logoutUser } from './services/storageService'; // Updated imports
+import { initUserProgress, downloadCloudData, saveUserProgress, completeOnboarding, syncTelegramUserData, logoutUser, resetUserProgress } from './services/storageService'; // Updated imports
 import { triggerHaptic } from './utils/uiHelpers';
 
 // Components
@@ -36,31 +36,49 @@ const App: React.FC = () => {
   // Navigation State
   const [scrollToPremium, setScrollToPremium] = useState(false);
 
-  useEffect(() => {
-      const load = async () => {
-          // Use new init function that checks for conflicts
-          const { data, hasConflict, cloudDate } = await initUserProgress();
-          
-          if (hasConflict && cloudDate) {
-              // Pause loading, show conflict modal
-              setConflictData({ localDate: data.lastLocalUpdate, cloudDate: cloudDate });
-              setProgress(data); // Show local momentarily behind modal
-          } else {
-              setProgress(data);
-              if (data.hasSeenOnboarding) setView('dashboard');
-              else setView('onboarding');
-          }
+  // Loading State with Emergency Reset
+  const [showEmergencyReset, setShowEmergencyReset] = useState(false);
 
-          await syncTelegramUserData(); // Sync name and photo
-          
-          if (window.Telegram?.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-            window.Telegram.WebApp.setHeaderColor('#F1F5F9'); 
-            window.Telegram.WebApp.setBackgroundColor('#F1F5F9');
-        }
+  useEffect(() => {
+      // Emergency timer: if stuck on loading for > 5s, show reset button
+      const timer = setTimeout(() => {
+          if (!progress) {
+              setShowEmergencyReset(true);
+          }
+      }, 5000);
+
+      const load = async () => {
+          try {
+              // Use new init function that checks for conflicts
+              const { data, hasConflict, cloudDate } = await initUserProgress();
+              
+              if (hasConflict && cloudDate) {
+                  // Pause loading, show conflict modal
+                  setConflictData({ localDate: data.lastLocalUpdate, cloudDate: cloudDate });
+                  setProgress(data); // Show local momentarily behind modal
+              } else {
+                  setProgress(data);
+                  if (data.hasSeenOnboarding) setView('dashboard');
+                  else setView('onboarding');
+              }
+
+              await syncTelegramUserData(); // Sync name and photo
+              
+              if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                window.Telegram.WebApp.setHeaderColor('#F1F5F9'); 
+                window.Telegram.WebApp.setBackgroundColor('#F1F5F9');
+            }
+          } catch (e) {
+              console.error("Initialization failed completely:", e);
+              // Force reset visibility on error
+              setShowEmergencyReset(true);
+          }
       };
       load();
+
+      return () => clearTimeout(timer);
   }, []);
 
   const handleConflictResolve = async (useCloud: boolean) => {
@@ -78,6 +96,14 @@ const App: React.FC = () => {
           }
           if (progress?.hasSeenOnboarding) setView('dashboard');
           else setView('onboarding');
+      }
+  };
+
+  const handleEmergencyReset = async () => {
+      const c = window.confirm("Сбросить данные? Это исправит зависание, но удалит прогресс.");
+      if (c) {
+          await resetUserProgress();
+          window.location.reload();
       }
   };
 
@@ -172,7 +198,36 @@ const App: React.FC = () => {
       setView(target);
   };
 
-  if (!progress) return <div className="min-h-screen flex items-center justify-center bg-slate-50"><Loader2 className="w-8 h-8 animate-spin text-violet-600"/></div>;
+  if (!progress) {
+      return (
+          <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-6 text-center">
+              <Loader2 className="w-10 h-10 animate-spin text-violet-600 mb-4"/>
+              
+              {showEmergencyReset && (
+                  <div className="animate-in fade-in zoom-in duration-500 max-w-xs">
+                      <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-2xl border border-rose-100 dark:border-rose-800 mb-4">
+                          <div className="flex justify-center mb-2">
+                              <AlertTriangle className="w-6 h-6 text-rose-500" />
+                          </div>
+                          <p className="text-xs font-bold text-rose-600 dark:text-rose-300 mb-1">
+                              Возникла проблема с загрузкой
+                          </p>
+                          <p className="text-[10px] text-rose-500 dark:text-rose-400 leading-snug">
+                              Если приложение зависло, попробуйте сбросить данные. Это удалит прогресс, но восстановит работу.
+                          </p>
+                      </div>
+                      <button 
+                          onClick={handleEmergencyReset}
+                          className="w-full py-3 bg-slate-900 dark:bg-slate-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                      >
+                          <RefreshCw className="w-4 h-4" />
+                          Сбросить данные
+                      </button>
+                  </div>
+              )}
+          </div>
+      );
+  }
 
   const TabButton = ({ target, icon: Icon, label, customAction }: { target: any, icon: any, label: string, customAction?: () => void }) => {
       const isActive = view === target;
