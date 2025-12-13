@@ -14,25 +14,25 @@ export interface WordExample {
 }
 
 export interface SecondaryMeaning {
-  meaning: string; // The specific definition (e.g. "To manage a business")
-  translation: string; // (e.g. "Управлять")
-  example?: WordExample; // Optional example for this specific meaning
+  meaning: string;
+  translation: string;
+  example?: WordExample;
 }
 
 export interface Word {
   id: string;
   term: string;
-  transcription?: string; // e.g. /rɪp/
-  russianTransliteration?: string; // e.g. "рип"
-  translation: string; // PRIMARY translation
+  transcription?: string;
+  russianTransliteration?: string;
+  translation: string;
   level: ProficiencyLevel;
   partOfSpeech: string;
   frequency?: 'High' | 'Medium' | 'Low';
   register?: 'Formal' | 'Informal' | 'Neutral' | 'Slang' | 'Literary';
-  definition: string; // PRIMARY definition
-  usageContext?: string; // Text description of contexts (Business, Legal, etc.)
-  examples: WordExample[]; // Examples for the PRIMARY meaning
-  secondaryMeanings?: SecondaryMeaning[]; // NEW: List of other common meanings
+  definition: string;
+  usageContext?: string;
+  examples: WordExample[];
+  secondaryMeanings?: SecondaryMeaning[];
   isCustom?: boolean;
 }
 
@@ -40,70 +40,68 @@ export interface Achievement {
   id: string;
   title: string;
   description: string;
-  icon: any; // Changed from string to any to support React Nodes (Lucide Icons)
+  icon: any;
   current: number;
   max: number;
   category: 'learning' | 'dictionary' | 'streak' | 'time' | 'mastery' | 'performance' | 'misc' | 'blitz' | 'social';
 }
 
 export interface WordProgress {
-  easeFactor: number; // For SuperMemo-2 style SRS (default 2.5)
-  interval: number;   // Days until next review
-  nextReviewDate: number; // Timestamp
+  easeFactor: number;
+  interval: number;
+  nextReviewDate: number;
   status: 'new' | 'learning' | 'review' | 'mastered';
-  // Advanced SRS metrics (FSRS/SM-2)
-  difficulty?: number; // 0 (easy) to 1 (hard)
-  stability?: number; // Measure of memory strength
+  difficulty?: number;
+  stability?: number;
 }
 
 export interface UserProgress {
   xp: number;
   streak: number;
-  lastLoginDate: string; // YYYY-MM-DD
-  wordsLearnedToday: number;
-  aiGenerationsToday: number; // Track AI usage limits
+  lastLoginDate: string;
   
-  // Settings
+  // Sync Meta
+  lastLocalUpdate: number; // When was the DB last touched locally
+  lastCloudSync: number;   // When was the last successful upload to Telegram Cloud
+  
+  wordsLearnedToday: number;
+  aiGenerationsToday: number;
+  
   darkMode: boolean;
 
-  premiumStatus: boolean; // True if Lifetime
-  premiumExpiration: number | null; // Timestamp if Monthly (null if free or lifetime)
+  premiumStatus: boolean;
+  premiumExpiration: number | null;
 
-  // Map of wordID -> SRS data
   wordProgress: Record<string, WordProgress>; 
-  // Map of wordID -> User Comment
   wordComments: Record<string, string>;
   
-  // Track used codes to prevent abuse
   usedPromoCodes: string[];
 
   hasSeenOnboarding: boolean;
   userName?: string;
-  photoUrl?: string; // Telegram Profile Photo
+  photoUrl?: string;
   customWords: Word[];
-  nextSessionUnlockTime?: number; // Timestamp for 24h lock
+  nextSessionUnlockTime?: number;
   dailyProgressByLevel: Record<string, number>;
   
-  // Economy & Gamification
   wallet: {
     coins: number;
   };
   inventory: {
-    streakFreeze: number; // Protects streak
-    timeFreeze: number;   // Pauses timer in Blitz
-    bomb: number;         // Removes wrong answers in Blitz
+    streakFreeze: number;
+    timeFreeze: number;
+    bomb: number;
   };
-  blitzHighScores: Record<string, number>; // Level -> Score
+  blitzHighScores: Record<string, number>;
 }
 
-// Structured response from Gemini (Updated for Tutor Mode)
 export interface AIExplanation {
-  alternativeDefinition: string; // New simpler definition in English
-  detailedExplanation: string; // Tutor-style explanation in Russian
-  nuance: string; // Specific usage constraints or connotations
+  alternativeDefinition: string;
+  detailedExplanation: string;
+  nuance: string;
   collocations: { en: string; ru: string }[]; 
   mnemonic: string; 
-  extraExamples: { en: string; ru: string }[]; // 3 fresh examples
+  extraExamples: { en: string; ru: string }[];
 }
 
 export interface AIWordDetails {
@@ -115,7 +113,7 @@ export interface AIWordDetails {
   exampleRu: string;
 }
 
-export type ViewState = 'onboarding' | 'dashboard' | 'learn_daily' | 'learn_review' | 'levels' | 'dictionary' | 'profile' | 'achievements' | 'progress_stats' | 'blitz_intro' | 'blitz_game' | 'shop';
+export type ViewState = 'onboarding' | 'dashboard' | 'learn_daily' | 'learn_review' | 'levels' | 'dictionary' | 'profile' | 'achievements' | 'progress_stats' | 'blitz_intro' | 'blitz_game' | 'shop' | 'data_management';
 
 declare global {
   interface Window {
@@ -140,7 +138,6 @@ declare global {
         openTelegramLink: (url: string) => void;
         openLink: (url: string, options?: { try_instant_view?: boolean }) => void;
         
-        // Navigation
         BackButton: {
           isVisible: boolean;
           show: () => void;
@@ -149,7 +146,6 @@ declare global {
           offClick: (cb: () => void) => void;
         };
 
-        // Cloud Storage
         CloudStorage: {
           setItem: (key: string, value: string, callback?: (err: any, stored: boolean) => void) => void;
           getItem: (key: string, callback?: (err: any, value: string) => void) => void;

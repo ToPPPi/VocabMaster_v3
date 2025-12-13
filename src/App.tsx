@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, Zap } from 'lucide-react';
 import { ProficiencyLevel, ViewState, UserProgress } from './types';
-import { getUserProgress, completeOnboarding, resetUserProgress, syncTelegramUserData, logoutUser } from './services/storageService';
+import { initUserProgress, downloadCloudData, saveUserProgress, completeOnboarding, syncTelegramUserData, logoutUser } from './services/storageService'; // Updated imports
 import { triggerHaptic } from './utils/uiHelpers';
 
 // Components
@@ -18,12 +18,17 @@ import { AchievementsView } from './components/AchievementsView';
 import { BlitzGame } from './components/BlitzGame';
 import { ShopView } from './components/ShopView';
 import { RewardOverlay, RewardType } from './components/RewardOverlay';
+import { DataManagementView } from './components/DataManagementView';
+import { SyncConflictModal } from './components/SyncConflictModal'; // Import new modal
 
 const App: React.FC = () => {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [view, setView] = useState<ViewState | 'level_browser' | 'progress_stats'>('onboarding');
   const [activeLevel, setActiveLevel] = useState<ProficiencyLevel | null>(null);
   const [levelsMode, setLevelsMode] = useState<'learn' | 'browse' | 'blitz'>('browse');
+  
+  // Conflict State
+  const [conflictData, setConflictData] = useState<{localDate: number, cloudDate: number} | null>(null);
   
   // Reward State
   const [reward, setReward] = useState<RewardType | null>(null);
@@ -33,16 +38,24 @@ const App: React.FC = () => {
 
   useEffect(() => {
       const load = async () => {
+          // Use new init function that checks for conflicts
+          const { data, hasConflict, cloudDate } = await initUserProgress();
+          
+          if (hasConflict && cloudDate) {
+              // Pause loading, show conflict modal
+              setConflictData({ localDate: data.lastLocalUpdate, cloudDate: cloudDate });
+              setProgress(data); // Show local momentarily behind modal
+          } else {
+              setProgress(data);
+              if (data.hasSeenOnboarding) setView('dashboard');
+              else setView('onboarding');
+          }
+
           await syncTelegramUserData(); // Sync name and photo
-          const p = await getUserProgress();
-          setProgress(p);
-          if (p.hasSeenOnboarding) setView('dashboard');
-          else setView('onboarding');
           
           if (window.Telegram?.WebApp) {
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
-            // Set header color to match light/dark mode later if needed, but standard is safe
             window.Telegram.WebApp.setHeaderColor('#F1F5F9'); 
             window.Telegram.WebApp.setBackgroundColor('#F1F5F9');
         }
@@ -50,21 +63,33 @@ const App: React.FC = () => {
       load();
   }, []);
 
-  // --- PREVENT ZOOM (IOS NATIVE FEEL) ---
+  const handleConflictResolve = async (useCloud: boolean) => {
+      setConflictData(null);
+      if (useCloud) {
+          const newData = await downloadCloudData();
+          if (newData) {
+              setProgress(newData);
+              if (newData.hasSeenOnboarding) setView('dashboard');
+          }
+      } else {
+          // Keep local, force overwrite cloud
+          if (progress) {
+              await saveUserProgress(progress, true);
+          }
+          if (progress?.hasSeenOnboarding) setView('dashboard');
+          else setView('onboarding');
+      }
+  };
+
   useEffect(() => {
     const handleGestureStart = (e: any) => {
         e.preventDefault();
     };
-    
-    // Prevent Pinch-to-Zoom
     document.addEventListener('gesturestart', handleGestureStart);
-    
-    // Prevent Double-Tap Zoom on non-interactive elements
     let lastTouchEnd = 0;
     const handleTouchEnd = (e: any) => {
         const now = (new Date()).getTime();
         if (now - lastTouchEnd <= 300) {
-            // Check if target is not an input
             if(e.target && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
             }
@@ -72,20 +97,17 @@ const App: React.FC = () => {
         lastTouchEnd = now;
     };
     document.addEventListener('touchend', handleTouchEnd, false);
-
     return () => {
         document.removeEventListener('gesturestart', handleGestureStart);
         document.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
-  // --- ANDROID BACK BUTTON HANDLING ---
   useEffect(() => {
       const tg = window.Telegram?.WebApp;
       if (!tg) return;
 
       const handleBack = () => {
-          // If in a deep view, go back to dashboard
           if (view !== 'dashboard' && view !== 'onboarding') {
               setView('dashboard');
           }
@@ -95,7 +117,6 @@ const App: React.FC = () => {
          tg.BackButton.onClick(handleBack);
       }
 
-      // Show back button only when not on main screens
       if (view !== 'dashboard' && view !== 'onboarding') {
           tg.BackButton?.show();
       } else {
@@ -108,10 +129,10 @@ const App: React.FC = () => {
   }, [view]);
 
   const refreshProgress = async () => {
-      const p = await getUserProgress();
-      // Ensure state update triggers re-render by creating a new object reference
-      setProgress({ ...p });
-      if(!p.hasSeenOnboarding && view !== 'onboarding') setView('onboarding');
+      // Re-fetch using init is safe as it hits memory cache first
+      const { data } = await initUserProgress();
+      setProgress({ ...data });
+      if(!data.hasSeenOnboarding && view !== 'onboarding') setView('onboarding');
   };
 
   const finishOnboarding = async (name: string) => { 
@@ -122,7 +143,6 @@ const App: React.FC = () => {
   
   const handleLevelSelect = (level: ProficiencyLevel) => {
       setActiveLevel(level);
-      // Standard routing for non-blitz modes
       if (levelsMode === 'learn') {
           setView('learn_daily');
       } else {
@@ -133,13 +153,11 @@ const App: React.FC = () => {
   const handleLogout = async () => {
       triggerHaptic('medium');
       try {
-          // Force logout logic even if storage is slow
           await logoutUser();
           await refreshProgress();
       } catch (e) {
           console.error("Logout failed:", e);
       } finally {
-          // Guaranteed view transition
           setView('onboarding');
       }
   };
@@ -150,7 +168,7 @@ const App: React.FC = () => {
   };
 
   const handleTabChange = (target: any) => {
-      setScrollToPremium(false); // Reset scroll trigger when manually navigating
+      setScrollToPremium(false);
       setView(target);
   };
 
@@ -173,16 +191,21 @@ const App: React.FC = () => {
       );
   }
 
-  // Full Screen Game Mode Check
   const isFullScreen = view === 'blitz_game';
 
   return (
-    // DARK MODE WRAPPER
-    // If progress.darkMode is true, add 'dark' class to outer div
     <div className={progress.darkMode ? 'dark' : ''}>
         <div className={`max-w-md mx-auto h-[100dvh] ${isFullScreen ? 'bg-slate-900' : 'bg-slate-50 dark:bg-slate-950'} flex flex-col font-sans relative shadow-2xl md:shadow-none overflow-hidden transition-colors duration-300`}>
             
-            {/* Reward Overlay Layer */}
+            {/* Conflict Modal Overlay */}
+            {conflictData && (
+                <SyncConflictModal 
+                    localDate={conflictData.localDate} 
+                    cloudDate={conflictData.cloudDate}
+                    onResolve={handleConflictResolve}
+                />
+            )}
+
             <RewardOverlay type={reward} onClose={() => setReward(null)} />
 
             <div className={`flex-1 overflow-y-auto no-scrollbar relative z-10 ${!isFullScreen ? 'pb-24' : ''}`}>
@@ -220,7 +243,6 @@ const App: React.FC = () => {
                     />
                 )}
                 
-                {/* Blitz Intro: Direct Routing to Game */}
                 {view === 'blitz_intro' && (
                     <LevelsScreen 
                         progress={progress} 
@@ -263,6 +285,15 @@ const App: React.FC = () => {
                         onLogout={handleLogout} 
                         scrollToPremium={scrollToPremium}
                         onShowReward={(type) => setReward(type)}
+                        onNavigate={setView}
+                    />
+                )}
+                
+                {view === 'data_management' && (
+                    <DataManagementView 
+                        progress={progress}
+                        onBack={() => setView('profile')}
+                        onUpdate={refreshProgress}
                     />
                 )}
                 
@@ -270,8 +301,7 @@ const App: React.FC = () => {
                 {view === 'achievements' && <AchievementsView progress={progress} onBack={() => setView('dashboard')} />} 
             </div>
             
-            {/* Navigation Bar - Clean, sticky, glassmorphism without heavy borders */}
-            {!isFullScreen && ['dashboard', 'levels', 'dictionary', 'profile', 'progress_stats', 'shop', 'achievements', 'level_browser'].includes(view as any) && (
+            {!isFullScreen && ['dashboard', 'levels', 'dictionary', 'profile', 'progress_stats', 'shop', 'achievements', 'level_browser', 'data_management'].includes(view as any) && (
                 <div className="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50">
                     <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200/60 dark:border-slate-800 pb-safe transition-colors duration-300">
                         <div className="flex justify-around items-center h-16 px-1">
