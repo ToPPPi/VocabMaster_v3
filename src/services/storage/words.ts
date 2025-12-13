@@ -227,8 +227,9 @@ export const dev_UnlockRealWords = async (count: number = 500, onProgress?: (per
             stability: 20
         };
         
-        // Update level stats
+        // Update level stats AND daily stats
         progress.dailyProgressByLevel[w.level] = (progress.dailyProgressByLevel[w.level] || 0) + 1;
+        progress.wordsLearnedToday += 1;
 
         // UI Update every 50 items
         if (i % 50 === 0) {
@@ -255,11 +256,16 @@ export const dev_PopulateReview = async (count: number = 15, onProgress?: (perce
     
     const progress = await getUserProgress();
     const now = getSecureNow();
-    const DAY = 86400000;
 
-    // Shuffle and pick 15 words (can be existing ones or new ones)
+    // Pick random 15 words from all available (including known ones to force them into review)
+    // If we want only words that are already known, we should filter. 
+    // But typically dev tool wants to force *some* words into review.
+    
+    // Better strategy: Pick from ALL words, so we can populate review even on empty account
     const shuffled = allWords.sort(() => 0.5 - Math.random()).slice(0, count);
     
+    let addedCount = 0;
+
     for(let index = 0; index < shuffled.length; index++) {
         const w = shuffled[index];
         let interval = 1;
@@ -267,17 +273,11 @@ export const dev_PopulateReview = async (count: number = 15, onProgress?: (perce
         // Random distribution for Review Intervals (5 days to 1 Year)
         const rnd = Math.random();
         
-        if (rnd < 0.2) {
-            interval = 5; // 5 Days
-        } else if (rnd < 0.4) {
-            interval = 30; // 1 Month
-        } else if (rnd < 0.6) {
-            interval = 90; // 3 Months
-        } else if (rnd < 0.8) {
-            interval = 180; // 6 Months
-        } else {
-            interval = 365; // 1 Year
-        }
+        if (rnd < 0.2) interval = 5; 
+        else if (rnd < 0.4) interval = 30; 
+        else if (rnd < 0.6) interval = 90; 
+        else if (rnd < 0.8) interval = 180; 
+        else interval = 365; 
 
         // We set nextReviewDate to NOW (or slightly past) so they show up immediately in Review Session.
         // But the 'interval' is high, simulating a word learned long ago.
@@ -289,6 +289,8 @@ export const dev_PopulateReview = async (count: number = 15, onProgress?: (perce
             difficulty: 0.5,
             stability: interval
         };
+        
+        addedCount++;
 
         // UI Update for small batch
         if (onProgress) {
@@ -298,7 +300,7 @@ export const dev_PopulateReview = async (count: number = 15, onProgress?: (perce
     }
 
     if (onProgress) onProgress(95);
-    await saveUserProgress(progress, true);
+    await saveUserProgress(progress, true); 
     if (onProgress) onProgress(100);
-    return shuffled.length;
+    return addedCount;
 };

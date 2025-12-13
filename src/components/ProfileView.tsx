@@ -122,13 +122,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
         setLoadingProgress(0);
 
         try {
-            await dev_UnlockRealWords(500, (percent) => {
+            const count = await dev_UnlockRealWords(500, (percent) => {
                 setLoadingProgress(percent);
                 if (percent > 90) setLoadingText("Сохранение в облако...");
                 else if (percent > 50) setLoadingText("Добавление слов...");
             });
             await onUpdate();
             triggerHaptic('success');
+            alert(`Успешно добавлено слов: ${count}\n(Всего доступно в базе на данный момент: ${count})`);
         } catch (e) {
             console.error(e);
             alert("Ошибка при добавлении.");
@@ -146,12 +147,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ progress, onUpdate, on
         setLoadingProgress(0);
 
         try {
-            await dev_PopulateReview(15, (percent) => {
+            const count = await dev_PopulateReview(15, (percent) => {
                 setLoadingProgress(percent);
                 if (percent > 80) setLoadingText("Сохранение...");
             });
             await onUpdate();
             triggerHaptic('success');
+            alert(`Успешно добавлено в очередь повторения: ${count} слов.`);
         } catch (e) {
             console.error(e);
             alert("Ошибка при заполнении очереди.");
