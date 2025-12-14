@@ -3964,19 +3964,6 @@ createRichWord('b1_debit', 'Debit', '/ˈdebɪt/', 'дэбит', 'Дебет / С
     ],
     []
   ),
-createRichWord('b1_buggy', 'Buggy', '/ˈbʌɡi/', 'баги', 'Коляска / Багги', ProficiencyLevel.B1, 'noun', 'Medium', 'Neutral',
-    'Легкая складная коляска для маленьких детей; легкий автомобиль для езды по бездорожью.',
-    '- Дети: "Push the buggy" (Толкать коляску)\n- Транспорт: "Dune buggy" (Пляжный багги)\n- Гольф: "Golf buggy" (Гольф-кар)',
-    [
-        { en: 'The baby fell asleep in her buggy.', ru: 'Малышка заснула в своей коляске.' },
-        { en: 'We rented a dune buggy to drive on the beach.', ru: 'Мы арендовали багги, чтобы покататься по пляжу.' },
-        { en: 'He loaded the golf clubs onto the buggy.', ru: 'Он погрузил клюшки для гольфа на гольф-кар.' },
-        { en: 'Folding the buggy can be tricky sometimes.', ru: 'Сложить коляску иногда бывает непросто.' }
-    ],
-    [
-        { meaning: "Full of bugs (software)", translation: "Глючный (о софте)", example: { en: "This new update is very buggy.", ru: "Это новое обновление очень глючное." } }
-    ]
-),
 
 createRichWord('b1_cardigan', 'Cardigan', '/ˈkɑːdɪɡən/', 'кадигэн', 'Кардиган', ProficiencyLevel.B1, 'noun', 'Medium', 'Neutral',
     'Вязаная кофта на пуговицах или молнии спереди.',

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { Wrench, TestTube, Clock, Search, Loader2 } from 'lucide-react';
-import { dev_UnlockRealWords, dev_PopulateReview, dev_FindDuplicates, togglePremium } from '../../services/storageService';
+import { Wrench, TestTube, Clock, Search, Loader2, Activity } from 'lucide-react';
+import { dev_UnlockRealWords, dev_PopulateReview, dev_RunHealthCheck, togglePremium } from '../../services/storageService';
 import { triggerHaptic } from '../../utils/uiHelpers';
 
 interface DevZoneProps {
@@ -12,7 +12,7 @@ export const DevZone: React.FC<DevZoneProps> = ({ onUpdate }) => {
     const [isDevLoading, setIsDevLoading] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState(0);
     const [loadingText, setLoadingText] = useState("");
-    const [duplicateReport, setDuplicateReport] = useState<string[] | null>(null);
+    const [report, setReport] = useState<string[] | null>(null);
 
     const handleDevPremium = async () => {
         triggerHaptic('success');
@@ -70,18 +70,17 @@ export const DevZone: React.FC<DevZoneProps> = ({ onUpdate }) => {
         }
     };
 
-    const handleCheckDuplicates = async () => {
+    const handleHealthCheck = async () => {
         setIsDevLoading(true);
-        setLoadingText("Сканирование базы...");
+        setLoadingText("Диагностика словаря...");
+        setLoadingProgress(50);
         try {
-            const duplicates = await dev_FindDuplicates();
-            setDuplicateReport(duplicates);
-            if (duplicates.length === 0) {
-                alert("Дубликатов ID не найдено! База чиста.");
-            }
+            const result = await dev_RunHealthCheck();
+            setReport(result);
+            setLoadingProgress(100);
         } catch (e) {
             console.error(e);
-            alert("Ошибка сканирования.");
+            alert("Ошибка диагностики.");
         } finally {
             setIsDevLoading(false);
         }
@@ -129,7 +128,7 @@ export const DevZone: React.FC<DevZoneProps> = ({ onUpdate }) => {
                             className="flex-1 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-sm active:scale-95 flex items-center justify-center gap-2"
                         >
                             {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <TestTube className="w-3 h-3"/>}
-                            Add 500 Real Words (Database Only)
+                            Add 500 Real Words
                         </button>
                     </div>
 
@@ -139,24 +138,24 @@ export const DevZone: React.FC<DevZoneProps> = ({ onUpdate }) => {
                         className="w-full py-2 bg-amber-500 text-white text-xs font-bold rounded-xl shadow-sm active:scale-95 flex items-center justify-center gap-2"
                     >
                         {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <Clock className="w-3 h-3"/>}
-                        [DEV] Populate Review Queue (15 words)
+                        [DEV] Populate Review Queue
                     </button>
 
                     <button 
-                        onClick={handleCheckDuplicates}
+                        onClick={handleHealthCheck}
                         disabled={isDevLoading}
-                        className="w-full py-2 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-xl shadow-sm active:scale-95 flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-700"
+                        className="w-full py-2 bg-blue-600 text-white text-xs font-bold rounded-xl shadow-sm active:scale-95 flex items-center justify-center gap-2 border border-blue-500"
                     >
-                        {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <Search className="w-3 h-3"/>}
-                        [DEV] Scan for ID Duplicates
+                        {isDevLoading ? <Loader2 className="w-3 h-3 animate-spin"/> : <Activity className="w-3 h-3"/>}
+                        [DEV] Диагностика Словаря (Health Check)
                     </button>
 
-                    {duplicateReport && duplicateReport.length > 0 && (
-                        <div className="mt-4 p-3 bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-900/30 rounded-xl text-left max-h-48 overflow-y-auto no-scrollbar">
-                            <h4 className="text-xs font-bold text-rose-700 dark:text-rose-400 mb-2 sticky top-0 bg-rose-50 dark:bg-transparent pb-1">Found Conflicts ({duplicateReport.length}):</h4>
-                            <ul className="space-y-1">
-                                {duplicateReport.map((line, idx) => (
-                                    <li key={idx} className="text-[10px] font-mono text-rose-600 dark:text-rose-300 border-b border-rose-100 dark:border-rose-800/50 pb-1 last:border-0 leading-tight">
+                    {report && report.length > 0 && (
+                        <div className="mt-4 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-left max-h-64 overflow-y-auto no-scrollbar">
+                            <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 sticky top-0 bg-white dark:bg-slate-800 pb-2 border-b border-slate-100 dark:border-slate-700">Отчет диагностики:</h4>
+                            <ul className="space-y-1.5">
+                                {report.map((line, idx) => (
+                                    <li key={idx} className={`text-[10px] font-mono border-b border-slate-100 dark:border-slate-700/50 pb-1 last:border-0 leading-tight ${line.startsWith('✅') ? 'text-emerald-600 dark:text-emerald-400' : line.startsWith('⚠️') ? 'text-amber-600 dark:text-amber-400' : line.startsWith('❌') ? 'text-rose-600 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`}>
                                         {line}
                                     </li>
                                 ))}
