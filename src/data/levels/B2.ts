@@ -3484,5 +3484,1585 @@ createRichWord('b2_deadline', 'Deadline', '/ˈded.laɪn/', 'дэдлайн', 'К
     ],
     []
   ),
+createRichWord('b2_cellular', 'Cellular', '/ˈseljələ(r)/', 'сэльюлэ', 'Клеточный / Сотовый', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Относящийся к клеткам (биологическим) или к системе мобильной связи.',
+    '- Связь: "Cellular network" (Сотовая сеть)\n- Биология: "Cellular structure" (Клеточная структура)\n- Технологии: "Cellular data" (Сотовые данные)',
+    [
+        { en: 'The cellular network coverage is weak in the mountains.', ru: 'Покрытие сотовой сети в горах слабое.' },
+        { en: 'Scientists studied the cellular damage caused by the virus.', ru: 'Ученые изучили клеточные повреждения, вызванные вирусом.' },
+        { en: 'You need to turn off cellular data to save battery.', ru: 'Тебе нужно выключить сотовые данные, чтобы сэкономить заряд.' },
+        { en: 'Life relies on complex cellular processes.', ru: 'Жизнь зависит от сложных клеточных процессов.' }
+    ],
+    [
+        { meaning: "Porous", translation: "Ячеистый / Пористый", example: { en: "Cellular concrete.", ru: "Ячеистый бетон." } }
+    ]
+),
+
+createRichWord('b2_ceramic', 'Ceramic', '/səˈræmɪk/', 'сирэмик', 'Керамический', ProficiencyLevel.B2, 'adj', 'Low', 'Neutral',
+    'Сделанный из глины и обожженный при высокой температуре.',
+    '- Посуда: "Ceramic tiles" (Керамическая плитка)\n- Искусство: "Ceramic art" (Керамическое искусство)\n- Материал: "Ceramic knife" (Керамический нож)',
+    [
+        { en: 'The floor in the bathroom is covered with blue ceramic tiles.', ru: 'Пол в ванной покрыт голубой керамической плиткой.' },
+        { en: 'She collects antique ceramic bowls from Japan.', ru: 'Она коллекционирует старинные керамические чаши из Японии.' },
+        { en: 'Ceramic knives remain sharp for a very long time.', ru: 'Керамические ножи остаются острыми очень долгое время.' },
+        { en: 'He takes evening classes in ceramic pottery.', ru: 'Он посещает вечерние курсы по гончарному делу.' }
+    ],
+    [
+        { meaning: "Ceramics (noun)", translation: "Керамика (изделия)", example: { en: "An exhibition of ceramics.", ru: "Выставка керамики." } }
+    ]
+),
+
+createRichWord('b2_charitable', 'Charitable', '/ˈtʃærɪtəbl/', 'чэритэбл', 'Благотворительный / Милосердный', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Связанный с помощью нуждающимся; добрый и неосуждающий в суждениях о других.',
+    '- Организация: "Charitable foundation" (Благотворительный фонд)\n- Действие: "Charitable donation" (Благотворительное пожертвование)\n- Отношение: "Be charitable" (Быть снисходительным)',
+    [
+        { en: 'She leaves a lot of money to charitable organizations.', ru: 'Она оставляет много денег благотворительным организациям.' },
+        { en: 'The company has a strong charitable program for the community.', ru: 'У компании есть сильная благотворительная программа для общества.' },
+        { en: 'Try to take a more charitable view of his mistakes.', ru: 'Постарайся взглянуть на его ошибки более снисходительно.' },
+        { en: 'Their charitable work helped hundreds of homeless people.', ru: 'Их благотворительная работа помогла сотням бездомных.' }
+    ],
+    []
+),
+
+createRichWord('b2_chord', 'Chord', '/kɔːd/', 'код', 'Аккорд', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Группа (обычно три или более) музыкальных нот, звучащих одновременно.',
+    '- Музыка: "Play a chord" (Сыграть аккорд)\n- Гитара: "Guitar chords" (Гитарные аккорды)\n- Идиома: "Strike a chord" (Задеть за живое)',
+    [
+        { en: 'He strummed a few chords on his acoustic guitar.', ru: 'Он побренькал несколько аккордов на своей акустической гитаре.' },
+        { en: 'The song begins with a dramatic major chord.', ru: 'Песня начинается с драматичного мажорного аккорда.' },
+        { en: 'Her speech struck a chord with many voters.', ru: 'Ее речь нашла отклик у многих избирателей.' },
+        { en: 'Learning the basic chords is the first step in piano.', ru: 'Изучение базовых аккордов — первый шаг в игре на пианино.' }
+    ],
+    [
+        { meaning: "Line segment (Math)", translation: "Хорда", example: { en: "A chord connects two points on a circle.", ru: "Хорда соединяет две точки на окружности." } }
+    ]
+),
+
+createRichWord('b2_chorus', 'Chorus', '/ˈkɔːrəs/', 'корэс', 'Припев / Хор', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Часть песни, которая повторяется; большая группа людей, поющих вместе.',
+    '- Песня: "Sing the chorus" (Петь припев)\n- Группа: "Join the chorus" (Вступить в хор)\n- Согласие: "Chorus of approval" (Хор одобрения)',
+    [
+        { en: 'Everyone knows the chorus of this famous song.', ru: 'Все знают припев этой известной песни.' },
+        { en: 'A chorus of angry voices rose from the crowd.', ru: 'Из толпы поднялся хор сердитых голосов.' },
+        { en: 'The children sang in chorus at the school concert.', ru: 'Дети пели хором на школьном концерте.' },
+        { en: 'Please join in when we get to the chorus.', ru: 'Пожалуйста, присоединяйтесь, когда мы дойдем до припева.' }
+    ],
+    [
+        { meaning: "Simultaneous utterance", translation: "Хором (одновременно)", example: { en: "\"Yes!\" they answered in chorus.", ru: "\"Да!\" — ответили они хором." } }
+    ]
+),
+
+createRichWord('b2_chuckle', 'Chuckle', '/ˈtʃʌkl/', 'чакл', 'Хихикать / Усмехаться', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Смеяться тихо, часто с закрытым ртом, выражая удовлетворение или веселье.',
+    '- Реакция: "Chuckle to oneself" (Хихикать про себя)\n- Звук: "Soft chuckle" (Тихий смешок)\n- Эмоция: "Have a chuckle" (Посмеяться)',
+    [
+        { en: 'He chuckled to himself as he read the funny message.', ru: 'Он усмехнулся про себя, читая смешное сообщение.' },
+        { en: 'She gave a little chuckle when she saw the puppy playing.', ru: 'Она тихо хихикнула, увидев, как играет щенок.' },
+        { en: 'The definition of the word made the students chuckle.', ru: 'Определение этого слова заставило студентов хихикать.' },
+        { en: 'There was a low chuckle from the back of the room.', ru: 'Из глубины комнаты раздался тихий смешок.' }
+    ],
+    [
+        { meaning: "A quiet laugh (noun)", translation: "Смешок", example: { en: "He suppressed a chuckle.", ru: "Он подавил смешок." } }
+    ]
+),
+
+createRichWord('b2_clan', 'Clan', '/klæn/', 'клэн', 'Клан / Род', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Большая группа семей, имеющих общего предка (особенно в Шотландии); тесная группа людей.',
+    '- История: "Scottish clan" (Шотландский клан)\n- Семья: "The whole clan" (Все семейство)\n- Общество: "Clan chief" (Вождь клана)',
+    [
+        { en: 'The Scottish clans fought each other for centuries.', ru: 'Шотландские кланы воевали друг с другом столетиями.' },
+        { en: 'Our whole clan gathers together for Christmas dinner.', ru: 'Все наше семейство собирается вместе на рождественский ужин.' },
+        { en: 'They act like a clan, excluding anyone from outside.', ru: 'Они ведут себя как клан, исключая любого постороннего.' },
+        { en: 'Members of the clan wear a specific tartan pattern.', ru: 'Члены клана носят определенный узор тартана (клетчатой ткани).' }
+    ],
+    []
+),
+
+createRichWord('b2_claw', 'Claw', '/klɔː/', 'кло', 'Коготь / Клешня', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Острый загнутый ноготь на лапе животного или птицы; часть тела краба.',
+    '- Животное: "Cat\'s claws" (Кошачьи когти)\n- Морепродукты: "Crab claw" (Клешня краба)\n- Действие: "Claw marks" (Следы от когтей)',
+    [
+        { en: 'The cat sharpened its claws on the wooden fence.', ru: 'Кошка точила когти о деревянный забор.' },
+        { en: 'The eagle seized its prey with its powerful claws.', ru: 'Орел схватил добычу своими мощными когтями.' },
+        { en: 'He managed to claw his way back to the top.', ru: 'Ему удалось с трудом (карабкаясь) вернуться на вершину.' },
+        { en: 'Be careful, that lobster has huge claws.', ru: 'Будь осторожен, у этого омара огромные клешни.' }
+    ],
+    [
+        { meaning: "To scratch/tear", translation: "Царапать / Рвать когтями", example: { en: "She clawed at his face.", ru: "Она вцепилась ему в лицо." } }
+    ]
+),
+
+createRichWord('b2_cocaine', 'Cocaine', '/kəʊˈkeɪn/', 'кэукейн', 'Кокаин', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сильный нелегальный наркотик, обычно в виде белого порошка.',
+    '- Преступность: "Cocaine addiction" (Кокаиновая зависимость)\n- Закон: "Possession of cocaine" (Хранение кокаина)\n- Сленг: "Cocaine high" (Кайф от кокаина)',
+    [
+        { en: 'He was arrested for smuggling cocaine across the border.', ru: 'Его арестовали за контрабанду кокаина через границу.' },
+        { en: 'Cocaine is a highly addictive and dangerous substance.', ru: 'Кокаин — это вещество, вызывающее сильное привыкание и очень опасное.' },
+        { en: 'The movie depicts the rise of the cocaine trade in the 80s.', ru: 'Фильм описывает расцвет торговли кокаином в 80-е.' },
+        { en: 'Tests revealed traces of cocaine in his blood.', ru: 'Тесты выявили следы кокаина в его крови.' }
+    ],
+    []
+),
+
+createRichWord('b2_collision', 'Collision', '/kəˈlɪʒn/', 'кэлижн', 'Столкновение', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Авария, при которой два или более транспортных средства или предмета врезаются друг в друга.',
+    '- Дорога: "Head-on collision" (Лобовое столкновение)\n- Космос: "Collision course" (Курс на столкновение)\n- Мнения: "Collision of interests" (Столкновение интересов)',
+    [
+        { en: 'The driver was injured in a collision with a bus.', ru: 'Водитель пострадал при столкновении с автобусом.' },
+        { en: 'Luckily, we managed to avoid a collision at the last second.', ru: 'К счастью, нам удалось избежать столкновения в последнюю секунду.' },
+        { en: 'The two galaxies are on a collision course.', ru: 'Две галактики находятся на курсе столкновения.' },
+        { en: 'There was a collision of cultures when they moved abroad.', ru: 'Произошло столкновение культур, когда они переехали за границу.' }
+    ],
+    []
+),
+
+createRichWord('b2_communism', 'Communism', '/ˈkɒmjənɪzəm/', 'комьюнизм', 'Коммунизм', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Политическая система, в которой государство владеет собственностью и производством, а блага делятся поровну.',
+    '- Политика: "Fall of communism" (Падение коммунизма)\n- История: "Soviet communism" (Советский коммунизм)\n- Идеология: "Believe in communism" (Верить в коммунизм)',
+    [
+        { en: 'The collapse of communism changed the map of Europe.', ru: 'Крах коммунизма изменил карту Европы.' },
+        { en: 'Many books were written about the theory of communism.', ru: 'О теории коммунизма было написано много книг.' },
+        { en: 'He was a strong supporter of communism in his youth.', ru: 'В молодости он был убежденным сторонником коммунизма.' },
+        { en: 'Countries transitioned from communism to capitalism.', ru: 'Страны перешли от коммунизма к капитализму.' }
+    ],
+    []
+),
+
+createRichWord('b2_compartment', 'Compartment', '/kəmˈpɑːtmənt/', 'кэмпатмэнт', 'Отделение / Купе', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Отдельная секция внутри большей структуры, например, в поезде или сумке.',
+    '- Поезд: "Train compartment" (Купе поезда)\n- Хранение: "Glove compartment" (Бардачок в машине)\n- Багаж: "Secret compartment" (Потайное отделение)',
+    [
+        { en: 'We booked a sleeping compartment on the night train.', ru: 'Мы забронировали спальное купе в ночном поезде.' },
+        { en: 'Keep your registration documents in the glove compartment.', ru: 'Держите документы на машину в бардачке.' },
+        { en: 'The bag has a separate compartment for a laptop.', ru: 'В сумке есть отдельный отсек для ноутбука.' },
+        { en: 'The ice fell into the freezer compartment.', ru: 'Лед упал в морозильную камеру.' }
+    ],
+    [
+        { meaning: "Separate section (abstract)", translation: "Отсек / Изолированная часть", example: { en: "He keeps his work and life in separate compartments.", ru: "Он держит работу и жизнь в разных плоскостях (не смешивает)." } }
+    ]
+),
+
+createRichWord('b2_compassion', 'Compassion', '/kəmˈpæʃn/', 'кэмпэшн', 'Сострадание', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Сильное чувство сочувствия и печали по поводу чужих страданий и желание помочь.',
+    '- Чувства: "Show compassion" (Проявлять сострадание)\n- Характер: "Man of compassion" (Сострадательный человек)\n- Действие: "Look with compassion" (Смотреть с состраданием)',
+    [
+        { en: 'The nurse treated the patients with great compassion.', ru: 'Медсестра относилась к пациентам с большим состраданием.' },
+        { en: 'We should show compassion for those less fortunate than us.', ru: 'Мы должны проявлять сострадание к тем, кому повезло меньше нас.' },
+        { en: 'Her heart was filled with compassion for the orphan.', ru: 'Ее сердце наполнилось состраданием к сироте.' },
+        { en: 'He felt no compassion for the criminal\'s fate.', ru: 'Он не испытывал сострадания к судьбе преступника.' }
+    ],
+    []
+),
+
+createRichWord('b2_compost', 'Compost', '/ˈkɒmpɒst/', 'компост', 'Компост / Удобрение', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Смесь гниющих растений и пищевых отходов, используемая для улучшения качества почвы.',
+    '- Сад: "Compost heap" (Компостная куча)\n- Действие: "Make compost" (Делать компост)\n- Экология: "Compost bin" (Контейнер для компоста)',
+    [
+        { en: 'Put the vegetable peelings in the compost bin.', ru: 'Положите овощные очистки в контейнер для компоста.' },
+        { en: 'Compost is an excellent natural fertilizer for your garden.', ru: 'Компост — отличное натуральное удобрение для вашего сада.' },
+        { en: 'It takes several months for the leaves to turn into compost.', ru: 'Требуется несколько месяцев, чтобы листья превратились в компост.' },
+        { en: 'We use compost to help our roses grow better.', ru: 'Мы используем компост, чтобы наши розы росли лучше.' }
+    ],
+    [
+        { meaning: "To turn into compost", translation: "Компостировать", example: { en: "You can compost paper and cardboard.", ru: "Бумагу и картон можно компостировать." } }
+    ]
+),
+
+createRichWord('b2_conquer', 'Conquer', '/ˈkɒŋkə(r)/', 'конкэ', 'Завоевывать / Покорять', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Взять контроль над страной или городом с помощью военной силы; успешно преодолеть проблему.',
+    '- Война: "Conquer a country" (Завоевать страну)\n- Личное: "Conquer fear" (Победить страх)\n- Спорт: "Conquer the mountain" (Покорить гору)',
+    [
+        { en: 'The army set out to conquer the neighbouring lands.', ru: 'Армия отправилась завоевывать соседние земли.' },
+        { en: 'She finally managed to conquer her fear of spiders.', ru: 'Ей наконец удалось побороть свой страх перед пауками.' },
+        { en: 'Napolean tried to conquer the whole of Europe.', ru: 'Наполеон пытался завоевать всю Европу.' },
+        { en: 'Scientists are working to conquer this disease.', ru: 'Ученые работают над тем, чтобы победить эту болезнь.' }
+    ],
+    []
+),
+
+createRichWord('b2_condense', 'Condense', '/kənˈdens/', 'кэндэнс', 'Сгущать / Конденсировать', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Превращать газ в жидкость; делать текст короче, сохраняя смысл.',
+    '- Физика: "Steam condenses" (Пар конденсируется)\n- Текст: "Condense the report" (Сократить отчет)\n- Еда: "Condensed milk" (Сгущенное молоко)',
+    [
+        { en: 'Water vapour condenses on cold windows to form drops.', ru: 'Водяной пар конденсируется на холодных окнах, образуя капли.' },
+        { en: 'Please condense your essay into one paragraph.', ru: 'Пожалуйста, сожмите свое эссе до одного абзаца.' },
+        { en: 'I love pancakes with sweet condensed milk.', ru: 'Я обожаю блины со сладким сгущенным молоком.' },
+        { en: 'The long speech was condensed for the news summary.', ru: 'Длинную речь сократили для сводки новостей.' }
+    ],
+    []
+  ),
+createRichWord('b2_convene', 'Convene', '/kənˈviːn/', 'кэнвин', 'Созывать / Собраться', ProficiencyLevel.B2, 'verb', 'Low', 'Formal',
+    'Организовать встречу или собраться вместе для встречи (официально).',
+    '- Бизнес: "Convene a meeting" (Созвать совещание)\n- Суд: "Court convenes" (Суд собирается)\n- Политика: "Convene a conference" (Созвать конференцию)',
+    [
+        { en: 'The committee will convene next week to discuss the budget.', ru: 'Комитет соберется на следующей неделе, чтобы обсудить бюджет.' },
+        { en: 'The Prime Minister convened an emergency cabinet meeting.', ru: 'Премьер-министр созвал экстренное заседание кабинета.' },
+        { en: 'A special panel was convened to investigate the incident.', ru: 'Была созвана специальная комиссия для расследования инцидента.' },
+        { en: 'We agreed to convene again in a month\'s time.', ru: 'Мы договорились собраться снова через месяц.' }
+    ],
+    []
+),
+
+createRichWord('b2_conversely', 'Conversely', '/ˈkɒnvɜːsli/', 'конвёсли', 'Наоборот / С другой стороны', ProficiencyLevel.B2, 'adv', 'Low', 'Formal',
+    'Вводное слово, используемое для описания ситуации, противоположной только что упомянутой.',
+    '- Аргумент: "And conversely" (И наоборот)\n- Логика: "Act conversely" (Действовать наоборот)\n- Связка: "Conversely, some people..." (С другой стороны, некоторые люди...)',
+    [
+        { en: 'Poor health is accepted as an attribute of old age. Conversely, youth is associated with health.', ru: 'Плохое здоровье считается признаком старости. И наоборот, молодость ассоциируется со здоровьем.' },
+        { en: 'You can add the fluid to the powder, or, conversely, the powder to the fluid.', ru: 'Вы можете добавить жидкость в порошок, или, наоборот, порошок в жидкость.' },
+        { en: 'Some people enjoy the heat; conversely, others prefer winter.', ru: 'Некоторые люди наслаждаются жарой; с другой стороны, другие предпочитают зиму.' },
+        { en: 'If sales go up, we hire. Conversely, if they drop, we fire.', ru: 'Если продажи растут, мы нанимаем. И наоборот, если они падают, мы увольняем.' }
+    ],
+    []
+),
+
+createRichWord('b2_corpse', 'Corpse', '/kɔːps/', 'копс', 'Труп', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Мертвое тело, обычно человека (используется в криминальном или медицинском контексте).',
+    '- Криминал: "Identify the corpse" (Опознать труп)\n- Медицина: "Examine the corpse" (Осмотреть труп)\n- Идиома: "Walking corpse" (Живой труп)',
+    [
+        { en: 'The police found a corpse in the abandoned house.', ru: 'Полиция нашла труп в заброшенном доме.' },
+        { en: 'Doctors examined the corpse to determine the cause of death.', ru: 'Врачи осмотрели труп, чтобы определить причину смерти.' },
+        { en: 'He looked like a walking corpse after the illness.', ru: 'После болезни он выглядел как живой труп.' },
+        { en: 'The corpse was buried in an unmarked grave.', ru: 'Труп был похоронен в безымянной могиле.' }
+    ],
+    []
+),
+
+createRichWord('b2_cradle', 'Cradle', '/ˈkreɪdl/', 'крейдл', 'Колыбель / Баюкать', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Маленькая кроватка для младенца (обычно качающаяся); место зарождения чего-либо.',
+    '- Мебель: "Rock the cradle" (Качать колыбель)\n- Метафора: "Cradle of civilization" (Колыбель цивилизации)\n- Глагол: "Cradle a baby" (Баюкать/держать бережно)',
+    [
+        { en: 'She gently rocked the cradle until the baby fell asleep.', ru: 'Она нежно качала колыбель, пока ребенок не заснул.' },
+        { en: 'Greece is often called the cradle of Western civilization.', ru: 'Грецию часто называют колыбелью западной цивилизации.' },
+        { en: 'He cradled the injured bird in his hands.', ru: 'Он бережно держал раненую птицу в руках.' },
+        { en: 'She cradled her cup of coffee to warm her hands.', ru: 'Она обхватила чашку кофе, чтобы согреть руки.' }
+    ],
+    [
+        { meaning: "From birth to death", translation: "От рождения до смерти", example: { en: "From the cradle to the grave.", ru: "От колыбели до могилы." } }
+    ]
+),
+
+createRichWord('b2_cramp', 'Cramp', '/kræmp/', 'крэмп', 'Судорога / Стеснять', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Внезапная болезненная скованность в мышце; ограничение свободы или развития.',
+    '- Здоровье: "Muscle cramp" (Мышечная судорога)\n- Спорт: "Leg cramp" (Судорога ноги)\n- Идиома: "Cramp my style" (Мешать мне/Стеснять меня)',
+    [
+        { en: 'I got a terrible cramp in my leg while swimming.', ru: 'У меня ужасно свело ногу, когда я плавал.' },
+        { en: 'Writers often suffer from writer\'s cramp in their hands.', ru: 'Писатели часто страдают от писчего спазма в руках.' },
+        { en: 'Tight rules will cramp the company\'s growth.', ru: 'Жесткие правила будут сдерживать рост компании.' },
+        { en: 'Having my parents around really cramps my style.', ru: 'Присутствие родителей реально меня стесняет (мешает развернуться).' }
+    ],
+    []
+),
+
+createRichWord('b2_crane', 'Crane', '/kreɪn/', 'крейн', 'Журавль / Подъемный кран', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Высокая машина для подъема тяжестей; большая птица с длинной шеей и ногами.',
+    '- Строительство: "Tower crane" (Башенный кран)\n- Птица: "White crane" (Белый журавль)\n- Глагол: "Crane your neck" (Вытягивать шею)',
+    [
+        { en: 'A huge crane lifted the steel beams to the top floor.', ru: 'Огромный кран поднял стальные балки на верхний этаж.' },
+        { en: 'We saw a crane standing on one leg in the marsh.', ru: 'Мы видели журавля, стоящего на одной ноге на болоте.' },
+        { en: 'She craned her neck to see over the crowd.', ru: 'Она вытянула шею, чтобы видеть поверх толпы.' },
+        { en: 'Construction cranes dominate the city skyline.', ru: 'Строительные краны доминируют в панораме города.' }
+    ],
+    []
+),
+
+createRichWord('b2_crest', 'Crest', '/krest/', 'крест', 'Гребень / Вершина', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Верхняя часть волны или холма; пучок перьев на голове птицы; герб.',
+    '- Природа: "Crest of a wave" (Гребень волны)\n- География: "Crest of a hill" (Вершина холма)\n- Символ: "Family crest" (Семейный герб)',
+    [
+        { en: 'Surfers rode on the crest of the wave.', ru: 'Серферы ехали на гребне волны.' },
+        { en: 'We finally reached the crest of the mountain.', ru: 'Мы наконец достигли вершины горы.' },
+        { en: 'The bird has a distinctive yellow crest on its head.', ru: 'У этой птицы есть характерный желтый хохолок на голове.' },
+        { en: 'The school crest is embroidered on the uniform.', ru: 'Школьный герб вышит на форме.' }
+    ],
+    []
+),
+
+createRichWord('b2_cripple', 'Cripple', '/ˈkrɪpl/', 'крипл', 'Калечить / Парализовать', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Повредить чье-то тело так, что человек не может ходить; нанести серьезный ущерб системе или экономике.',
+    '- Здоровье: "Crippled by arthritis" (Искалеченный артритом)\n- Экономика: "Cripple the economy" (Подорвать экономику)\n- Сущ: "A cripple" (Калека - грубо/устар.)',
+    [
+        { en: 'The accident crippled him for life.', ru: 'Авария сделала его калекой на всю жизнь.' },
+        { en: 'High taxes threaten to cripple small businesses.', ru: 'Высокие налоги угрожают парализовать малый бизнес.' },
+        { en: 'The attack crippled the ship\'s communication system.', ru: 'Атака вывела из строя систему связи корабля.' },
+        { en: 'He was crippled by a fear of failure.', ru: 'Его парализовал страх неудачи.' }
+    ],
+    []
+),
+
+createRichWord('b2_crook', 'Crook', '/krʊk/', 'крук', 'Мошенник / Изгиб', ProficiencyLevel.B2, 'noun', 'Low', 'Informal',
+    'Нечестный человек или преступник (разг.); изогнутая часть чего-либо (например, локтя).',
+    '- Преступник: "Petty crook" (Мелкий жулик)\n- Тело: "Crook of the arm" (Локтевой сгиб)\n- Предмет: "Shepherd\'s crook" (Пастуший посох)',
+    [
+        { en: 'That salesman is a crook, don\'t buy anything from him.', ru: 'Этот продавец — жулик, ничего у него не покупай.' },
+        { en: 'She held the flowers in the crook of her arm.', ru: 'Она держала цветы на сгибе локтя.' },
+        { en: 'The police finally caught the crook responsible for the theft.', ru: 'Полиция наконец поймала преступника, ответственного за кражу.' },
+        { en: 'By hook or by crook, I will finish this job.', ru: 'Всеми правдами и неправдами я закончу эту работу.' }
+    ],
+    []
+),
+
+createRichWord('b2_crouch', 'Crouch', '/kraʊtʃ/', 'крауч', 'Присесть / Сжаться', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Согнуть колени и опустить тело близко к земле (часто чтобы спрятаться).',
+    '- Действие: "Crouch down" (Присесть на корточки)\n- Поза: "Crouching tiger" (Крадущийся тигр)\n- Страх: "Crouch in fear" (Сжаться от страха)',
+    [
+        { en: 'The soldiers crouched behind the wall to avoid fire.', ru: 'Солдаты пригнулись за стеной, чтобы избежать огня.' },
+        { en: 'He crouched down to talk to the child.', ru: 'Он присел на корточки, чтобы поговорить с ребенком.' },
+        { en: 'The cat was crouching in the grass, ready to jump.', ru: 'Кошка припала к земле в траве, готовая к прыжку.' },
+        { en: 'We crouched in the corner until the storm passed.', ru: 'Мы сидели, сжавшись в углу, пока шторм не прошел.' }
+    ],
+    []
+),
+
+createRichWord('b2_crunch', 'Crunch', '/krʌntʃ/', 'кранч', 'Хруст / Хрустеть', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Издавать громкий звук при раздавливании чего-то твердого; громко жевать.',
+    '- Звук: "Crunch of snow" (Хруст снега)\n- Еда: "Crunch on an apple" (Хрустеть яблоком)\n- Экономика: "Credit crunch" (Кредитный кризис)',
+    [
+        { en: 'The snow crunched under our feet as we walked.', ru: 'Снег хрустел у нас под ногами, пока мы шли.' },
+        { en: 'She sat there crunching on a carrot.', ru: 'Она сидела там, хрустя морковкой.' },
+        { en: 'The car crunched into the tree.', ru: 'Машина с хрустом врезалась в дерево.' },
+        { en: 'Companies are suffering due to the credit crunch.', ru: 'Компании страдают из-за кредитного кризиса.' }
+    ],
+    [
+        { meaning: "Critical moment", translation: "Решающий момент", example: { en: "When the crunch comes, I'll be ready.", ru: "Когда настанет решающий момент, я буду готов." } }
+    ]
+),
+
+createRichWord('b2_crusade', 'Crusade', '/kruːˈseɪd/', 'крусейд', 'Крестовый поход / Кампания', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Длительная и решительная борьба за правое дело; исторические религиозные войны.',
+    '- История: "The Crusades" (Крестовые походы)\n- Общество: "Crusade against drugs" (Кампания против наркотиков)\n- Действие: "Lead a crusade" (Возглавить кампанию)',
+    [
+        { en: 'She led a crusade against corruption in the city.', ru: 'Она возглавила кампанию борьбы с коррупцией в городе.' },
+        { en: 'Historically, the Crusades were wars between Christians and Muslims.', ru: 'Исторически Крестовые походы были войнами между христианами и мусульманами.' },
+        { en: 'He is on a crusade to save the local library.', ru: 'Он ведет борьбу за спасение местной библиотеки.' },
+        { en: 'Newspapers joined the crusade for better schools.', ru: 'Газеты присоединились к кампании за улучшение школ.' }
+    ],
+    []
+),
+
+createRichWord('b2_curator', 'Curator', '/kjʊˈreɪtə(r)/', 'кьюрейтэ', 'Куратор / Хранитель музея', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Человек, отвечающий за музей, выставку или коллекцию.',
+    '- Профессия: "Museum curator" (Куратор музея)\n- Искусство: "Assistant curator" (Помощник куратора)\n- Задача: "Curator of the exhibition" (Куратор выставки)',
+    [
+        { en: 'The curator explained the history of the painting.', ru: 'Куратор объяснил историю этой картины.' },
+        { en: 'She works as a curator at the National Gallery.', ru: 'Она работает хранителем в Национальной галерее.' },
+        { en: 'The museum curator is responsible for acquiring new art.', ru: 'Куратор музея отвечает за приобретение новых предметов искусства.' },
+        { en: 'He was appointed curator of the rare books collection.', ru: 'Его назначили хранителем коллекции редких книг.' }
+    ],
+    []
+),
+
+createRichWord('b2_curb', 'Curb', '/kɜːb/', 'кёб', 'Сдерживать / Бордюр', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Контролировать или ограничивать что-то нежелательное; край тротуара (сущ.).',
+    '- Действие: "Curb spending" (Ограничить расходы)\n- Эмоции: "Curb your anger" (Сдерживать гнев)\n- Улица: "Park by the curb" (Парковаться у бордюра)',
+    [
+        { en: 'You need to curb your enthusiasm a little bit.', ru: 'Тебе нужно немного умерить свой энтузиазм.' },
+        { en: 'The government took measures to curb inflation.', ru: 'Правительство приняло меры для сдерживания инфляции.' },
+        { en: 'He tripped over the curb and fell into the street.', ru: 'Он споткнулся о бордюр и упал на дорогу.' },
+        { en: 'Please try to curb your dog from barking.', ru: 'Пожалуйста, постарайтесь удержать собаку от лая.' }
+    ],
+    []
+),
+
+createRichWord('b2_cylinder', 'Cylinder', '/ˈsɪlɪndə(r)/', 'силиндэ', 'Цилиндр', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Геометрическая форма с прямыми сторонами и круглыми концами; деталь двигателя.',
+    '- Форма: "Gas cylinder" (Газовый баллон)\n- Двигатель: "Four-cylinder engine" (Четырехцилиндровый двигатель)\n- Предмет: "Measuring cylinder" (Мерный цилиндр)',
+    [
+        { en: 'The divers carry oxygen in a metal cylinder.', ru: 'Дайверы носят кислород в металлическом баллоне.' },
+        { en: 'The engine is firing on only three cylinders.', ru: 'Двигатель работает только на трех цилиндрах.' },
+        { en: 'Calculate the volume of the cylinder.', ru: 'Рассчитайте объем цилиндра.' },
+        { en: 'Cookies were packed in a tall cardboard cylinder.', ru: 'Печенье было упаковано в высокий картонный цилиндр.' }
+    ],
+    []
+),
+
+createRichWord('b2_dangle', 'Dangle', '/ˈdæŋɡl/', 'дэнгл', 'Свисать / Болтать (ногами)', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Висеть или качаться свободно; держать что-то так, чтобы оно висело.',
+    '- Поза: "Dangle legs" (Болтать ногами)\n- Предмет: "Dangle from a wire" (Свисать с провода)\n- Искушение: "Dangle a carrot" (Манить морковкой/обещанием)',
+    [
+        { en: 'A loose wire was dangling from the ceiling.', ru: 'С потолка свисал незакрепленный провод.' },
+        { en: 'They sat on the wall, dangling their legs.', ru: 'Они сидели на стене, болтая ногами.' },
+        { en: 'He dangled the keys in front of the baby.', ru: 'Он покачивал ключами перед ребенком.' },
+        { en: 'The company dangled a big bonus to keep him.', ru: 'Компания поманила его большим бонусом, чтобы удержать.' }
+    ],
+    []
+),
+
+createRichWord('b2_dart', 'Dart', '/dɑːt/', 'дат', 'Дротик / Метнуться', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Маленькая острая стрела для игры; быстрое внезапное движение.',
+    '- Игра: "Play darts" (Играть в дартс)\n- Оружие: "Tranquilizer dart" (Дротик с транквилизатором)\n- Глагол: "Dart across" (Переметнуться/Пронестись)',
+    [
+        { en: 'We played darts at the pub last night.', ru: 'Вчера вечером мы играли в дартс в пабе.' },
+        { en: 'A rabbit darted across the road in front of us.', ru: 'Кролик перебежал дорогу прямо перед нами.' },
+        { en: 'She darted a quick look at the clock.', ru: 'Она бросила быстрый взгляд на часы.' },
+        { en: 'The vet used a dart to put the lion to sleep.', ru: 'Ветеринар использовал дротик, чтобы усыпить льва.' }
+    ],
+    []
+),
+
+createRichWord('b2_dazzle', 'Dazzle', '/ˈdæzl/', 'дэзл', 'Ослеплять / Поражать', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Ослепить ярким светом; произвести сильное впечатление чьим-то мастерством или красотой.',
+    '- Свет: "Dazzled by the sun" (Ослепленный солнцем)\n- Впечатление: "Dazzle the audience" (Поразить публику)\n- Качество: "Dazzling smile" (Ослепительная улыбка)',
+    [
+        { en: 'I was dazzled by the bright headlights of the car.', ru: 'Меня ослепили яркие фары автомобиля.' },
+        { en: 'Her performance dazzled the judges and the audience.', ru: 'Ее выступление поразило судей и зрителей.' },
+        { en: 'He has a dazzling career ahead of him.', ru: 'Его ждет блестящая карьера.' },
+        { en: 'The diamond ring dazzled in the light.', ru: 'Бриллиантовое кольцо сверкало на свету.' }
+    ],
+    []
+),
+
+createRichWord('b2_debris', 'Debris', '/ˈdeɪbriː/', 'дэйбри', 'Обломки / Мусор', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Разбитые или разбросанные куски чего-либо (после взрыва, аварии, шторма).',
+    '- Катастрофа: "Space debris" (Космический мусор)\n- Уборка: "Clear the debris" (Расчистить завалы)\n- Здание: "Falling debris" (Падающие обломки)',
+    [
+        { en: 'Emergency teams searched through the debris for survivors.', ru: 'Спасательные команды обыскивали завалы в поисках выживших.' },
+        { en: 'The beach was covered in debris after the storm.', ru: 'После шторма пляж был покрыт мусором.' },
+        { en: 'Falling debris from the building injured two people.', ru: 'Падающие обломки здания ранили двух человек.' },
+        { en: 'Space debris is becoming a problem for satellites.', ru: 'Космический мусор становится проблемой для спутников.' }
+    ],
+    []
+),
+
+createRichWord('b2_deceased', 'Deceased', '/dɪˈsiːst/', 'дисист', 'Умерший / Покойный', ProficiencyLevel.B2, 'adj', 'Low', 'Formal',
+    'Официальное или вежливое слово для обозначения умершего человека.',
+    '- Документы: "The deceased" (Покойный - сущ.)\n- Семья: "Deceased parents" (Умершие родители)\n- Право: "Estate of the deceased" (Имущество покойного)',
+    [
+        { en: 'The family of the deceased requested privacy.', ru: 'Семья покойного попросила о конфиденциальности.' },
+        { en: 'Her deceased husband was a famous writer.', ru: 'Ее покойный муж был известным писателем.' },
+        { en: 'We are gathered here to remember the deceased.', ru: 'Мы собрались здесь, чтобы почтить память усопшего.' },
+        { en: 'The lawyer read the will of the deceased.', ru: 'Адвокат зачитал завещание покойного.' }
+    ],
+    []
+),
+
+createRichWord('b2_default', 'Default', '/dɪˈfɔːlt/', 'дифолт', 'По умолчанию / Дефолт', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Стандартная настройка (компьютер); невыполнение обязательств по выплате долга.',
+    '- Компьютер: "Default settings" (Настройки по умолчанию)\n- Финансы: "Default on a loan" (Невыплата кредита)\n- Выбор: "By default" (По умолчанию/автоматически)',
+    [
+        { en: 'The computer is set to English by default.', ru: 'Компьютер настроен на английский язык по умолчанию.' },
+        { en: 'If you default on your mortgage, you may lose your home.', ru: 'Если вы допустите просрочку по ипотеке, вы можете потерять дом.' },
+        { en: 'I became the leader by default because no one else wanted to.', ru: 'Я стал лидером автоматически, потому что никто больше не хотел.' },
+        { en: 'The country is at risk of sovereign default.', ru: 'Страна находится под угрозой суверенного дефолта.' }
+    ],
+    []
+),
+
+createRichWord('b2_definitive', 'Definitive', '/dɪˈfɪnətɪv/', 'дифинитив', 'Окончательный / Авторитетный', ProficiencyLevel.B2, 'adj', 'Medium', 'Formal',
+    'Не подлежащий изменению; считающийся лучшим и полным в своем роде.',
+    '- Решение: "Definitive answer" (Окончательный ответ)\n- Книга: "Definitive guide" (Полное руководство)\n- Доказательство: "Definitive proof" (Окончательное доказательство)',
+    [
+        { en: 'We need a definitive answer by tomorrow.', ru: 'Нам нужен окончательный ответ к завтрашнему дню.' },
+        { en: 'This book is the definitive biography of Einstein.', ru: 'Эта книга — самая полная биография Эйнштейна.' },
+        { en: 'There is no definitive proof of his involvement.', ru: 'Нет окончательных доказательств его причастности.' },
+        { en: 'The definitive version of the movie includes extra scenes.', ru: 'Окончательная версия фильма включает дополнительные сцены.' }
+    ],
+    []
+),
+
+createRichWord('b2_degrade', 'Degrade', '/dɪˈɡreɪd/', 'дигрейд', 'Деградировать / Унижать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Ухудшать качество чего-либо; относиться к кому-то без уважения; разлагаться (химия).',
+    '- Отношение: "Degrade women" (Унижать женщин)\n- Качество: "Degrade the environment" (Ухудшать окружающую среду)\n- Химия: "Biodegradable" (Биоразлагаемый)',
+    [
+        { en: 'Pornography often degrades women.', ru: 'Порнография часто унижает женщин.' },
+        { en: 'The plastic will not degrade for hundreds of years.', ru: 'Пластик не будет разлагаться сотни лет.' },
+        { en: 'Pollution has degraded the air quality in the city.', ru: 'Загрязнение ухудшило качество воздуха в городе.' },
+        { en: 'Don\'t degrade yourself by begging for money.', ru: 'Не унижайся, выпрашивая деньги.' }
+    ],
+    []
+),
+
+createRichWord('b2_delta', 'Delta', '/ˈdeltə/', 'дэлтэ', 'Дельта', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Участок земли в форме треугольника, где река разделяется перед впадением в море.',
+    '- География: "Nile Delta" (Дельта Нила)\n- Форма: "Delta wing" (Дельтавидное крыло)\n- Буква: "Alpha, Beta, Delta" (Альфа, Бета, Дельта)',
+    [
+        { en: 'The Nile Delta is a very fertile region.', ru: 'Дельта Нила — очень плодородный регион.' },
+        { en: 'Rice is grown in the river delta.', ru: 'В дельте реки выращивают рис.' },
+        { en: 'The plane has a distinctive delta wing shape.', ru: 'У самолета характерная форма треугольного крыла.' },
+        { en: 'Sediment builds up to form a delta.', ru: 'Осадочные породы накапливаются, образуя дельту.' }
+    ],
+    []
+),
+
+createRichWord('b2_denounce', 'Denounce', '/dɪˈnaʊns/', 'динаунс', 'Осуждать / Обличать', ProficiencyLevel.B2, 'verb', 'Low', 'Formal',
+    'Публично заявлять, что что-то является неправильным или злым; доносить на кого-то.',
+    '- Политика: "Denounce the violence" (Осудить насилие)\n- Предательство: "Denounce as a spy" (Обличить как шпиона)\n- Речь: "Publicly denounce" (Публично осудить)',
+    [
+        { en: 'The president denounced the terrorist attack.', ru: 'Президент осудил террористическую атаку.' },
+        { en: 'She was denounced to the secret police by her neighbour.', ru: 'Сосед донес на нее в тайную полицию.' },
+        { en: 'Leaders gathered to denounce racism and hatred.', ru: 'Лидеры собрались, чтобы осудить расизм и ненависть.' },
+        { en: 'He denounced the treaty as a betrayal of the country.', ru: 'Он осудил этот договор как предательство страны.' }
+    ],
+    []
+),
+
+createRichWord('b2_dependency', 'Dependency', '/dɪˈpendənsi/', 'дипэндэнси', 'Зависимость / Иждивение', ProficiencyLevel.B2, 'noun', 'Medium', 'Formal',
+    'Состояние зависимости от чего-то (наркотики, помощь); территория, контролируемая другой страной.',
+    '- Наркотики: "Drug dependency" (Наркозависимость)\n- Финансы: "Economic dependency" (Экономическая зависимость)\n- Политика: "Crown dependency" (Коронное владение)',
+    [
+        { en: 'He is being treated for alcohol dependency.', ru: 'Он проходит лечение от алкогольной зависимости.' },
+        { en: 'The country needs to reduce its dependency on foreign oil.', ru: 'Стране необходимо снизить зависимость от иностранной нефти.' },
+        { en: 'Gibraltar is a British overseas territory, not a dependency.', ru: 'Гибралтар — это британская заморская территория, а не зависимая территория.' },
+        { en: 'Long-term welfare creates a culture of dependency.', ru: 'Длительное социальное пособие создает культуру иждивенчества.' }
+    ],
+    []
+),
+
+createRichWord('b2_depot', 'Depot', '/ˈdepəʊ/', 'дэпэу', 'Депо / Склад', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Место для хранения товаров или транспортных средств (автобусов, поездов).',
+    '- Транспорт: "Bus depot" (Автобусный парк)\n- Военные: "Arms depot" (Склад оружия)\n- Торговля: "Fuel depot" (Топливное хранилище)',
+    [
+        { en: 'The buses return to the depot at night.', ru: 'Автобусы возвращаются в депо ночью.' },
+        { en: 'Supplies were stored in a large supply depot.', ru: 'Припасы хранились на большом складе снабжения.' },
+        { en: 'The train stopped at the maintenance depot for repairs.', ru: 'Поезд остановился в ремонтном депо для починки.' },
+        { en: 'My grandfather worked at the railway depot.', ru: 'Мой дедушка работал в железнодорожном депо.' }
+    ],
+    []
+),
+
+createRichWord('b2_descent', 'Descent', '/dɪˈsent/', 'дисэнт', 'Спуск / Происхождение', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Действие по движению вниз; происхождение человека (национальность/предки).',
+    '- Движение: "Steep descent" (Крутой спуск)\n- Самолет: "Begin descent" (Начать снижение)\n- Семья: "African descent" (Африканское происхождение)',
+    [
+        { en: 'The plane began its descent into London.', ru: 'Самолет начал снижение к Лондону.' },
+        { en: 'She is of French and German descent.', ru: 'Она французского и немецкого происхождения.' },
+        { en: 'The descent down the mountain was dangerous.', ru: 'Спуск с горы был опасным.' },
+        { en: 'His rapid descent into madness was frightening.', ru: 'Его стремительное погружение в безумие пугало.' }
+    ],
+    []
+),
+
+createRichWord('b2_detention', 'Detention', '/dɪˈtenʃn/', 'дитэншн', 'Задержание / Оставление после уроков', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Арест или содержание под стражей; наказание в школе, когда ученик остается после уроков.',
+    '- Полиция: "Police detention" (Полицейское задержание)\n- Школа: "In detention" (Оставленный после уроков)\n- Центр: "Detention centre" (СИЗО/Центр временного содержания)',
+    [
+        { en: 'He was held in detention for questioning.', ru: 'Его держали под стражей для допроса.' },
+        { en: 'The teacher gave him a detention for being late.', ru: 'Учитель оставил его после уроков за опоздание.' },
+        { en: 'Immigrants were kept in a detention centre.', ru: 'Иммигранты содержались в центре временного пребывания.' },
+        { en: 'Detention without trial is a violation of human rights.', ru: 'Задержание без суда является нарушением прав человека.' }
+    ],
+    []
+),
+
+createRichWord('b2_deviate', 'Deviate', '/ˈdiːvieɪt/', 'дивиейт', 'Отклоняться', ProficiencyLevel.B2, 'verb', 'Low', 'Formal',
+    'Делать что-то отличное от того, что является обычным или ожидаемым; менять курс.',
+    '- Норма: "Deviate from the norm" (Отклоняться от нормы)\n- План: "Deviate from the plan" (Отклоняться от плана)\n- Курс: "Deviate course" (Сбиться с курса)',
+    [
+        { en: 'Do not deviate from the instructions given.', ru: 'Не отклоняйтесь от данных инструкций.' },
+        { en: 'The bus had to deviate from its usual route.', ru: 'Автобусу пришлось отклониться от своего обычного маршрута.' },
+        { en: 'He never deviates from his daily routine.', ru: 'Он никогда не отступает от своего распорядка дня.' },
+        { en: 'The investigation deviated into unrelated matters.', ru: 'Расследование ушло в сторону, к несвязанным вопросам.' }
+    ],
+    []
+),
+
+createRichWord('b2_diagnostic', 'Diagnostic', '/ˌdaɪəɡˈnɒstɪk/', 'дайэгностик', 'Диагностический', ProficiencyLevel.B2, 'adj', 'Low', 'Formal',
+    'Связанный с определением болезни или проблемы.',
+    '- Медицина: "Diagnostic test" (Диагностический тест)\n- Техника: "Diagnostic tool" (Инструмент диагностики)\n- Результат: "Diagnostic value" (Диагностическая ценность)',
+    [
+        { en: 'Doctors performed several diagnostic tests on the patient.', ru: 'Врачи провели несколько диагностических тестов пациенту.' },
+        { en: 'The mechanic used a diagnostic computer to check the car.', ru: 'Механик использовал диагностический компьютер для проверки машины.' },
+        { en: 'Early diagnostic screening can save lives.', ru: 'Раннее диагностическое обследование может спасти жизни.' },
+        { en: 'Symptom overlap makes diagnostic accuracy difficult.', ru: 'Совпадение симптомов затрудняет точность диагностики.' }
+    ],
+    []
+),
+
+createRichWord('b2_dilute', 'Dilute', '/daɪˈluːt/', 'дайлют', 'Разбавлять', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Делать жидкость слабее, добавляя воду; делать качество или убеждение слабее.',
+    '- Жидкость: "Dilute with water" (Разбавить водой)\n- Химия: "Dilute acid" (Разбавленная кислота)\n- Переносное: "Dilute the effect" (Ослабить эффект)',
+    [
+        { en: 'Dilute the juice with some water before drinking.', ru: 'Разбавь сок водой перед питьем.' },
+        { en: 'The heavy rain diluted the saltiness of the lake.', ru: 'Сильный дождь разбавил соленость озера.' },
+        { en: 'Too many cooks usually dilute the quality of the broth.', ru: 'Слишком много поваров обычно портят бульон (разбавляют качество).' },
+        { en: 'They issued new shares, which diluted the stock value.', ru: 'Они выпустили новые акции, что размыло их стоимость.' }
+    ],
+    []
+  ),
+createRichWord('b2_buoy', 'Buoy', '/bɔɪ/', 'бой', 'Буй / Поддерживать', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Плавающий объект, привязанный ко дну, чтобы отмечать безопасные или опасные места; (гл.) поддерживать на плаву или морально.',
+    '- Море: "Life buoy" (Спасательный круг)\n- Действие: "Buoyed by hope" (Поддерживаемый надеждой)\n- Навигация: "Marker buoy" (Маркировочный буй)',
+    [
+        { en: 'The red buoy marks the entrance to the harbour.', ru: 'Красный буй отмечает вход в гавань.' },
+        { en: 'She was buoyed up by the support of her friends.', ru: 'Её поддерживала (вдохновляла) поддержка друзей.' },
+        { en: 'Keep the boat to the left of the buoy.', ru: 'Держите лодку левее буя.' },
+        { en: 'High profits buoyed the company\'s stock price.', ru: 'Высокая прибыль поддержала цену акций компании.' }
+    ],
+    []
+),
+
+createRichWord('b2_burrow', 'Burrow', '/ˈbʌrəʊ/', 'барэу', 'Нора / Рыть нору', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Отверстие в земле, вырытое животным для проживания; рыть или прятаться.',
+    '- Животное: "Rabbit burrow" (Кроличья нора)\n- Действие: "Burrow into bed" (Зарыться в постель)\n- Глагол: "Burrow underground" (Рыть под землей)',
+    [
+        { en: 'The rabbit ran into its burrow to hide.', ru: 'Кролик побежал в свою нору, чтобы спрятаться.' },
+        { en: 'She burrowed her face into the pillow.', ru: 'Она зарылась лицом в подушку.' },
+        { en: 'Moles burrow tunnels under the lawn.', ru: 'Кроты роют туннели под газоном.' },
+        { en: 'He burrowed through the pile of papers on his desk.', ru: 'Он рылся в кипе бумаг на своем столе.' }
+    ],
+    []
+),
+
+createRichWord('b2_bustle', 'Bustle', '/ˈbʌsl/', 'басл', 'Суета / Суетиться', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Шумная, энергичная активность; двигаться быстро и энергично.',
+    '- Город: "Hustle and bustle" (Шум и суета)\n- Действие: "Bustle about" (Суетиться вокруг)\n- Место: "Bustling market" (Шумный рынок)',
+    [
+        { en: 'I love the hustle and bustle of the big city.', ru: 'Я обожаю шум и суету большого города.' },
+        { en: 'She bustled around the kitchen preparing dinner.', ru: 'Она суетилась на кухне, готовя ужин.' },
+        { en: 'The station was bustling with commuters.', ru: 'Станция была переполнена (шумела) пассажирами.' },
+        { en: 'He enjoyed the bustle of the morning market.', ru: 'Ему нравилась суета утреннего рынка.' }
+    ],
+    []
+),
+
+createRichWord('b2_cadet', 'Cadet', '/kəˈdet/', 'кэдет', 'Кадет / Курсант', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Молодой человек, проходящий обучение в вооруженных силах или полиции.',
+    '- Армия: "Army cadet" (Армейский кадет)\n- Полиция: "Police cadet" (Курсант полиции)\n- Обучение: "Cadet school" (Кадетское училище)',
+    [
+        { en: 'He joined the air force as a cadet.', ru: 'Он поступил в военно-воздушные силы курсантом.' },
+        { en: 'The cadets were marching on the parade ground.', ru: 'Кадеты маршировали на плацу.' },
+        { en: 'Officer cadets undergo rigorous training.', ru: 'Офицеры-курсанты проходят суровую подготовку.' },
+        { en: 'My younger brother is a space cadet (dreamer).', ru: 'Мой младший брат — мечтатель (витает в облаках).' }
+    ],
+    []
+),
+
+createRichWord('b2_canopy', 'Canopy', '/ˈkænəpi/', 'кэнэпи', 'Навес / Полог (леса)', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Покрытие (из ткани), подвешенное над кроватью или троном; верхний слой ветвей деревьев в лесу.',
+    '- Лес: "Forest canopy" (Лесной полог)\n- Кровать: "Bed canopy" (Балдахин над кроватью)\n- Самолет: "Glass canopy" (Фонарь кабины пилота)',
+    [
+        { en: 'The trees formed a thick canopy over the road.', ru: 'Деревья образовали густой навес над дорогой.' },
+        { en: 'We sat under the canopy to escape the sun.', ru: 'Мы сидели под навесом, чтобы укрыться от солнца.' },
+        { en: 'The rainforest canopy is home to many birds.', ru: 'Полог тропического леса является домом для многих птиц.' },
+        { en: 'The pilot ejected the canopy before bailing out.', ru: 'Пилот сбросил фонарь кабины перед катапультированием.' }
+    ],
+    []
+),
+
+createRichWord('b2_capitalise', 'Capitalise', '/kəˈpɪtəlaɪz/', 'кэпитзлайз', 'Извлекать выгоду / Писать с большой буквы', ProficiencyLevel.B2, 'verb', 'Medium', 'Formal',
+    'Использовать ситуацию для получения преимущества (часто с "on"); писать с заглавной буквы.',
+    '- Выгода: "Capitalise on mistakes" (Воспользоваться ошибками)\n- Текст: "Capitalise the title" (Написать заголовок заглавными)\n- Финансы: "Market capitalisation" (Рыночная капитализация)',
+    [
+        { en: 'We need to capitalise on our opponent\'s weakness.', ru: 'Нам нужно воспользоваться слабостью нашего противника.' },
+        { en: 'Please capitalise the first letter of each sentence.', ru: 'Пожалуйста, пишите первую букву каждого предложения заглавной.' },
+        { en: 'The company failed to capitalise on the new trend.', ru: 'Компания не смогла извлечь выгоду из нового тренда.' },
+        { en: 'Names of countries should always be capitalised.', ru: 'Названия стран всегда должны писаться с большой буквы.' }
+    ],
+    []
+),
+
+createRichWord('b2_cardiac', 'Cardiac', '/ˈkɑːdiæk/', 'кадиэк', 'Сердечный', ProficiencyLevel.B2, 'adj', 'Low', 'Formal',
+    'Связанный с сердцем или сердечными заболеваниями.',
+    '- Медицина: "Cardiac arrest" (Остановка сердца)\n- Больница: "Cardiac unit" (Кардиологическое отделение)\n- Операция: "Cardiac surgery" (Операция на сердце)',
+    [
+        { en: 'He suffered a cardiac arrest and was rushed to hospital.', ru: 'У него случилась остановка сердца, и его срочно доставили в больницу.' },
+        { en: 'Regular exercise improves cardiac health.', ru: 'Регулярные упражнения улучшают здоровье сердца.' },
+        { en: 'The nurse works in the cardiac intensive care unit.', ru: 'Медсестра работает в кардиологической реанимации.' },
+        { en: 'Cardiac muscles work tirelessly throughout your life.', ru: 'Сердечные мышцы работают без устали на протяжении всей вашей жизни.' }
+    ],
+    []
+),
+
+createRichWord('b2_caress', 'Caress', '/kəˈres/', 'кэрес', 'Ласкать / Гладить', ProficiencyLevel.B2, 'verb', 'Low', 'Literary',
+    'Трогать или гладить кого-то нежно и с любовью.',
+    '- Жест: "Gentle caress" (Нежная ласка - сущ.)\n- Ветер: "Breeze caressed" (Ветерок ласкал)\n- Действие: "Caress the face" (Гладить по лицу)',
+    [
+        { en: 'He gently caressed her cheek with his hand.', ru: 'Он нежно погладил её щеку рукой.' },
+        { en: 'The warm sun caressed our skin on the beach.', ru: 'Теплое солнце ласкало нашу кожу на пляже.' },
+        { en: 'She gave the dog a loving caress.', ru: 'Она ласково погладила собаку.' },
+        { en: 'Soft music caressed their ears.', ru: 'Мягкая музыка ласкала их слух.' }
+    ],
+    []
+),
+
+createRichWord('b2_cartel', 'Cartel', '/kɑːˈtel/', 'кател', 'Картель', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Группа компаний или стран, которые соглашаются контролировать цены; преступная группировка (наркокартель).',
+    '- Преступность: "Drug cartel" (Наркокартель)\n- Бизнес: "Oil cartel" (Нефтяной картель)\n- Действие: "Form a cartel" (Создать картель)',
+    [
+        { en: 'The oil cartel decided to cut production to raise prices.', ru: 'Нефтяной картель решил сократить добычу, чтобы поднять цены.' },
+        { en: 'Police are fighting a war against the drug cartels.', ru: 'Полиция ведет войну против наркокартелей.' },
+        { en: 'Illegal cartels control the market in this region.', ru: 'Нелегальные картели контролируют рынок в этом регионе.' },
+        { en: 'Price-fixing by a cartel is illegal.', ru: 'Фиксация цен картелем незаконна.' }
+    ],
+    []
+),
+
+createRichWord('b2_cartridge', 'Cartridge', '/ˈkɑːtrɪdʒ/', 'катридж', 'Картридж / Патрон', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Сменный контейнер с чернилами, пленкой и т.д.; металлическая трубка с пулей и порохом.',
+    '- Принтер: "Ink cartridge" (Чернильный картридж)\n- Оружие: "Shotgun cartridge" (Патрон для дробовика)\n- Игра: "Game cartridge" (Игровой картридж)',
+    [
+        { en: 'I need to replace the black ink cartridge in the printer.', ru: 'Мне нужно заменить черный картридж в принтере.' },
+        { en: 'The hunter loaded a cartridge into his rifle.', ru: 'Охотник зарядил патрон в винтовку.' },
+        { en: 'Old video game consoles used plastic cartridges.', ru: 'Старые игровые приставки использовали пластиковые картриджи.' },
+        { en: 'We found empty cartridges on the floor after the shooting.', ru: 'Мы нашли пустые гильзы на полу после стрельбы.' }
+    ],
+    []
+),
+
+createRichWord('b2_cascade', 'Cascade', '/kæˈskeɪd/', 'кэскейд', 'Каскад / Водопад', ProficiencyLevel.B2, 'noun', 'Low', 'Literary',
+    'Небольшой водопад; что-то падающее или свисающее волнами (волосы, ткань); последовательность событий.',
+    '- Вода: "Cascade of water" (Каскад воды)\n- Волосы: "Cascade of hair" (Водопад волос)\n- Эффект: "Cascade effect" (Каскадный эффект)',
+    [
+        { en: 'Water cascaded down the rocks into the pool below.', ru: 'Вода каскадом падала со скал в бассейн внизу.' },
+        { en: 'She had a cascade of golden curls.', ru: 'У нее был водопад золотистых локонов.' },
+        { en: 'The error caused a cascade of system failures.', ru: 'Ошибка вызвала каскад системных сбоев.' },
+        { en: 'Information cascaded down from management to staff.', ru: 'Информация спускалась каскадом от руководства к персоналу.' }
+    ],
+    []
+),
+
+createRichWord('b2_cavalry', 'Cavalry', '/ˈkævlri/', 'кэвлри', 'Кавалерия', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Солдаты, сражающиеся верхом на лошадях (в прошлом) или на бронетехнике (сейчас).',
+    '- История: "Charge of the cavalry" (Атака кавалерии)\n- Армия: "Armoured cavalry" (Бронетанковая кавалерия)\n- Идиома: "Send in the cavalry" (Послать подмогу)',
+    [
+        { en: 'The cavalry charged across the field with swords drawn.', ru: 'Кавалерия помчалась через поле с обнаженными мечами.' },
+        { en: 'We need to wait for the cavalry to arrive.', ru: 'Нам нужно подождать прибытия подкрепления (кавалерии).' },
+        { en: 'Modern cavalry units use tanks and helicopters.', ru: 'Современные кавалерийские части используют танки и вертолеты.' },
+        { en: 'The sound of the cavalry trumpets scared the enemy.', ru: 'Звук кавалерийских труб напугал врага.' }
+    ],
+    []
+),
+
+createRichWord('b2_cavern', 'Cavern', '/ˈkævən/', 'кэвэн', 'Пещера (большая)', ProficiencyLevel.B2, 'noun', 'Low', 'Literary',
+    'Большая, глубокая и темная пещера.',
+    '- Место: "Underground cavern" (Подземная пещера)\n- Размер: "Vast cavern" (Огромная пещера)\n- Прилагательное: "Cavernous room" (Похожая на пещеру комната)',
+    [
+        { en: 'The explorers descended into the dark cavern.', ru: 'Исследователи спустились в темную пещеру.' },
+        { en: 'Stalactites hung from the roof of the cavern.', ru: 'Сталактиты свисали с потолка пещеры.' },
+        { en: 'The concert hall felt like a vast, cold cavern.', ru: 'Концертный зал казался огромной холодной пещерой.' },
+        { en: 'Echoes bounced around the empty cavern.', ru: 'Эхо отражалось в пустой пещере.' }
+    ],
+    []
+),
+
+createRichWord('b2_cavity', 'Cavity', '/ˈkævəti/', 'кэвэти', 'Полость / Дырка (в зубе)', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Пустое пространство внутри чего-то твердого; разрушение в зубе (кариес).',
+    '- Зубы: "Have a cavity" (Иметь дырку в зубе)\n- Тело: "Chest cavity" (Грудная полость)\n- Строительство: "Cavity wall" (Полая стена)',
+    [
+        { en: 'The dentist found a cavity in my back tooth.', ru: 'Стоматолог нашел дырку в моем заднем зубе.' },
+        { en: 'Birds often nest in the cavity of an old tree.', ru: 'Птицы часто вьют гнезда в дуплах старых деревьев.' },
+        { en: 'The organs are located within the abdominal cavity.', ru: 'Органы расположены в брюшной полости.' },
+        { en: 'Insulation was pumped into the wall cavity.', ru: 'Изоляция была закачана в полость стены.' }
+    ],
+    []
+),
+
+createRichWord('b2_chaired', 'Chaired', '/tʃeəd/', 'чеэд', 'Возглавлял / Вёл (собрание)', ProficiencyLevel.B2, 'verb', 'Medium', 'Formal',
+    'Прошедшее время от "Chair": вести встречу или комитет (быть председателем).',
+    '- Встреча: "Chaired the meeting" (Вел собрание)\n- Роль: "Chaired by" (Под председательством)\n- Организация: "Chaired the panel" (Возглавлял комиссию)',
+    [
+        { en: 'She chaired the meeting efficiently and kept it on time.', ru: 'Она эффективно вела собрание и уложилась в график.' },
+        { en: 'The committee was chaired by a senior professor.', ru: 'Комитет возглавлял старший профессор.' },
+        { en: 'He has chaired the board of directors for five years.', ru: 'Он возглавляет совет директоров уже пять лет.' },
+        { en: 'Who chaired the discussion yesterday?', ru: 'Кто вел дискуссию вчера?' }
+    ],
+    []
+),
+
+createRichWord('b2_chaotic', 'Chaotic', '/keɪˈɒtɪk/', 'кэйатик', 'Хаотичный', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Находящийся в состоянии полного беспорядка и путаницы.',
+    '- Ситуация: "Chaotic situation" (Хаотичная ситуация)\n- Движение: "Chaotic traffic" (Хаотичное движение)\n- Жизнь: "Chaotic lifestyle" (Беспорядочный образ жизни)',
+    [
+        { en: 'The traffic in the city centre was absolutely chaotic.', ru: 'Движение в центре города было абсолютно хаотичным.' },
+        { en: 'After the explosion, the scene was chaotic.', ru: 'После взрыва на месте царил хаос.' },
+        { en: 'He leads a chaotic life with no fixed schedule.', ru: 'Он ведет беспорядочную жизнь без фиксированного расписания.' },
+        { en: 'The meeting was chaotic because everyone shouted at once.', ru: 'Собрание было хаотичным, потому что все кричали одновременно.' }
+    ],
+    []
+),
+
+createRichWord('b2_chaplain', 'Chaplain', '/ˈtʃæplɪn/', 'чэплин', 'Капеллан / Священник', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Священник, работающий в нерелигиозной организации (армия, больница, тюрьма, школа).',
+    '- Армия: "Army chaplain" (Армейский капеллан)\n- Больница: "Hospital chaplain" (Больничный священник)\n- Тюрьма: "Prison chaplain" (Тюремный священник)',
+    [
+        { en: 'The hospital chaplain visited the sick patients.', ru: 'Больничный священник посетил больных пациентов.' },
+        { en: 'Soldiers often talk to the chaplain for comfort.', ru: 'Солдаты часто говорят с капелланом ради утешения.' },
+        { en: 'She works as a chaplain at the university.', ru: 'Она работает капелланом в университете.' },
+        { en: 'The chaplain led a prayer before the battle.', ru: 'Капеллан прочел молитву перед битвой.' }
+    ],
+    []
+),
+
+createRichWord('b2_charisma', 'Charisma', '/kəˈrɪzmə/', 'кэлизмэ', 'Харизма', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сильная личная привлекательность или обаяние, которое притягивает других людей (часто о лидерах).',
+    '- Личность: "Personal charisma" (Личная харизма)\n- Политика: "Leader with charisma" (Лидер с харизмой)\n- Прилагательное: "Lack charisma" (Не иметь харизмы)',
+    [
+        { en: 'The politician lacks the charisma to win the election.', ru: 'Политику не хватает харизмы, чтобы выиграть выборы.' },
+        { en: 'He has a natural charisma that makes people listen.', ru: 'У него природная харизма, которая заставляет людей слушать.' },
+        { en: 'Charisma is often more important than policy.', ru: 'Харизма часто важнее политики.' },
+        { en: 'Her charisma on stage captivated the audience.', ru: 'Её харизма на сцене пленила публику.' }
+    ],
+    []
+),
+
+createRichWord('b2_cherish', 'Cherish', '/ˈtʃerɪʃ/', 'чериш', 'Лелеять / Бережно хранить', ProficiencyLevel.B2, 'verb', 'Low', 'Literary',
+    'Любить и защищать кого-то; хранить воспоминание или надежду в мыслях.',
+    '- Любовь: "Cherish a child" (Лелеять ребенка)\n- Память: "Cherish the memory" (Бережно хранить память)\n- Клятва: "To love and to cherish" (Любить и лелеять)',
+    [
+        { en: 'I will always cherish the memories of our trip.', ru: 'Я всегда буду бережно хранить воспоминания о нашей поездке.' },
+        { en: 'She cherishes her old family photographs.', ru: 'Она дорожит своими старыми семейными фотографиями.' },
+        { en: 'He cherished the hope that she would return.', ru: 'Он лелеял надежду, что она вернется.' },
+        { en: 'A mother cherishes her children above all else.', ru: 'Мать лелеет своих детей превыше всего.' }
+    ],
+    []
+),
+
+createRichWord('b2_choreograph', 'Choreograph', '/ˈkɒriəɡrɑːf/', 'кориэграф', 'Ставить танец', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Придумывать и планировать движения для танца или выступления.',
+    '- Танец: "Choreograph a ballet" (Поставить балет)\n- Событие: "Carefully choreographed" (Тщательно спланированный)\n- Профессия: "Choreographer" (Хореограф)',
+    [
+        { en: 'She was hired to choreograph the new music video.', ru: 'Её наняли поставить танец для нового музыкального клипа.' },
+        { en: 'The fight scenes in the movie were carefully choreographed.', ru: 'Сцены драк в фильме были тщательно поставлены.' },
+        { en: 'He choreographed the opening ceremony of the games.', ru: 'Он ставил хореографию церемонии открытия игр.' },
+        { en: 'The dancers learned the steps choreographed by the master.', ru: 'Танцоры выучили шаги, поставленные мастером.' }
+    ],
+    []
+),
+
+createRichWord('b2_chromosome', 'Chromosome', '/ˈkrəʊməsəʊm/', 'крэумэсэум', 'Хромосома', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Часть клетки живого существа, содержащая гены (ДНК).',
+    '- Биология: "X chromosome" (X-хромосома)\n- Количество: "46 chromosomes" (46 хромосом)\n- Нарушение: "Chromosome abnormality" (Хромосомная аномалия)',
+    [
+        { en: 'Humans normally have 23 pairs of chromosomes.', ru: 'У людей обычно 23 пары хромосом.' },
+        { en: 'The Y chromosome determines male sex.', ru: 'Y-хромосома определяет мужской пол.' },
+        { en: 'Scientists studied the chromosomes under a microscope.', ru: 'Ученые изучали хромосомы под микроскопом.' },
+        { en: 'Down syndrome is caused by an extra chromosome.', ru: 'Синдром Дауна вызван лишней хромосомой.' }
+    ],
+    []
+),
+
+createRichWord('b2_chronology', 'Chronology', '/krəˈnɒlədʒi/', 'крэнолэджи', 'Хронология', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Порядок, в котором происходили события; наука о времени.',
+    '- Порядок: "In chronology" (В хронологическом порядке)\n- История: "Chronology of events" (Хронология событий)\n- Ошибка: "Confused chronology" (Спутанная хронология)',
+    [
+        { en: 'The police tried to establish the chronology of the crime.', ru: 'Полиция пыталась установить хронологию преступления.' },
+        { en: 'Please list the dates in reverse chronology.', ru: 'Пожалуйста, перечислите даты в обратной хронологии.' },
+        { en: 'We need to check the exact chronology of the war.', ru: 'Нам нужно проверить точную хронологию войны.' },
+        { en: 'The book explains the chronology of ancient civilizations.', ru: 'Книга объясняет хронологию древних цивилизаций.' }
+    ],
+    []
+),
+
+createRichWord('b2_clatter', 'Clatter', '/ˈklætə(r)/', 'клэтэ', 'Грохот / Звон', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Издавать серию громких коротких звуков (как при падении твердых предметов).',
+    '- Посуда: "Dishes clatter" (Посуда гремит)\n- Обувь: "Clatter down stairs" (Грохотать вниз по лестнице)\n- Звук: "Loud clatter" (Громкий звон/грохот)',
+    [
+        { en: 'The tray slipped and clattered onto the floor.', ru: 'Поднос выскользнул и с грохотом упал на пол.' },
+        { en: 'We heard the clatter of horses\' hooves on the street.', ru: 'Мы слышали цокот копыт лошадей на улице.' },
+        { en: 'Don\'t clatter the pots and pans so much.', ru: 'Не греми так кастрюлями и сковородками.' },
+        { en: 'The old engine started with a loud clatter.', ru: 'Старый двигатель завелся с громким стуком.' }
+    ],
+    []
+),
+
+createRichWord('b2_climax', 'Climax', '/ˈklaɪmæks/', 'клаймэкс', 'Кульминация', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Самая важная или захватывающая часть истории, события или ситуации.',
+    '- Фильм: "Dramatic climax" (Драматическая развязка)\n- Событие: "Reach a climax" (Достичь кульминации)\n- Секс: "Sexual climax" (Оргазм - эвфемизм)',
+    [
+        { en: 'The movie reached its climax in the final battle scene.', ru: 'Фильм достиг кульминации в финальной сцене битвы.' },
+        { en: 'The climax of the festival was the firework display.', ru: 'Кульминацией фестиваля стал фейерверк.' },
+        { en: 'Years of tension came to a climax yesterday.', ru: 'Годы напряжения достигли пика вчера.' },
+        { en: 'The story builds up slowly to a thrilling climax.', ru: 'История медленно нарастает к захватывающей развязке.' }
+    ],
+    []
+),
+
+createRichWord('b2_clinch', 'Clinch', '/klɪntʃ/', 'клинч', 'Заключить / Решить (спор)', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Окончательно решить дело или выиграть сделку; (спорт) сцепиться в объятиях (бокс).',
+    '- Сделка: "Clinch a deal" (Заключить сделку)\n- Победа: "Clinch the title" (Завоевать титул)\n- Спорт: "In a clinch" (В клинче)',
+    [
+        { en: 'The goal in the last minute clinched the victory for us.', ru: 'Гол на последней минуте обеспечил нам победу.' },
+        { en: 'They finally clinched the business deal after weeks of talks.', ru: 'Они наконец заключили деловую сделку после недель переговоров.' },
+        { en: 'This evidence clinches the argument.', ru: 'Это доказательство решает спор.' },
+        { en: 'The boxers clinched in the centre of the ring.', ru: 'Боксеры вошли в клинч в центре ринга.' }
+    ],
+    []
+),
+
+createRichWord('b2_clog', 'Clog', '/klɒɡ/', 'клог', 'Засорять / Сабо (обувь)', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Блокировать или забивать (трубу, движение); деревянный башмак (сущ).',
+    '- Труба: "Clogged sink" (Засоренная раковина)\n- Трафик: "Clogged with traffic" (Забитый машинами)\n- Обувь: "Wear clogs" (Носить сабо)',
+    [
+        { en: 'Hair clogged the shower drain.', ru: 'Волосы засорили слив в душе.' },
+        { en: 'The roads are clogged with holiday traffic.', ru: 'Дороги забиты праздничным трафиком.' },
+        { en: 'Eating too much fat can clog your arteries.', ru: 'Употребление слишком большого количества жира может закупорить артерии.' },
+        { en: 'Traditional Dutch dancers wear wooden clogs.', ru: 'Традиционные голландские танцоры носят деревянные башмаки.' }
+    ],
+    []
+),
+
+createRichWord('b2_clove', 'Clove', '/kləʊv/', 'клэув', 'Гвоздика / Зубчик (чеснока)', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сушеный бутон цветка, используемый как специя; отдельный сегмент головки чеснока.',
+    '- Чеснок: "Clove of garlic" (Зубчик чеснока)\n- Специя: "Ground cloves" (Молотая гвоздика)\n- Запах: "Scent of cloves" (Запах гвоздики)',
+    [
+        { en: 'Add one crushed clove of garlic to the sauce.', ru: 'Добавьте один раздавленный зубчик чеснока в соус.' },
+        { en: 'Cloves are often used in apple pies and mulled wine.', ru: 'Гвоздика часто используется в яблочных пирогах и глинтвейне.' },
+        { en: 'She put cloves in an orange to make it smell nice.', ru: 'Она воткнула гвоздику в апельсин, чтобы он приятно пах.' },
+        { en: 'Oil of cloves can help with toothache.', ru: 'Гвоздичное масло может помочь при зубной боли.' }
+    ],
+    []
+),
+
+createRichWord('b2_clump', 'Clump', '/klʌmp/', 'кламп', 'Группа / Ком (земли)', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сгруппированная масса вещей (деревьев, волос, земли).',
+    '- Растения: "Clump of trees" (Группа деревьев)\n- Грязь: "Clump of earth" (Ком земли)\n- Глагол: "Clump together" (Сбиваться в кучу)',
+    [
+        { en: 'A clump of trees stood in the middle of the field.', ru: 'Посреди поля стояла группа деревьев.' },
+        { en: 'The gardener planted the flowers in clumps.', ru: 'Садовник посадил цветы группами.' },
+        { en: 'He wiped a clump of mud off his boot.', ru: 'Он стер ком грязи со своего ботинка.' },
+        { en: 'The bacteria cells clumped together under the microscope.', ru: 'Бактериальные клетки сбились в кучу под микроскопом.' }
+    ],
+    []
+),
+
+createRichWord('b2_clutter', 'Clutter', '/ˈklʌtə(r)/', 'клатэ', 'Беспорядок / Загромождать', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Множество вещей в беспорядке; заставлять пространство вещами.',
+    '- Комната: "Clear the clutter" (Убрать беспорядок)\n- Ум: "Clutter your mind" (Засорять разум)\n- Место: "Cluttered desk" (Заваленный стол)',
+    [
+        { en: 'Her desk is covered in clutter.', ru: 'Её стол завален хламом.' },
+        { en: 'Try not to clutter the room with too much furniture.', ru: 'Старайся не загромождать комнату слишком большим количеством мебели.' },
+        { en: 'I need to sort through the clutter in the garage.', ru: 'Мне нужно разобрать хлам в гараже.' },
+        { en: 'Don\'t clutter your head with useless facts.', ru: 'Не забивай голову бесполезными фактами.' }
+    ],
+    []
+),
+
+createRichWord('b2_cobble', 'Cobble', '/ˈkɒbl/', 'кобл', 'Булыжник / Мостить', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Круглый камень, используемый для мощения улиц (обычно во мн. числе - cobbles/cobblestones).',
+    '- Улица: "Cobbled street" (Мощеная улица)\n- Камень: "Walk on cobbles" (Идти по брусчатке)\n- Глагол: "Cobble together" (Слепить на скорую руку)',
+    [
+        { en: 'The old town is famous for its narrow cobbled streets.', ru: 'Старый город знаменит своими узкими мощеными улочками.' },
+        { en: 'It is difficult to walk on cobbles in high heels.', ru: 'Трудно ходить по брусчатке на высоких каблуках.' },
+        { en: 'They managed to cobble together a solution.', ru: 'Им удалось наспех состряпать решение.' },
+        { en: 'The carriage rattled over the cobbles.', ru: 'Карета громыхала по булыжникам.' }
+    ],
+    []
+),
+
+createRichWord('b2_columnist', 'Columnist', '/ˈkɒləmnɪst/', 'колэмнист', 'Обозреватель / Колумнист', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Журналист, который пишет регулярную серию статей (колонку) для газеты или журнала.',
+    '- СМИ: "Newspaper columnist" (Газетный обозреватель)\n- Тема: "Gossip columnist" (Светский обозреватель)\n- Мнение: "Opinion columnist" (Автор колонки мнений)',
+    [
+        { en: 'She works as a fashion columnist for a magazine.', ru: 'Она работает модным обозревателем в журнале.' },
+        { en: 'The columnist criticized the government\'s new policy.', ru: 'Колумнист раскритиковал новую политику правительства.' },
+        { en: 'He is a syndicated columnist read by millions.', ru: 'Он — синдицированный (печатающийся во многих изданиях) обозреватель, которого читают миллионы.' },
+        { en: 'I read his weekly column every Sunday.', ru: 'Я читаю его еженедельную колонку каждое воскресенье.' }
+    ],
+    []
+  ),
+createRichWord('b2_compulsory', 'Compulsory', '/kəmˈpʌlsəri/', 'кэмпалсэри', 'Обязательный', ProficiencyLevel.B2, 'adj', 'Medium', 'Formal',
+    'То, что должно быть сделано по закону или правилам.',
+    '- Образование: "Compulsory education" (Обязательное образование)\n- Закон: "Compulsory insurance" (Обязательное страхование)\n- Спорт: "Compulsory figures" (Обязательная программа)',
+    [
+        { en: 'Maths and English are compulsory subjects in this school.', ru: 'Математика и английский являются обязательными предметами в этой школе.' },
+        { en: 'It is compulsory to wear a seatbelt in the car.', ru: 'В машине обязательно нужно пристегиваться ремнем безопасности.' },
+        { en: 'Military service is no longer compulsory in many countries.', ru: 'Военная служба больше не является обязательной во многих странах.' },
+        { en: 'There was a compulsory meeting for all staff members.', ru: 'Для всех сотрудников было обязательное собрание.' }
+    ],
+    []
+),
+
+createRichWord('b2_conquest', 'Conquest', '/ˈkɒŋkwest/', 'конквест', 'Завоевание', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Действие по захвату контроля над страной или людьми силой.',
+    '- История: "Norman Conquest" (Нормандское завоевание)\n- Война: "Military conquest" (Военное завоевание)\n- Любовь: "Sexual conquest" (Любовная победа)',
+    [
+        { en: 'The Norman Conquest of 1066 changed English history.', ru: 'Нормандское завоевание 1066 года изменило английскую историю.' },
+        { en: 'They dreamed of world conquest and power.', ru: 'Они мечтали о мировом господстве и власти.' },
+        { en: 'He boasted about his many conquests.', ru: 'Он хвастался своими многочисленными победами.' },
+        { en: 'The conquest of Mount Everest was a great achievement.', ru: 'Покорение Эвереста стало великим достижением.' }
+    ],
+    []
+),
+
+createRichWord('b2_cracker', 'Cracker', '/ˈkrækə(r)/', 'крэкэ', 'Крекер / Хлопушка', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Тонкое сухое печенье (часто соленое); рождественская игрушка, которая хлопает при разрыве.',
+    '- Еда: "Cheese and crackers" (Сыр и крекеры)\n- Праздник: "Christmas cracker" (Рождественская хлопушка)\n- Сленг: "A cracker of a goal" (Потрясающий гол)',
+    [
+        { en: 'We ate some crackers with cheese as a snack.', ru: 'Мы съели немного крекеров с сыром в качестве перекуса.' },
+        { en: 'The baby was chewing on a dry cracker.', ru: 'Ребенок жевал сухой крекер.' },
+        { en: 'We pulled Christmas crackers at the dinner table.', ru: 'Мы взрывали рождественские хлопушки за обеденным столом.' },
+        { en: 'Pass me the box of crackers, please.', ru: 'Передай мне коробку крекеров, пожалуйста.' }
+    ],
+    [
+        { meaning: "Hacker (slang)", translation: "Взломщик", example: { en: "A cracker broke into the system.", ru: "Взломщик проник в систему." } }
+    ]
+),
+
+createRichWord('b2_crate', 'Crate', '/kreɪt/', 'крейт', 'Ящик', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Большой деревянный или пластиковый ящик для перевозки или хранения товаров.',
+    '- Груз: "Wooden crate" (Деревянный ящик)\n- Напитки: "Crate of beer" (Ящик пива)\n- Перевозка: "Packing crate" (Упаковочный ящик)',
+    [
+        { en: 'The workers loaded a heavy crate onto the truck.', ru: 'Рабочие погрузили тяжелый ящик на грузовик.' },
+        { en: 'We bought a whole crate of apples from the farm.', ru: 'Мы купили целый ящик яблок на ферме.' },
+        { en: 'He sat on an upturned crate to rest.', ru: 'Он сел на перевернутый ящик, чтобы отдохнуть.' },
+        { en: 'The machinery arrived in large shipping crates.', ru: 'Оборудование прибыло в больших транспортировочных ящиках.' }
+    ],
+    []
+),
+
+createRichWord('b2_crater', 'Crater', '/ˈkreɪtə(r)/', 'крейтэ', 'Кратер', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Большая дыра в земле, вызванная взрывом или ударом; жерло вулкана.',
+    '- Космос: "Moon crater" (Лунный кратер)\n- Вулкан: "Volcanic crater" (Вулканический кратер)\n- Взрыв: "Bomb crater" (Воронка от бомбы)',
+    [
+        { en: 'The bomb left a huge crater in the middle of the road.', ru: 'Бомба оставила огромную воронку посреди дороги.' },
+        { en: 'You can see craters on the moon with a telescope.', ru: 'Через телескоп можно увидеть кратеры на Луне.' },
+        { en: 'Smoke rose from the crater of the active volcano.', ru: 'Дым поднимался из кратера действующего вулкана.' },
+        { en: 'The meteorite impact created a deep crater.', ru: 'Удар метеорита создал глубокий кратер.' }
+    ],
+    []
+),
+
+createRichWord('b2_crumb', 'Crumb', '/krʌm/', 'крам', 'Крошка', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Очень маленький кусочек хлеба, пирога или печенья.',
+    '- Еда: "Bread crumbs" (Хлебные крошки)\n- Уборка: "Sweep up crumbs" (Сметать крошки)\n- Количество: "Crumb of comfort" (Капля утешения)',
+    [
+        { en: 'She brushed the crumbs off the table.', ru: 'Она смахнула крошки со стола.' },
+        { en: 'The birds ate every single crumb of bread.', ru: 'Птицы съели каждую крошку хлеба.' },
+        { en: 'I will coat the chicken in bread crumbs.', ru: 'Я обваляю курицу в панировочных сухарях.' },
+        { en: 'There wasn\'t a crumb of food left in the house.', ru: 'В доме не осталось ни крошки еды.' }
+    ],
+    []
+),
+
+createRichWord('b2_cuisine', 'Cuisine', '/kwɪˈziːn/', 'квизин', 'Кухня (национальная)', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Стиль приготовления пищи, характерный для определенной страны или региона.',
+    '- Стиль: "French cuisine" (Французская кухня)\n- Ресторан: "Local cuisine" (Местная кухня)\n- Качество: "Haute cuisine" (Высокая кухня)',
+    [
+        { en: 'Italian cuisine is famous for its pasta and pizza.', ru: 'Итальянская кухня славится своей пастой и пиццей.' },
+        { en: 'We enjoy trying different types of cuisine when we travel.', ru: 'Мы любим пробовать разные виды кухни, когда путешествуем.' },
+        { en: 'The hotel offers excellent international cuisine.', ru: 'Отель предлагает превосходную интернациональную кухню.' },
+        { en: 'Indian cuisine uses a lot of spicy ingredients.', ru: 'Индийская кухня использует много острых ингредиентов.' }
+    ],
+    []
+),
+
+createRichWord('b2_deceive', 'Deceive', '/dɪˈsiːv/', 'дисив', 'Обманывать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Заставлять кого-то поверить в неправду, обычно ради выгоды.',
+    '- Отношения: "Deceive a partner" (Обмануть партнера)\n- Внешность: "Appearances deceive" (Внешность обманчива)\n- Намеренно: "Intend to deceive" (Намереваться обмануть)',
+    [
+        { en: 'He tried to deceive the public about his past.', ru: 'Он пытался обмануть общественность по поводу своего прошлого.' },
+        { en: 'Don\'t be deceived by his friendly smile.', ru: 'Не обманывайтесь его дружелюбной улыбкой.' },
+        { en: 'She deceived him into signing the papers.', ru: 'Она обманом заставила его подписать бумаги.' },
+        { en: 'You are deceiving yourself if you think this will work.', ru: 'Ты обманываешь себя, если думаешь, что это сработает.' }
+    ],
+    []
+),
+
+createRichWord('b2_deception', 'Deception', '/dɪˈsepʃn/', 'дисэпшн', 'Обман', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Действие по обману кого-либо; ложь или трюк.',
+    '- Действие: "Act of deception" (Акт обмана)\n- Способ: "By deception" (Путем обмана)\n- Самообман: "Self-deception" (Самообман)',
+    [
+        { en: 'He was accused of obtaining money by deception.', ru: 'Его обвинили в получении денег путем обмана.' },
+        { en: 'The war involved a lot of deception and spying.', ru: 'Война включала много обмана и шпионажа.' },
+        { en: 'Her claim to be a doctor was a complete deception.', ru: 'Ее заявление о том, что она врач, было полным обманом.' },
+        { en: 'Deception is common in the world of politics.', ru: 'Обман распространен в мире политики.' }
+    ],
+    []
+),
+
+createRichWord('b2_demolish', 'Demolish', '/dɪˈmɒlɪʃ/', 'димолиш', 'Сносить / Разрушать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Полностью разрушить здание или сооружение; (перен.) разгромить аргумент или съесть еду.',
+    '- Здание: "Demolish a house" (Снести дом)\n- Спорт: "Demolish the opponent" (Разгромить противника)\n- Идея: "Demolish a theory" (Разбить теорию)',
+    [
+        { en: 'The old factory was demolished to make way for flats.', ru: 'Старую фабрику снесли, чтобы освободить место для квартир.' },
+        { en: 'They plan to demolish the bridge next year.', ru: 'Они планируют снести мост в следующем году.' },
+        { en: 'He completely demolished my argument in five minutes.', ru: 'Он полностью разбил мой аргумент за пять минут.' },
+        { en: 'The hungry boys demolished the pizza instantly.', ru: 'Голодные мальчики мгновенно уничтожили пиццу.' }
+    ],
+    []
+),
+
+createRichWord('b2_den', 'Den', '/den/', 'дэн', 'Логово / Берлога', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Дом дикого животного; комната в доме для отдыха; место незаконной деятельности.',
+    '- Животные: "Lion\'s den" (Логово льва)\n- Дом: "Go to the den" (Пойти в комнату отдыха)\n- Криминал: "Den of thieves" (Притон воров)',
+    [
+        { en: 'The bear spent the winter sleeping in its den.', ru: 'Медведь провел зиму, спя в своей берлоге.' },
+        { en: 'My father uses the small room as his den.', ru: 'Мой отец использует маленькую комнату как свой кабинет/комнату отдыха.' },
+        { en: 'The police raided a gambling den last night.', ru: 'Полиция совершила налет на игорный притон прошлой ночью.' },
+        { en: 'Daniel was thrown into the lion\'s den.', ru: 'Даниила бросили в ров со львами.' }
+    ],
+    []
+  ),
+createRichWord('b2_catfish', 'Catfish', '/ˈkætfɪʃ/', 'кэтфиш', 'Сом / Кэтфишинг', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Рыба с "усами", похожими на кошачьи; (сленг) человек, создающий фальшивый профиль в интернете.',
+    '- Рыба: "Fried catfish" (Жареный сом)\n- Интернет: "Catfish profile" (Фейковый профиль)\n- Сленг: "Being catfished" (Стать жертвой обмана в сети)',
+    [
+        { en: 'Catfish are bottom-feeders found in freshwater rivers.', ru: 'Сомы — это донные рыбы, обитающие в пресноводных реках.' },
+        { en: 'We went fishing and caught a huge catfish.', ru: 'Мы пошли на рыбалку и поймали огромного сома.' },
+        { en: 'He realized he was being catfished when she refused to video call.', ru: 'Он понял, что его разводят (кэтфишинг), когда она отказалась от видеозвонка.' },
+        { en: 'The documentary explores the phenomenon of internet catfish.', ru: 'Документальный фильм исследует феномен интернет-мошенников (кэтфишинга).' }
+    ],
+    []
+),
+
+createRichWord('b2_chemotherapy', 'Chemotherapy', '/ˌkiːməʊˈθerəpi/', 'кимэутэрэпи', 'Химиотерапия', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Лечение заболеваний (особенно рака) с использованием химических веществ.',
+    '- Медицина: "Undergo chemotherapy" (Проходить химиотерапию)\n- Эффект: "Side effects of chemotherapy" (Побочные эффекты химиотерапии)\n- Курс: "Chemotherapy treatment" (Курс химиотерапии)',
+    [
+        { en: 'She lost her hair during the course of chemotherapy.', ru: 'Она потеряла волосы во время курса химиотерапии.' },
+        { en: 'Chemotherapy is often used to shrink tumours before surgery.', ru: 'Химиотерапия часто используется для уменьшения опухолей перед операцией.' },
+        { en: 'The doctors decided that chemotherapy was the best option.', ru: 'Врачи решили, что химиотерапия была лучшим вариантом.' },
+        { en: 'He felt very weak after his chemotherapy session.', ru: 'Он чувствовал себя очень слабым после сеанса химиотерапии.' }
+    ],
+    []
+),
+
+createRichWord('b2_chlorine', 'Chlorine', '/ˈklɔːriːn/', 'клорин', 'Хлор', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Химический элемент (газ), часто используемый для дезинфекции воды в бассейнах.',
+    '- Бассейн: "Smell of chlorine" (Запах хлорки)\n- Химия: "Chlorine gas" (Газ хлор)\n- Очистка: "Chlorine tablets" (Таблетки хлора)',
+    [
+        { en: 'The smell of chlorine in the swimming pool was very strong.', ru: 'Запах хлорки в бассейне был очень сильным.' },
+        { en: 'Chlorine is added to drinking water to kill bacteria.', ru: 'Хлор добавляют в питьевую воду, чтобы убить бактерии.' },
+        { en: 'My eyes turned red because of the chlorine.', ru: 'Мои глаза покраснели из-за хлора.' },
+        { en: 'Be careful when handling chlorine tablets for the pool.', ru: 'Будьте осторожны при обращении с таблетками хлора для бассейна.' }
+    ],
+    []
+),
+
+createRichWord('b2_clockwise', 'Clockwise', '/ˈklɒkwaɪz/', 'клоквайз', 'По часовой стрелке', ProficiencyLevel.B2, 'adv', 'Medium', 'Neutral',
+    'В направлении движения стрелок часов.',
+    '- Движение: "Turn clockwise" (Повернуть по часовой стрелке)\n- Направление: "Clockwise direction" (Направление по часовой стрелке)\n- Противоположность: "Anti-clockwise" (Против часовой стрелки)',
+    [
+        { en: 'Turn the handle clockwise to open the door.', ru: 'Поверните ручку по часовой стрелке, чтобы открыть дверь.' },
+        { en: 'The players moved clockwise around the circle.', ru: 'Игроки двигались по часовой стрелке по кругу.' },
+        { en: 'Stir the mixture in a clockwise motion.', ru: 'Перемешивайте смесь движением по часовой стрелке.' },
+        { en: 'To lock it, turn the key clockwise.', ru: 'Чтобы запереть, поверните ключ по часовой стрелке.' }
+    ],
+    []
+),
+
+createRichWord('b2_coexist', 'Coexist', '/ˌkəʊɪɡˈzɪst/', 'кэуигзист', 'Сосуществовать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Жить или существовать вместе в одно и то же время или в одном месте (часто о разных группах).',
+    '- Мир: "Coexist peacefully" (Мирно сосуществовать)\n- Природа: "Humans and animals coexist" (Люди и животные сосуществуют)\n- Отношения: "Learn to coexist" (Научиться сосуществовать)',
+    [
+        { en: 'Different religions have coexisted in this city for centuries.', ru: 'Различные религии сосуществовали в этом городе столетиями.' },
+        { en: 'It is difficult for these two species to coexist in the same territory.', ru: 'Этим двум видам трудно сосуществовать на одной территории.' },
+        { en: 'We must learn to coexist with our neighbours.', ru: 'Мы должны научиться сосуществовать с нашими соседями.' },
+        { en: 'Can tradition and modernity coexist?', ru: 'Могут ли традиции и современность сосуществовать?' }
+    ],
+    []
+),
+
+createRichWord('b2_coma', 'Coma', '/ˈkəʊmə/', 'кэумэ', 'Кома', ProficiencyLevel.B2, 'noun', 'Low', 'Formal',
+    'Состояние глубокого бессознательного состояния, вызванное травмой или болезнью.',
+    '- Медицина: "Fall into a coma" (Впасть в кому)\n- Состояние: "Come out of a coma" (Выйти из комы)\n- Длительность: "In a coma for weeks" (В коме неделями)',
+    [
+        { en: 'He was in a coma for three weeks after the accident.', ru: 'После аварии он был в коме три недели.' },
+        { en: 'Doctors induced a coma to help his brain heal.', ru: 'Врачи ввели его в искусственную кому, чтобы помочь мозгу восстановиться.' },
+        { en: 'Miraculously, she woke up from the coma.', ru: 'Чудесным образом она очнулась из комы.' },
+        { en: 'The patient remains in a deep coma.', ru: 'Пациент остается в глубокой коме.' }
+    ],
+    []
+),
+
+createRichWord('b2_contraception', 'Contraception', '/ˌkɒntrəˈsepʃn/', 'контрэсэпшн', 'Контрацепция', ProficiencyLevel.B2, 'noun', 'Medium', 'Formal',
+    'Методы или устройства, используемые для предотвращения беременности.',
+    '- Здоровье: "Methods of contraception" (Методы контрацепции)\n- Доступ: "Access to contraception" (Доступ к контрацепции)\n- Совет: "Advice on contraception" (Совет по контрацепции)',
+    [
+        { en: 'They offer free advice on contraception at the clinic.', ru: 'В клинике предлагают бесплатные консультации по контрацепции.' },
+        { en: 'The pill is a very common form of contraception.', ru: 'Таблетки — очень распространенная форма контрацепции.' },
+        { en: 'Religious views on contraception vary widely.', ru: 'Религиозные взгляды на контрацепцию сильно различаются.' },
+        { en: 'Couples should discuss contraception before starting a relationship.', ru: 'Парам следует обсудить контрацепцию перед началом отношений.' }
+    ],
+    []
+),
+
+createRichWord('b2_contraceptive', 'Contraceptive', '/ˌkɒntrəˈseptɪv/', 'контрэсэптив', 'Противозачаточный / Контрацептив', ProficiencyLevel.B2, 'adj', 'Medium', 'Formal',
+    'Связанный с предотвращением беременности; средство контрацепции (сущ).',
+    '- Таблетка: "Contraceptive pill" (Противозачаточная таблетка)\n- Метод: "Contraceptive method" (Метод контрацепции)\n- Устройство: "Barrier contraceptive" (Барьерный контрацептив)',
+    [
+        { en: 'She forgot to take her contraceptive pill yesterday.', ru: 'Вчера она забыла принять противозачаточную таблетку.' },
+        { en: 'Condoms are an effective contraceptive method.', ru: 'Презервативы — эффективный метод контрацепции.' },
+        { en: 'The doctor explained various contraceptive options.', ru: 'Врач объяснил различные варианты контрацепции.' },
+        { en: 'Contraceptive use has increased in recent years.', ru: 'Использование контрацептивов возросло в последние годы.' }
+    ],
+    []
+  ),
+createRichWord('b2_cork', 'Cork', '/kɔːk/', 'кок', 'Пробка / Кора пробкового дерева', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Легкий материал из коры дерева; пробка для бутылки (обычно винной).',
+    '- Вино: "Pull the cork" (Вытащить пробку)\n- Материал: "Cork floor" (Пробковый пол)\n- Инструмент: "Corkscrew" (Штопор)',
+    [
+        { en: 'The waiter removed the cork from the wine bottle.', ru: 'Официант вытащил пробку из бутылки вина.' },
+        { en: 'Cork is a very light and buoyant material.', ru: 'Пробка — очень легкий и плавучий материал.' },
+        { en: 'The champagne cork flew across the room.', ru: 'Пробка от шампанского перелетела через комнату.' },
+        { en: 'Don\'t let the cork crumble into the wine.', ru: 'Не дай пробке раскрошиться в вино.' }
+    ],
+    [
+        { meaning: "City in Ireland", translation: "Корк (город)", example: { en: "He is from Cork.", ru: "Он из Корка." } }
+    ]
+),
+
+createRichWord('b2_cot', 'Cot', '/kɒt/', 'кот', 'Детская кроватка', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Маленькая кровать с высокими бортиками для младенца (брит.); раскладушка (амер.).',
+    '- Мебель: "Baby in a cot" (Младенец в кроватке)\n- Сон: "Put in the cot" (Положить в кроватку)\n- Сленг: "Cot death" (Смерть в колыбели / СВДС)',
+    [
+        { en: 'The baby was sleeping peacefully in her cot.', ru: 'Малышка мирно спала в своей кроватке.' },
+        { en: 'We need to lower the base of the cot now he can stand.', ru: 'Нам нужно опустить дно кроватки, раз он теперь может стоять.' },
+        { en: 'He climbed out of his cot in the middle of the night.', ru: 'Он вылез из своей кроватки посреди ночи.' },
+        { en: 'She bought a second-hand cot for the nursery.', ru: 'Она купила подержанную кроватку для детской.' }
+    ],
+    []
+),
+
+createRichWord('b2_cuddle', 'Cuddle', '/ˈkʌdl/', 'кадл', 'Обнимать / Прижимать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Держать кого-то близко к себе, чтобы проявить любовь или согреть (более нежно и долго, чем hug).',
+    '- Отношения: "Cuddle together" (Прижаться друг к другу)\n- Дети: "Cuddle a toy" (Обнимать игрушку)\n- Сущ: "Give a cuddle" (Обнять)',
+    [
+        { en: 'They sat on the sofa, cuddling and watching TV.', ru: 'Они сидели на диване, обнявшись и смотря телевизор.' },
+        { en: 'The child cuddled her teddy bear tightly.', ru: 'Ребенок крепко прижал к себе плюшевого мишку.' },
+        { en: 'Come here and give me a big cuddle.', ru: 'Иди сюда и крепко обними меня.' },
+        { en: 'I like to cuddle up with a good book when it rains.', ru: 'Я люблю уютно устроиться с хорошей книгой, когда идет дождь.' }
+    ],
+    []
+),
+
+createRichWord('b2_customise', 'Customise', '/ˈkʌstəmaɪz/', 'кастэмайз', 'Настраивать / Индивидуализировать', ProficiencyLevel.B2, 'verb', 'Medium', 'Neutral',
+    'Изменять что-то, чтобы оно подходило под конкретные нужды или вкус владельца.',
+    '- Техника: "Customise settings" (Настроить параметры)\n- Авто: "Customise a car" (Тюнинговать машину)\n- Продукт: "Customised plan" (Индивидуальный план)',
+    [
+        { en: 'You can customise the layout of your homepage.', ru: 'Вы можете настроить макет своей домашней страницы.' },
+        { en: 'They offer a service to customise sneakers.', ru: 'Они предлагают услугу по кастомизации кроссовок.' },
+        { en: 'The software allows users to customise the interface.', ru: 'Программное обеспечение позволяет пользователям настраивать интерфейс.' },
+        { en: 'We need a customised solution for this client.', ru: 'Нам нужно индивидуальное решение для этого клиента.' }
+    ],
+    []
+),
+
+createRichWord('b2_decode', 'Decode', '/diːˈkəʊd/', 'дикеуд', 'Декодировать / Расшифровывать', ProficiencyLevel.B2, 'verb', 'Low', 'Neutral',
+    'Преобразовывать код или зашифрованное сообщение в понятный язык.',
+    '- Технологии: "Decode a signal" (Декодировать сигнал)\n- Текст: "Decode a message" (Расшифровать сообщение)\n- Смысл: "Decode meaning" (Разгадать смысл)',
+    [
+        { en: 'The spies worked hard to decode the enemy message.', ru: 'Шпионы усердно работали, чтобы расшифровать вражеское сообщение.' },
+        { en: 'Your brain decodes the electrical signals from your eyes.', ru: 'Ваш мозг декодирует электрические сигналы от глаз.' },
+        { en: 'Can you decode this strange handwriting?', ru: 'Ты можешь разобрать этот странный почерк?' },
+        { en: 'The receiver decodes the satellite transmission.', ru: 'Приемник декодирует спутниковую передачу.' }
+    ],
+    []
+),
+
+createRichWord('b2_denim', 'Denim', '/ˈdenɪm/', 'дэним', 'Джинсовая ткань / Деним', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Прочная хлопчатобумажная ткань, обычно синего цвета, используемая для джинсов.',
+    '- Одежда: "Denim jacket" (Джинсовая куртка)\n- Стиль: "Wear denim" (Носить джинсовое)\n- Цвет: "Faded denim" (Выцветший деним)',
+    [
+        { en: 'He was wearing a blue denim shirt and jeans.', ru: 'Он был одет в синюю джинсовую рубашку и джинсы.' },
+        { en: 'Denim is a very durable material for work clothes.', ru: 'Деним — очень прочный материал для рабочей одежды.' },
+        { en: 'She bought a skirt made of black denim.', ru: 'Она купила юбку из черной джинсовой ткани.' },
+        { en: 'Double denim is considered a fashion mistake by some.', ru: 'Некоторые считают сочетание джинсового верха и низа модной ошибкой.' }
+    ],
+    []
+),
+
+createRichWord('b2_detergent', 'Detergent', '/dɪˈtɜːdʒənt/', 'дитёджэнт', 'Моющее средство', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Химическое вещество (жидкость или порошок) для стирки одежды или мытья посуды.',
+    '- Дом: "Laundry detergent" (Стиральный порошок/гель)\n- Посуда: "Dish detergent" (Средство для посуды)\n- Вид: "Liquid detergent" (Жидкое средство)',
+    [
+        { en: 'I need to buy some laundry detergent from the supermarket.', ru: 'Мне нужно купить средство для стирки в супермаркете.' },
+        { en: 'This detergent is effective even at low temperatures.', ru: 'Это моющее средство эффективно даже при низких температурах.' },
+        { en: 'Use a mild detergent for delicate fabrics.', ru: 'Используйте мягкое средство для деликатных тканей.' },
+        { en: 'He poured too much detergent into the washing machine.', ru: 'Он налил слишком много средства в стиральную машину.' }
+    ],
+    []
+),
+
+createRichWord('b2_discomfort', 'Discomfort', '/dɪsˈkʌmfət/', 'дискамфэт', 'Дискомфорт / Неудобство', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Чувство легкой боли или беспокойства; отсутствие комфорта.',
+    '- Ощущение: "Feel discomfort" (Чувствовать дискомфорт)\n- Причина: "Cause discomfort" (Причинять неудобство)\n- Здоровье: "Stomach discomfort" (Дискомфорт в желудке)',
+    [
+        { en: 'He felt some discomfort in his chest after running.', ru: 'Он почувствовал некоторый дискомфорт в груди после бега.' },
+        { en: 'The heat caused considerable discomfort to the passengers.', ru: 'Жара доставила пассажирам значительный дискомфорт.' },
+        { en: 'She tried to hide her discomfort at the rude question.', ru: 'Она попыталась скрыть свою неловкость от грубого вопроса.' },
+        { en: 'The new shoes gave me a lot of discomfort.', ru: 'Новые туфли доставили мне много неудобств.' }
+    ],
+    []
+  ),
+createRichWord('b2_colossal', 'Colossal', '/kəˈlɒsl/', 'кэлосл', 'Колоссальный / Громадный', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Чрезвычайно большой по размеру, эффекту или количеству.',
+    '- Размер: "Colossal statue" (Колоссальная статуя)\n- Ошибка: "Colossal mistake" (Чудовищная ошибка)\n- Успех: "Colossal success" (Грандиозный успех)',
+    [
+        { en: 'The project was a colossal waste of money.', ru: 'Этот проект был колоссальной тратой денег.' },
+        { en: 'A colossal statue stood at the entrance to the harbour.', ru: 'Громадная статуя стояла у входа в гавань.' },
+        { en: 'They need a colossal amount of funding to finish the bridge.', ru: 'Им требуется колоссальный объем финансирования, чтобы закончить мост.' },
+        { en: 'It was a colossal failure for the company.', ru: 'Это был грандиозный провал для компании.' }
+    ],
+    []
+),
+
+createRichWord('b2_combo', 'Combo', '/ˈkɒmbəʊ/', 'комбэу', 'Комбинация / Комбо', ProficiencyLevel.B2, 'noun', 'Medium', 'Informal',
+    'Небольшая джазовая группа; сочетание разных вещей (в еде или играх).',
+    '- Еда: "Burger combo" (Комбо с бургером)\n- Игра: "Winning combo" (Выигрышная комбинация)\n- Музыка: "Jazz combo" (Джазовый ансамбль)',
+    [
+        { en: 'I ordered the lunch combo which includes a drink.', ru: 'Я заказал обеденное комбо, которое включает напиток.' },
+        { en: 'That shirt and tie is a bad combo.', ru: 'Эта рубашка и галстук — плохая комбинация.' },
+        { en: 'He plays drums in a small jazz combo.', ru: 'Он играет на барабанах в небольшом джазовом ансамбле.' },
+        { en: 'Press these buttons to perform a special combo attack.', ru: 'Нажми эти кнопки, чтобы выполнить специальную комбо-атаку.' }
+    ],
+    []
+),
+
+createRichWord('b2_courier', 'Courier', '/ˈkʊriə(r)/', 'куриэ', 'Курьер', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Человек или компания, чья работа заключается в доставке посылок и документов.',
+    '- Доставка: "Bike courier" (Велокурьер)\n- Услуга: "Send by courier" (Отправить курьером)\n- Компания: "Courier service" (Курьерская служба)',
+    [
+        { en: 'The package was delivered by a motorcycle courier.', ru: 'Посылка была доставлена мотокурьером.' },
+        { en: 'Please send these documents by courier immediately.', ru: 'Пожалуйста, немедленно отправьте эти документы курьером.' },
+        { en: 'I worked as a courier during the summer holidays.', ru: 'Я работал курьером во время летних каникул.' },
+        { en: 'The courier asked for a signature upon receipt.', ru: 'Курьер попросил расписаться при получении.' }
+    ],
+    []
+),
+
+createRichWord('b2_courteous', 'Courteous', '/ˈkɜːtiəs/', 'кётиэс', 'Учтивый / Вежливый', ProficiencyLevel.B2, 'adj', 'Low', 'Formal',
+    'Вежливый и уважительный по отношению к другим людям.',
+    '- Поведение: "Courteous manner" (Учтивая манера)\n- Персонал: "Courteous staff" (Вежливый персонал)\n- Ответ: "Courteous reply" (Любезный ответ)',
+    [
+        { en: 'The hotel staff were extremely courteous and helpful.', ru: 'Персонал отеля был чрезвычайно учтив и полезен.' },
+        { en: 'It is courteous to knock before entering a room.', ru: 'Стучать перед входом в комнату — это вежливо.' },
+        { en: 'He wrote a courteous letter of apology.', ru: 'Он написал вежливое письмо с извинениями.' },
+        { en: 'Despite his anger, he remained courteous.', ru: 'Несмотря на свой гнев, он оставался учтивым.' }
+    ],
+    []
+),
+
+createRichWord('b2_crutch', 'Crutch', '/krʌtʃ/', 'крач', 'Костыль / Опора', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Палка с перекладиной сверху, используемая для опоры при ходьбе, если нога травмирована.',
+    '- Медицина: "Walk on crutches" (Ходить на костылях)\n- Психология: "Emotional crutch" (Эмоциональная опора/отдушина)\n- Травма: "Pair of crutches" (Пара костылей)',
+    [
+        { en: 'He has been on crutches since he broke his leg.', ru: 'Он ходит на костылях с тех пор, как сломал ногу.' },
+        { en: 'She uses food as a psychological crutch when she is stressed.', ru: 'Она использует еду как психологическую отдушину, когда испытывает стресс.' },
+        { en: 'I can\'t walk without my crutches yet.', ru: 'Я пока не могу ходить без костылей.' },
+        { en: 'Alcohol became a crutch for him to deal with his problems.', ru: 'Алкоголь стал для него костылем, чтобы справляться с проблемами.' }
+    ],
+    []
+),
+
+createRichWord('b2_cubicle', 'Cubicle', '/ˈkjuːbɪkl/', 'кьюбикл', 'Кабинка / Отсек', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Небольшое отгороженное пространство в комнате, например, для работы в офисе или переодевания.',
+    '- Офис: "Office cubicle" (Офисная кабинка)\n- Душ: "Shower cubicle" (Душевая кабинка)\n- Бассейн: "Changing cubicle" (Кабинка для переодевания)',
+    [
+        { en: 'He sits in a small grey cubicle all day.', ru: 'Он сидит в маленькой серой кабинке весь день.' },
+        { en: 'The changing cubicles at the pool were dirty.', ru: 'Кабинки для переодевания в бассейне были грязными.' },
+        { en: 'She decorated her work cubicle with photos of her dog.', ru: 'Она украсила свое рабочее место фотографиями своей собаки.' },
+        { en: 'Privacy is hard to find in an open cubicle layout.', ru: 'Уединение трудно найти при планировке с открытыми кабинками.' }
+    ],
+    []
+),
+
+createRichWord('b2_cuckoo', 'Cuckoo', '/ˈkʊkuː/', 'куку', 'Кукушка / Сумасшедший', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Птица, известная своим криком и тем, что подкладывает яйца в чужие гнезда; (adj) сумасшедший (разг.).',
+    '- Птица: "Cuckoo clock" (Часы с кукушкой)\n- Гнездо: "Cuckoo in the nest" (Непрошенный гость)\n- Сленг: "Go cuckoo" (Свихнуться)',
+    [
+        { en: 'We heard the call of a cuckoo in the forest.', ru: 'Мы слышали крик кукушки в лесу.' },
+        { en: 'My grandmother has an old wooden cuckoo clock.', ru: 'У моей бабушки есть старые деревянные часы с кукушкой.' },
+        { en: 'He went a bit cuckoo after living alone for so long.', ru: 'Он немного тронулся умом после того, как так долго жил один.' },
+        { en: 'The cuckoo lays its eggs in the nests of other birds.', ru: 'Кукушка откладывает яйца в гнезда других птиц.' }
+    ],
+    []
+),
+
+createRichWord('b2_curfew', 'Curfew', '/ˈkɜːfjuː/', 'кёфью', 'Комендантский час', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Закон, требующий, чтобы люди оставались в помещении после определенного времени; время возвращения домой для детей.',
+    '- Порядок: "Impose a curfew" (Ввести комендантский час)\n- Семья: "Strict curfew" (Строгий комендантский час/время возврата)\n- Нарушение: "Break curfew" (Нарушить комендантский час)',
+    [
+        { en: 'The government imposed a dusk-to-dawn curfew.', ru: 'Правительство ввело комендантский час от заката до рассвета.' },
+        { en: 'My parents gave me a midnight curfew.', ru: 'Родители установили мне время возвращения домой в полночь.' },
+        { en: 'Anyone found on the streets after curfew will be arrested.', ru: 'Любой, кто будет найден на улице после комендантского часа, будет арестован.' },
+        { en: 'He was grounded for breaking his curfew.', ru: 'Его посадили под домашний арест за нарушение времени возвращения домой.' }
+    ],
+    []
+),
+
+createRichWord('b2_custard', 'Custard', '/ˈkʌstəd/', 'кастэд', 'Заварной крем', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сладкий желтый соус из молока, яиц и сахара, который едят с десертами.',
+    '- Еда: "Apple pie and custard" (Яблочный пирог с заварным кремом)\n- Десерт: "Custard tart" (Тарталетка с заварным кремом)\n- Текстура: "Thick custard" (Густой заварной крем)',
+    [
+        { en: 'The children love bananas and custard for dessert.', ru: 'Дети обожают бананы с заварным кремом на десерт.' },
+        { en: 'She poured hot custard over the sponge pudding.', ru: 'Она полила бисквитный пудинг горячим заварным кремом.' },
+        { en: 'Portuguese custard tarts are delicious.', ru: 'Португальские тарталетки с заварным кремом восхитительны.' },
+        { en: 'The custard was too lumpy because he didn\'t stir it.', ru: 'Крем был слишком комковатым, потому что он его не мешал.' }
+    ],
+    []
+  ),
+createRichWord('b2_coyote', 'Coyote', '/kaɪˈəʊti/', 'кайэути', 'Койот', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Дикая собака, обитающая в Северной Америке, похожая на волка, но меньше.',
+    '- Животное: "Wild coyote" (Дикий койот)\n- Звук: "Coyote howling" (Вой койота)\n- Природа: "Pack of coyotes" (Стая койотов)',
+    [
+        { en: 'We heard a coyote howling in the distance last night.', ru: 'Прошлой ночью мы слышали вой койота вдалеке.' },
+        { en: 'Farmers protect their chickens from coyotes.', ru: 'Фермеры защищают своих кур от койотов.' },
+        { en: 'The coyote is a clever and adaptable animal.', ru: 'Койот — умное и легко приспосабливающееся животное.' },
+        { en: 'They saw a coyote crossing the road in the desert.', ru: 'Они видели, как койот перебегал дорогу в пустыне.' }
+    ],
+    [
+        { meaning: "Smuggler (Slang)", translation: "Перевозчик нелегалов", example: { en: "They paid a coyote to cross the border.", ru: "Они заплатили койоту, чтобы пересечь границу." } }
+    ]
+),
+
+createRichWord('b2_crib', 'Crib', '/krɪb/', 'криб', 'Детская кроватка / Шпаргалка', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Кровать с высокими бортиками для маленького ребенка (амер.); также сленг для шпаргалки или дома.',
+    '- Мебель: "Baby crib" (Детская кроватка)\n- Школа: "Exam crib" (Шпаргалка)\n- Рождество: "Nativity crib" (Рождественский вертеп/ясли)',
+    [
+        { en: 'The baby finally fell asleep in his crib.', ru: 'Малыш наконец заснул в своей кроватке.' },
+        { en: 'She bought a new mattress for the crib.', ru: 'Она купила новый матрас для кроватки.' },
+        { en: 'He was caught using a crib sheet during the test.', ru: 'Его поймали за использованием шпаргалки во время теста.' },
+        { en: 'At Christmas, we set up a crib in the church.', ru: 'На Рождество мы устанавливаем в церкви вертеп (ясли).' }
+    ],
+    [
+        { meaning: "House (Slang)", translation: "Хата / Дом", example: { en: "Welcome to my crib.", ru: "Добро пожаловать в мою хату." } }
+    ]
+),
+
+createRichWord('b2_daffodil', 'Daffodil', '/ˈdæfədɪl/', 'дэфэдил', 'Нарцисс (желтый)', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Желтый весенний цветок с формой трубы в центре.',
+    '- Сад: "Yellow daffodil" (Желтый нарцисс)\n- Время: "Spring daffodils" (Весенние нарциссы)\n- Букет: "Bunch of daffodils" (Букет нарциссов)',
+    [
+        { en: 'Daffodils are usually the first sign of spring.', ru: 'Нарциссы обычно являются первым признаком весны.' },
+        { en: 'She put a vase of yellow daffodils on the table.', ru: 'Она поставила на стол вазу с желтыми нарциссами.' },
+        { en: 'The park was full of blooming daffodils.', ru: 'Парк был полон цветущих нарциссов.' },
+        { en: 'Wordsworth wrote a famous poem about daffodils.', ru: 'Вордсворт написал знаменитое стихотворение о нарциссах.' }
+    ],
+    []
+),
+
+createRichWord('b2_dashboard', 'Dashboard', '/ˈdæʃbɔːd/', 'дэшбод', 'Приборная панель', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Панель управления в автомобиле; экран с графиками и данными в программном обеспечении.',
+    '- Авто: "Car dashboard" (Приборная панель автомобиля)\n- Бизнес: "Sales dashboard" (Панель мониторинга продаж)\n- Индикатор: "Dashboard light" (Лампочка на панели)',
+    [
+        { en: 'A warning light flashed on the car\'s dashboard.', ru: 'На приборной панели автомобиля замигал предупреждающий индикатор.' },
+        { en: 'He wiped the dust off the dashboard.', ru: 'Он вытер пыль с приборной панели.' },
+        { en: 'The app features a dashboard to track your progress.', ru: 'В приложении есть панель управления для отслеживания вашего прогресса.' },
+        { en: 'Managers use a digital dashboard to view key metrics.', ru: 'Менеджеры используют цифровую панель для просмотра ключевых показателей.' }
+    ],
+    []
+),
+
+createRichWord('b2_decimal', 'Decimal', '/ˈdesɪml/', 'дэсимл', 'Десятичный / Десятичная дробь', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Относящийся к системе счисления, основанной на числе 10; дробь с точкой (напр., 0.5).',
+    '- Математика: "Decimal point" (Десятичная точка)\n- Система: "Decimal system" (Десятичная система)\n- Число: "Decimal number" (Десятичное число)',
+    [
+        { en: 'The answer should be correct to two decimal places.', ru: 'Ответ должен быть точным до двух знаков после запятой.' },
+        { en: 'Most countries use a decimal currency system.', ru: 'Большинство стран используют десятичную валютную систему.' },
+        { en: 'You forgot to put the decimal point.', ru: 'Ты забыл поставить десятичную точку.' },
+        { en: 'Converting fractions to decimals is easy.', ru: 'Преобразовывать дроби в десятичные числа легко.' }
+    ],
+    []
+  ),
+createRichWord('b2_canary', 'Canary', '/kəˈneəri/', 'кэнеэри', 'Канарейка', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Маленькая желтая птичка, известная своим красивым пением.',
+    '- Питомец: "Pet canary" (Домашняя канарейка)\n- Шахта: "Canary in the coal mine" (Тревожный сигнал / Предупреждение)\n- Цвет: "Canary yellow" (Ярко-желтый цвет)',
+    [
+        { en: 'My grandmother keeps a canary in a cage.', ru: 'Моя бабушка держит канарейку в клетке.' },
+        { en: 'Miners used a canary to detect dangerous gas.', ru: 'Шахтеры использовали канарейку для обнаружения опасного газа.' },
+        { en: 'She wore a bright canary yellow dress.', ru: 'На ней было ярко-желтое платье.' },
+        { en: 'The canary sang beautifully all morning.', ru: 'Канарейка прекрасно пела все утро.' }
+    ],
+    [
+        { meaning: "Informer (Slang)", translation: "Стукач", example: { en: "He sang like a canary to the police.", ru: "Он всё выложил полиции (пел как канарейка)." } }
+    ]
+),
+
+createRichWord('b2_chubby', 'Chubby', '/ˈtʃʌbi/', 'чаби', 'Пухлый / Круглолицый', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Слегка толстый в приятном смысле (обычно о детях или щеках).',
+    '- Внешность: "Chubby cheeks" (Пухлые щеки)\n- Ребенок: "Chubby baby" (Пухлый младенец)\n- Пальцы: "Chubby fingers" (Пухлые пальчики)',
+    [
+        { en: 'The baby has cute chubby cheeks.', ru: 'У ребенка милые пухлые щечки.' },
+        { en: 'He was a chubby child but grew up slim.', ru: 'Он был пухлым ребенком, но вырос стройным.' },
+        { en: 'I pinched his chubby little legs.', ru: 'Я ущипнул его пухленькие ножки.' },
+        { en: 'Don\'t worry about being a bit chubby.', ru: 'Не беспокойся о том, что ты немного полноват.' }
+    ],
+    []
+),
+
+createRichWord('b2_coaster', 'Coaster', '/ˈkəʊstə(r)/', 'кэустэ', 'Подставка (под кружку) / Американские горки', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Небольшой коврик под стакан для защиты стола; (сокр.) аттракцион "американские горки".',
+    '- Дом: "Drink coaster" (Подставка под напиток)\n- Парк: "Roller coaster" (Американские горки)\n- Мебель: "Put on a coaster" (Поставить на подставку)',
+    [
+        { en: 'Please use a coaster, don\'t put the cup on the wood.', ru: 'Пожалуйста, используй подставку, не ставь чашку на дерево.' },
+        { en: 'We screamed on the roller coaster ride.', ru: 'Мы кричали, катаясь на американских горках.' },
+        { en: 'These cork coasters protect the table from heat.', ru: 'Эти пробковые подставки защищают стол от жара.' },
+        { en: 'Life is like a roller coaster with ups and downs.', ru: 'Жизнь похожа на американские горки со взлетами и падениями.' }
+    ],
+    []
+),
+
+createRichWord('b2_colosseum', 'Colosseum', '/ˌkɒləˈsiːəm/', 'колэсиэм', 'Колизей / Стадион', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Большой стадион или театр (особенно знаменитый в Риме); место для зрелищ.',
+    '- Рим: "The Colosseum" (Колизей)\n- Здание: "Ancient colosseum" (Древний амфитеатр)\n- Туризм: "Visit the Colosseum" (Посетить Колизей)',
+    [
+        { en: 'Gladiators used to fight in the Roman Colosseum.', ru: 'Гладиаторы сражались в римском Колизее.' },
+        { en: 'The Colosseum is one of the wonders of the world.', ru: 'Колизей — одно из чудес света.' },
+        { en: 'Thousands of tourists visit the Colosseum daily.', ru: 'Тысячи туристов посещают Колизей ежедневно.' },
+        { en: 'The band played in the city\'s new colosseum.', ru: 'Группа играла на новом городском стадионе.' }
+    ],
+    []
+),
+
+createRichWord('b2_comfy', 'Comfy', '/ˈkʌmfi/', 'камфи', 'Удобный / Уютный', ProficiencyLevel.B2, 'adj', 'High', 'Informal',
+    'Разговорное сокращение от "comfortable".',
+    '- Мебель: "Comfy chair" (Удобное кресло)\n- Одежда: "Comfy shoes" (Удобная обувь)\n- Ощущение: "Warm and comfy" (Тепло и уютно)',
+    [
+        { en: 'This sofa is really comfy to sit on.', ru: 'На этом диване очень удобно сидеть.' },
+        { en: 'Make yourself comfy while I make tea.', ru: 'Устраивайся поудобнее, пока я готовлю чай.' },
+        { en: 'I bought some comfy pyjamas for winter.', ru: 'Я купила уютную пижаму на зиму.' },
+        { en: 'Are you comfy in that bed?', ru: 'Тебе удобно в этой кровати?' }
+    ],
+    []
+  ),
+createRichWord('b2_crickets', 'Crickets', '/ˈkrɪkɪts/', 'крикитс', 'Сверчки / Тишина', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Насекомые, самцы которых издают стрекочущий звук; (перен.) абсолютная тишина в ответ на шутку или вопрос.',
+    '- Насекомые: "Chirping crickets" (Поющие сверчки)\n- Тишина: "Hear crickets" (Слышать тишину/игнор)\n- Природа: "Field of crickets" (Поле сверчков)',
+    [
+        { en: 'The sound of crickets filled the night air.', ru: 'Звук сверчков наполнил ночной воздух.' },
+        { en: 'I told a joke, but all I heard was crickets.', ru: 'Я рассказал шутку, но в ответ была лишь гробовая тишина.' },
+        { en: 'Crickets are related to grasshoppers.', ru: 'Сверчки родственны кузнечикам.' },
+        { en: 'They feed live crickets to the lizard.', ru: 'Они кормят ящерицу живыми сверчками.' }
+    ],
+    []
+),
+
+createRichWord('b2_cutlery', 'Cutlery', '/ˈkʌtləri/', 'катлэри', 'Столовые приборы', ProficiencyLevel.B2, 'noun', 'High', 'Neutral',
+    'Ножи, вилки и ложки, используемые для еды и сервировки пищи.',
+    '- Кухня: "Drawer for cutlery" (Ящик для приборов)\n- Сервировка: "Stainless steel cutlery" (Приборы из нержавейки)\n- Материал: "Silver cutlery" (Серебряные приборы)',
+    [
+        { en: 'Please put the dirty cutlery in the dishwasher.', ru: 'Пожалуйста, положи грязные приборы в посудомойку.' },
+        { en: 'The restaurant sets the tables with expensive cutlery.', ru: 'Ресторан сервирует столы дорогими приборами.' },
+        { en: 'Plastic cutlery is bad for the environment.', ru: 'Пластиковые приборы вредны для окружающей среды.' },
+        { en: 'She polished the silver cutlery for the dinner party.', ru: 'Она начистила серебряные приборы для званого ужина.' }
+    ],
+    []
+),
+
+createRichWord('b2_cyclone', 'Cyclone', '/ˈsaɪkləʊn/', 'сайклэун', 'Циклон', ProficiencyLevel.B2, 'noun', 'Low', 'Neutral',
+    'Сильный шторм с ветрами, вращающимися по кругу; область низкого давления.',
+    '- Погода: "Tropical cyclone" (Тропический циклон)\n- Разрушение: "Hit by a cyclone" (Пострадать от циклона)\n- Метеорология: "Cyclone warning" (Предупреждение о циклоне)',
+    [
+        { en: 'The cyclone caused massive damage to the coast.', ru: 'Циклон нанес огромный ущерб побережью.' },
+        { en: 'Residents were evacuated before the cyclone arrived.', ru: 'Жители были эвакуированы до прихода циклона.' },
+        { en: 'A powerful cyclone is forming over the ocean.', ru: 'Над океаном формируется мощный циклон.' },
+        { en: 'Meteorologists are tracking the path of the cyclone.', ru: 'Метеорологи отслеживают путь циклона.' }
+    ],
+    []
+),
+
+createRichWord('b2_deluxe', 'Deluxe', '/dɪˈlʌks/', 'дилакс', 'Роскошный / Люкс', ProficiencyLevel.B2, 'adj', 'Medium', 'Neutral',
+    'Очень высокого качества, дорогой и комфортабельный.',
+    '- Отель: "Deluxe room" (Номер люкс)\n- Издание: "Deluxe edition" (Подарочное издание)\n- Качество: "Deluxe features" (Роскошные функции)',
+    [
+        { en: 'We booked a deluxe suite for our honeymoon.', ru: 'Мы забронировали номер люкс для медового месяца.' },
+        { en: 'The deluxe version of the game includes extra content.', ru: 'Deluxe-версия игры включает дополнительный контент.' },
+        { en: 'He drives a deluxe model of the car.', ru: 'Он водит машину модели люкс.' },
+        { en: 'They offer a deluxe spa treatment package.', ru: 'Они предлагают роскошный пакет спа-процедур.' }
+    ],
+    []
+),
+
+createRichWord('b2_diaper', 'Diaper', '/ˈdaɪəpə(r)/', 'дайэпэ', 'Подгузник (амер.)', ProficiencyLevel.B2, 'noun', 'Medium', 'Neutral',
+    'Кусок мягкой ткани или бумаги, который надевают на ребенка, еще не умеющего пользоваться туалетом (брит. nappy).',
+    '- Дети: "Change a diaper" (Поменять подгузник)\n- Покупка: "Pack of diapers" (Упаковка подгузников)\n- Вид: "Cloth diaper" (Тканевый подгузник)',
+    [
+        { en: 'The baby needs a diaper change right now.', ru: 'Ребенку нужно поменять подгузник прямо сейчас.' },
+        { en: 'Disposable diapers are very convenient but expensive.', ru: 'Одноразовые подгузники очень удобны, но дороги.' },
+        { en: 'He learned how to change a diaper quickly.', ru: 'Он научился быстро менять подгузник.' },
+        { en: 'Don\'t forget to pack extra diapers in the bag.', ru: 'Не забудь положить в сумку запасные подгузники.' }
+    ],
+    []
+  ),
 
 ];

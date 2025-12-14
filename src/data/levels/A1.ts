@@ -185,7 +185,7 @@ createRichWord('a1_all', 'All', '/ɔːl/', 'ол', 'Все / Весь', Proficie
         { en: 'We ate all the food on the table.', ru: 'Мы съели всю еду на столе.' },
         { en: 'That is all I know about the story.', ru: 'Это всё, что я знаю об этой истории.' }
     ]
-  ),
+),
 createRichWord('a1_also', 'Also', '/ˈɔːlsəʊ/', 'олсоу', 'Также', ProficiencyLevel.A1, 'adv', 'High', 'Neutral',
     'Используется для добавления информации; означает "в дополнение", "тоже" или "кроме того".',
     '- Добавление: "I also like it" (Мне это тоже нравится)\n- Перечисление: "And also this" (А также это)\n- Уточнение: "Not only... but also" (Не только... но и)',
