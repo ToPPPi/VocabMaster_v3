@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Loader2, LayoutGrid, Layers, BarChart3, Library, User as UserIcon, AlertTriangle, RefreshCw, Send } from 'lucide-react';
 import { ProficiencyLevel, ViewState, UserProgress } from './types';
 import { initUserProgress, downloadCloudData, saveUserProgress, completeOnboarding, syncTelegramUserData, logoutUser, resetUserProgress } from './services/storageService'; 
 import { triggerHaptic } from './utils/uiHelpers';
@@ -20,6 +20,7 @@ import { ShopView } from './components/ShopView';
 import { RewardOverlay, RewardType } from './components/RewardOverlay';
 import { DataManagementView } from './components/DataManagementView';
 import { SyncConflictModal } from './components/SyncConflictModal'; 
+import { RecoveryView } from './components/RecoveryView';
 
 const App: React.FC = () => {
   const [progress, setProgress] = useState<UserProgress | null>(null);
@@ -31,22 +32,31 @@ const App: React.FC = () => {
   const [reward, setReward] = useState<RewardType | null>(null);
   const [scrollToPremium, setScrollToPremium] = useState(false);
 
-  // Loading State
-  const [showEmergencyReset, setShowEmergencyReset] = useState(false);
+  // States for Critical Errors and Environment
+  const [isCriticalError, setIsCriticalError] = useState(false);
+  const [isBrowserEnv, setIsBrowserEnv] = useState(false);
 
   useEffect(() => {
-      // Emergency timer: Force show Reset button very quickly on mobile
-      const timer = setTimeout(() => {
-          if (!progress) {
-              setShowEmergencyReset(true);
-          }
-      }, 1000); // Reduced from 2500 to 1000ms
+      // Check Environment
+      const isTg = !!window.Telegram?.WebApp?.initData;
+      // It is browser env if NOT in telegram AND NOT in development mode (localhost)
+      // This allows you to test normally on localhost, but shows banner on Vercel web
+      const isDev = (import.meta as any).env?.DEV;
+      
+      if (!isTg && !isDev) {
+          setIsBrowserEnv(true);
+      }
 
       const load = async () => {
           try {
               // 1. Init Data (Fast Boot Strategy)
-              const { data, hasConflict, cloudDate } = await initUserProgress();
+              const { data, hasConflict, cloudDate, criticalError } = await initUserProgress();
               
+              if (criticalError) {
+                  setIsCriticalError(true);
+                  return;
+              }
+
               // 2. Render UI immediately
               if (hasConflict && cloudDate) {
                   setConflictData({ localDate: data.lastLocalUpdate, cloudDate: cloudDate });
@@ -68,12 +78,10 @@ const App: React.FC = () => {
             }
           } catch (e) {
               console.error("Init Failed:", e);
-              setShowEmergencyReset(true);
+              setIsCriticalError(true);
           }
       };
       load();
-
-      return () => clearTimeout(timer);
   }, []);
 
   const handleConflictResolve = async (useCloud: boolean) => {
@@ -90,14 +98,6 @@ const App: React.FC = () => {
           }
           if (progress?.hasSeenOnboarding) setView('dashboard');
           else setView('onboarding');
-      }
-  };
-
-  const handleEmergencyReset = async () => {
-      if (window.confirm("Это удалит ВСЕ данные и перезапустит приложение. Продолжить?")) {
-          await resetUserProgress();
-          // Force reload ignoring cache
-          window.location.reload();
       }
   };
 
@@ -148,29 +148,17 @@ const App: React.FC = () => {
   const handleGoToPremium = () => { setScrollToPremium(true); setView('profile'); };
   const handleTabChange = (target: any) => { setScrollToPremium(false); setView(target); };
 
+  // --- CRITICAL RECOVERY MODE ---
+  if (isCriticalError) {
+      return <RecoveryView />;
+  }
+
+  // --- LOADING STATE ---
   if (!progress) {
       return (
           <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-6 text-center">
               <Loader2 className="w-10 h-10 animate-spin text-violet-600 mb-6"/>
-              
-              <div className={`transition-opacity duration-500 ${showEmergencyReset ? 'opacity-100' : 'opacity-0'}`}>
-                  <div className="w-full max-w-xs space-y-4">
-                      <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-2xl border border-rose-100 dark:border-rose-800">
-                          <p className="text-sm font-bold text-rose-700 dark:text-rose-300 mb-1">
-                              Мобильная версия зависла?
-                          </p>
-                          <p className="text-xs text-rose-600 dark:text-rose-400">
-                              Нажмите кнопку ниже, чтобы сбросить локальную базу данных.
-                          </p>
-                      </div>
-                      <button 
-                          onClick={handleEmergencyReset}
-                          className="w-full py-3 bg-slate-900 dark:bg-slate-800 text-white rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-transform"
-                      >
-                          Сброс и Запуск
-                      </button>
-                  </div>
-              </div>
+              <p className="text-slate-400 text-sm font-medium">Загрузка словаря...</p>
           </div>
       );
   }
@@ -198,6 +186,16 @@ const App: React.FC = () => {
     <div className={progress.darkMode ? 'dark' : ''}>
         <div className={`max-w-md mx-auto h-[100dvh] ${isFullScreen ? 'bg-slate-900' : 'bg-slate-50 dark:bg-slate-950'} flex flex-col font-sans relative shadow-2xl md:shadow-none overflow-hidden transition-colors duration-300`}>
             
+            {/* WEB BROWSER WARNING BANNER */}
+            {isBrowserEnv && view !== 'onboarding' && (
+                <div className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[10px] font-bold py-2 px-4 text-center relative z-50 flex justify-between items-center shadow-md animate-in slide-in-from-top duration-500">
+                    <span>Вы в демо-режиме (Браузер).</span>
+                    <a href="https://t.me/VocabMasterBot/app" target="_blank" rel="noopener noreferrer" className="bg-white text-violet-700 px-2 py-1 rounded-md flex items-center gap-1 hover:bg-slate-100 transition-colors">
+                        <Send className="w-3 h-3" /> Открыть App
+                    </a>
+                </div>
+            )}
+
             {conflictData && (
                 <SyncConflictModal 
                     localDate={conflictData.localDate} 

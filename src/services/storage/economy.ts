@@ -4,7 +4,7 @@ import { getUserProgress, saveUserProgress, getSecureNow } from './core';
 
 // --- PAYMENT CONFIGURATION ---
 // Safe access to import.meta.env
-const IS_DEV_SIMULATION = (import.meta as any).env?.DEV || false; 
+const IS_DEV_ENV = (import.meta as any).env?.DEV || false; 
 
 // Helper to check if premium is active
 export const isUserPremium = (progress: UserProgress): boolean => {
@@ -16,23 +16,33 @@ export const isUserPremium = (progress: UserProgress): boolean => {
 export const buyPremium = async (plan: 'month' | 'year' | 'lifetime'): Promise<boolean> => {
     const tg = window.Telegram?.WebApp;
     
-    // 1. Browser/Dev Logic
-    if (!tg?.initData || IS_DEV_SIMULATION) {
-        console.warn(`[DEV] Payment Sim: ${plan}`);
-        if (IS_DEV_SIMULATION) {
-            await new Promise(resolve => setTimeout(resolve, 800));
-            const confirm = window.confirm(`[DEV] Симуляция: Купить ${plan}?`);
-            if (confirm) {
-                await activatePremium(plan);
-                return true;
-            }
-            return false;
-        }
-        await activatePremium(plan);
-        return true;
+    // SECURITY FIX: 
+    // We strictly separate "Dev Environment" from "Production Web Browser".
+    // If usage is outside Telegram AND in Production (real website), we BLOCK payments.
+    
+    const isTelegramAvailable = !!tg?.initData;
+
+    // 1. Production Web Browser (Security Block)
+    if (!isTelegramAvailable && !IS_DEV_ENV) {
+        alert("Оплата доступна только в приложении Telegram. Пожалуйста, перейдите в бота @VocabMasterBot.");
+        // Optional: Redirect user
+        window.open('https://t.me/VocabMasterBot', '_blank');
+        return false;
     }
 
-    // 2. Real Payment Flow
+    // 2. Dev Simulation (Localhost Only)
+    if (!isTelegramAvailable && IS_DEV_ENV) {
+        console.warn(`[DEV] Payment Sim: ${plan}`);
+        await new Promise(resolve => setTimeout(resolve, 800));
+        const confirm = window.confirm(`[DEV MODE] Симуляция: Купить ${plan}?`);
+        if (confirm) {
+            await activatePremium(plan);
+            return true;
+        }
+        return false;
+    }
+
+    // 3. Real Payment Flow (Telegram)
     try {
         const response = await fetch('/api/create-invoice', {
             method: 'POST',

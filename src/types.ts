@@ -61,8 +61,9 @@ export interface UserProgress {
   lastLoginDate: string;
   
   // Sync Meta
-  lastLocalUpdate: number; // When was the DB last touched locally
-  lastCloudSync: number;   // When was the last successful upload to Telegram Cloud
+  lastLocalUpdate: number; 
+  lastCloudSync: number;   
+  lastAutoBackupDate?: number; // New field for auto-backup timer
   
   wordsLearnedToday: number;
   aiGenerationsToday: number;
