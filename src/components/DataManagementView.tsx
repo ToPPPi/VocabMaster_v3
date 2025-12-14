@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, HardDrive, Copy, Check, Trash2, AlertTriangle, FileText, CheckCircle, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Upload, HardDrive, Copy, Check, Trash2, AlertTriangle, FileText, CheckCircle, Loader2, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
 import { Header } from './Header';
 import { UserProgress } from '../types';
 import { exportUserData, importUserData, forceSave, resetUserProgress } from '../services/storage/core';
@@ -41,6 +41,21 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({ progress
         const json = JSON.stringify(progress);
         const bytes = new Blob([json]).size;
         setDbSize((bytes / 1024).toFixed(2) + ' KB');
+    };
+
+    // --- UPDATE APP LOGIC ---
+    const handleForceUpdate = async () => {
+        triggerHaptic('medium');
+        if (window.confirm("Это принудительно обновит приложение до последней версии (очистит кэш). Ваши данные сохранятся. Продолжить?")) {
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (const registration of registrations) {
+                    await registration.unregister();
+                }
+            }
+            // Clear browser cache via reload
+            window.location.reload();
+        }
     };
 
     // --- EXPORT LOGIC ---
@@ -172,19 +187,26 @@ export const DataManagementView: React.FC<DataManagementViewProps> = ({ progress
                 
                 {/* 1. LOCAL STATUS ONLY */}
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                                 <HardDrive className="w-5 h-5" />
                             </div>
                             <div>
                                 <h3 className="font-bold text-slate-900 dark:text-white text-sm">Локальное хранилище</h3>
-                                <p className="text-[10px] text-slate-500 dark:text-slate-400">Данные хранятся только на этом устройстве.</p>
                                 <p className="text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-1">Размер БД: {dbSize}</p>
                             </div>
                         </div>
                         <CheckCircle className="w-5 h-5 text-emerald-500" />
                     </div>
+
+                    <button 
+                        onClick={handleForceUpdate}
+                        className="w-full py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                    >
+                        <RefreshCcw className="w-3 h-3" />
+                        Обновить версию приложения
+                    </button>
                 </div>
 
                 {/* 2. MANUAL BACKUP ACTIONS */}
